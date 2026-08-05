@@ -1,10 +1,10 @@
 -- ============================================================================
--- FREEWHEEL — schema v1
+-- FREEWHEEL: schema v1
 -- Run this FIRST, in Supabase → SQL Editor → New query → paste → Run.
 -- Then run supabase-schema-v2.sql.
 --
 -- What v1 covers: anonymous trips. No accounts, no auth. Anyone with a link can
--- open a trip and add themselves. That is deliberate — gating the join kills the
+-- open a trip and add themselves. That is deliberate, gating the join kills the
 -- viral loop (see HANDOFF.md §4.1).
 -- ============================================================================
 
@@ -50,7 +50,7 @@ create table if not exists public.waitlist (
 -- ============================================================================
 -- ROW LEVEL SECURITY
 -- The site ships an anon key in client-side JS, so anon can do exactly what the
--- product needs and nothing more. Notably: waitlist is WRITE-ONLY to anon —
+-- product needs and nothing more. Notably: waitlist is WRITE-ONLY to anon,
 -- nobody can enumerate the email list with the public key.
 -- ============================================================================
 alter table public.trips    enable row level security;
@@ -77,7 +77,7 @@ create policy "anon read members" on public.members
   for select to anon, authenticated using (true);
 
 -- events: anon can write, and can read.
--- Read is deliberate — dashboard.html and the "Popular" sort in home.html both run on
+-- Read is deliberate, dashboard.html and the "Popular" sort in home.html both run on
 -- the anon key, and neither can invent numbers it can't see. Events carry no personal
 -- data: name + a small props blob + trip_code, never an email or a person's name.
 -- If you later want the funnel private, move dashboard.html behind auth and change the
@@ -96,7 +96,7 @@ create policy "anon insert waitlist" on public.waitlist
   for insert to anon, authenticated with check (true);
 
 -- ============================================================================
--- REALTIME — so a trip page updates the moment someone joins,
+-- REALTIME: so a trip page updates the moment someone joins,
 -- instead of waiting for the 45s poll fallback.
 -- ============================================================================
 do $$

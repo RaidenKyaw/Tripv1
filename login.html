@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Log in — Freewheel</title>
+<title>Log in · Freewheel</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
 <meta name="robots" content="noindex">
 <style>
@@ -54,6 +54,27 @@
   .alt a{color:var(--teal); font-weight:700;}
   .demo{background:#FAF1DC; border:1px solid #EBD9AE; border-radius:12px; padding:13px 14px;
         font-size:13px; color:#7C5A12; line-height:1.55; margin-bottom:16px;}
+
+  /* ---------------------------------------------------- interaction polish */
+  a,button,select,input,summary,.chip,.size,.sort,.wk,.wchip,.opt,.checkrow,
+  .navbtn,.postcard,.tier,.card,.deal,.trip,.fr{
+    transition:background-color .18s ease, border-color .18s ease, color .18s ease,
+               box-shadow .18s ease, transform .18s ease, opacity .18s ease;
+  }
+  /* Visible keyboard focus everywhere. Mouse users never see it; keyboard and
+     screen-reader users can't navigate confidently without it. */
+  :focus-visible{outline:3px solid var(--terra); outline-offset:2px; border-radius:8px;}
+  .btn:hover{filter:brightness(1.03);}
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 9px 24px rgba(217,106,75,.30);}
+  .btn-ghost:hover{border-color:var(--teal); background:var(--teal-soft); border-style:solid;}
+  .btn-accent:hover{filter:brightness(1.08);}
+  .chip:hover,.size:hover,.sort:hover,.wk:hover{border-color:#D7C3A6;}
+  a:hover{opacity:.85;}
+  ::selection{background:var(--gold-soft); color:var(--ink);}
+  html{-webkit-text-size-adjust:100%;}
+  body{text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;}
+  /* small-caps labels read better with a touch more tracking at small sizes */
+  label,.eyebrow,.k,.lbl,.from{font-variant-numeric:tabular-nums;}
 </style>
 </head>
 <body>
@@ -65,7 +86,7 @@
 
   <div class="demo hidden" id="demoNote">
     No backend connected yet, so there's nothing to log in to. Paste your Supabase keys into the
-    <b>BACKEND</b> line in this file to switch it on — or take a look around in demo mode.
+    <b>BACKEND</b> line in this file to switch it on, or take a look around in demo mode.
   </div>
 
   <div class="card">
@@ -86,7 +107,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ================= BACKEND (Supabase — optional) =================
+// ================= BACKEND (Supabase, optional) =================
 // Paste from Supabase → Project Settings → API. Leave blank = demo mode.
 const BACKEND = { url: "", anonKey: "" };
 const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
@@ -133,7 +154,7 @@ $("reset").addEventListener("click", async () => {
   if(sb){
     await sb.auth.resetPasswordForEmail(email, {redirectTo:location.origin + "/login.html"});
   }
-  // Same message either way — never reveal whether an address has an account.
+  // Same message either way. Never reveal whether an address has an account.
   show("ok", "If that address has an account, a reset link is on its way.");
   track("password_reset_requested");
 });

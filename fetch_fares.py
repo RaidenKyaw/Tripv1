@@ -12,7 +12,7 @@ Why a cache and not a live call: the pages are static HTML on GitHub Pages with 
 server, an API token must never ship to the browser, and fare APIs rate-limit hard.
 One nightly run, committed to the repo, is the whole backend.
 
-SAFETY RULE (HANDOFF.md §4.2 — never let a real user see sample fares):
+SAFETY RULE (HANDOFF.md §4.2, never let a real user see sample fares):
 this script only writes files if it got real prices for at least MIN_COVERAGE of
 the route/weekend pairs it asked for. A partial or failed run leaves the previous
 cache in place and exits non-zero, so a broken night is loud instead of silent.
@@ -34,7 +34,7 @@ API = "https://api.travelpayouts.com/aviasales/v3/prices_for_dates"
 CURRENCY = "usd"
 WEEKENDS = 12
 MIN_COVERAGE = 0.60          # below this we refuse to publish
-REQUEST_PAUSE = 0.25         # seconds between calls — be a good citizen
+REQUEST_PAUSE = 0.25         # seconds between calls, be a good citizen
 RETRIES = 3
 UA = "freewheel-fare-bot/1.0 (+https://github.com/RaidenKyaw/Tripv1)"
 
@@ -49,13 +49,13 @@ FX_CURRENCIES = ["CAD", "GBP", "EUR", "AUD", "NZD"]
 
 # Routes we cache, per origin: destination code -> (display city, typical return fare USD).
 #
-# Six origins, chosen for student density rather than airport size — the product needs
+# Six origins, chosen for student density rather than airport size, the product needs
 # ~500 users sharing a departure airport before deal quality is credible, so a short
 # list that fills is worth more than a long one that doesn't. Add origins as catchments
 # fill, not before. The typical fare is only used to seed --sample data; live runs
 # compute it from the median of what the API actually returns.
 ROUTES = {
-    "BOS": {   # Boston — highest student density per airport in the US
+    "BOS": {   # Boston, highest student density per airport in the US
         "LGA": ("New York", 130), "DCA": ("Washington DC", 140), "ORD": ("Chicago", 170),
         "MIA": ("Miami", 190), "MCO": ("Orlando", 180), "ATL": ("Atlanta", 170),
         "MSY": ("New Orleans", 210), "DEN": ("Denver", 230), "LAS": ("Las Vegas", 240),
@@ -147,7 +147,7 @@ def fetch_one(origin, dest, dep, ret, token):
             price = rows[0].get("price")
             return int(round(float(price))) if price else None
         except urllib.error.HTTPError as e:
-            if e.code == 429:                       # rate limited — back off and retry
+            if e.code == 429:                       # rate limited, back off and retry
                 time.sleep(2 ** attempt)
                 continue
             print(f"  ! {origin}->{dest} {dep}: HTTP {e.code}", file=sys.stderr)
@@ -209,7 +209,7 @@ def build(token, previous):
 
 
 def fetch_rates():
-    """Nightly FX snapshot. Returns None on any failure — the caller then leaves
+    """Nightly FX snapshot. Returns None on any failure, the caller then leaves
     whatever rates the pages already carry, which is better than zeroing them."""
     try:
         req = urllib.request.Request(FX_API, headers={"Accept": "application/json", "User-Agent": UA})
@@ -225,7 +225,7 @@ def fetch_rates():
         print("FX: " + ", ".join(f"{k} {v}" for k, v in out.items() if k != "USD"))
         return out
     except Exception as e:                       # noqa: BLE001 - FX is a nicety, never fatal
-        print(f"  ! FX rates unavailable ({e}) — keeping the rates already in the pages",
+        print(f"  ! FX rates unavailable ({e}), keeping the rates already in the pages",
               file=sys.stderr)
         return None
 
@@ -235,7 +235,7 @@ def make_sample():
     token to hand. Deterministic (fixed seed) so the committed blob only changes when
     the routes do, not on every run.
 
-    This does NOT clear SAMPLE_DATA — pages keep showing the "these aren't real
+    This does NOT clear SAMPLE_DATA, pages keep showing the "these aren't real
     prices" banner. Only a successful live fetch is allowed to clear that.
     """
     import random
@@ -280,7 +280,7 @@ def rewrite(path, blob, stamp, live=True, rates=None):
     new_line = "const FARES_ALL = " + json.dumps(blob, separators=(",", ":")) + ";"
     src, n = re.subn(r"^const FARES_ALL = .*?;\r?$", lambda _: new_line, src, count=1, flags=re.M)
     if not n:
-        raise SystemExit(f"{path}: no `const FARES_ALL = ...;` line found — did the file change shape?")
+        raise SystemExit(f"{path}: no `const FARES_ALL = ...;` line found, did the file change shape?")
 
     # These two are optional per file; only app.html/home.html/index.html carry them today.
     if live:
@@ -310,7 +310,7 @@ def main():
         for path in TARGETS:
             if os.path.exists(path):
                 rewrite(path, blob, stamp="", live=False)
-        print("\nDone. These are NOT real prices — the sample banners stay up until a live run.")
+        print("\nDone. These are NOT real prices, the sample banners stay up until a live run.")
         return
 
     if not args.token:
@@ -326,12 +326,12 @@ def main():
     if coverage < MIN_COVERAGE:
         raise SystemExit(
             f"\nABORTED: only {coverage:.0%} of fares came back live, below the {MIN_COVERAGE:.0%} floor.\n"
-            "Nothing was written — the site keeps the last good cache rather than showing\n"
+            "Nothing was written, the site keeps the last good cache rather than showing\n"
             "a half-empty one. Check the token and the API status, then run again."
         )
 
     if args.dry_run:
-        print("\nDry run — no files written.")
+        print("\nDry run, no files written.")
         return
 
     rates = fetch_rates()

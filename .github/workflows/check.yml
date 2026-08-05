@@ -1,0 +1,37 @@
+name: Checks
+
+# Runs on every push and pull request. It is deliberately cheap: no browser, no
+# network, no install step, so there is never a reason to skip it.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Structural checks
+        run: python check.py
+
+      - name: Fare fetcher compiles and its weekend maths matches the pages
+        run: |
+          python -m py_compile fetch_fares.py
+          python - <<'PY'
+          import fetch_fares as F
+          w = F.next_weekends()
+          assert len(w) == F.WEEKENDS, "wrong number of weekends"
+          assert all(a.weekday() == 4 and b.weekday() == 0 for a, b in w), \
+              "weekends must run Friday to Monday"
+          assert all(len(v) for v in F.ROUTES.values()), "an origin has no routes"
+          print(f"{len(F.ROUTES)} origins, "
+                f"{sum(len(v) for v in F.ROUTES.values())} routes, "
+                f"first weekend {w[0][0]}")
+          PY

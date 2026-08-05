@@ -2,11 +2,11 @@ name: Refresh fares nightly
 
 # 17:30 UTC = 03:30 in Sydney during AEST. Sydney shifts to AEDT (UTC+11) in
 # October, so the job lands at 04:30 local for that half of the year. Both are
-# the middle of the night, which is all that matters — nobody is looking.
+# the middle of the night, which is all that matters, nobody is looking.
 on:
   schedule:
     - cron: "30 17 * * *"
-  workflow_dispatch:        # "Run workflow" button — use this for the first run
+  workflow_dispatch:        # "Run workflow" button, use this for the first run
 
 permissions:
   contents: write
@@ -33,7 +33,7 @@ jobs:
       - name: Commit the new cache
         run: |
           if [ -z "$(git status --porcelain)" ]; then
-            echo "Prices unchanged — nothing to commit."
+            echo "Prices unchanged, nothing to commit."
             exit 0
           fi
           git config user.name  "freewheel-bot"

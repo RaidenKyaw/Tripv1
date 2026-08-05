@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Start free — Freewheel</title>
+<title>Start free · Freewheel</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
 <meta name="robots" content="noindex">
 <style>
@@ -59,7 +59,7 @@
   .btn-link{background:none; border:none; color:var(--dim); font-size:13.5px; text-decoration:underline;
             cursor:pointer; display:block; margin:12px auto 0; font-family:var(--sans);}
 
-  /* live value panel — the aha moment, delivered before we ask for anything */
+  /* live value panel: the aha moment, delivered before we ask for anything */
   .live{background:var(--teal-deep); border-radius:14px; padding:15px 16px 16px; margin-bottom:14px;
         color:#EAF3F0;}
   .live .lbl{font-size:10.5px; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
@@ -117,6 +117,28 @@
   .toast.show{opacity:1;}
   .sample-flag{background:var(--gold-soft); border:1px solid #EBD9AE; color:#8A6412; font-size:12px;
                padding:9px 13px; border-radius:11px; margin:14px 0 0; font-weight:600; line-height:1.5;}
+
+  /* ---------------------------------------------------- interaction polish */
+  a,button,select,input,summary,.chip,.size,.sort,.wk,.wchip,.opt,.checkrow,
+  .navbtn,.postcard,.tier,.card,.deal,.trip,.fr{
+    transition:background-color .18s ease, border-color .18s ease, color .18s ease,
+               box-shadow .18s ease, transform .18s ease, opacity .18s ease;
+  }
+  /* Visible keyboard focus everywhere. Mouse users never see it; keyboard and
+     screen-reader users can't navigate confidently without it. */
+  :focus-visible{outline:3px solid var(--terra); outline-offset:2px; border-radius:8px;}
+  .btn:hover{filter:brightness(1.03);}
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 9px 24px rgba(217,106,75,.30);}
+  .btn-ghost:hover{border-color:var(--teal); background:var(--teal-soft); border-style:solid;}
+  .btn-accent:hover{filter:brightness(1.08);}
+  .chip:hover,.size:hover,.sort:hover,.wk:hover{border-color:#D7C3A6;}
+  a:hover{opacity:.85;}
+  ::selection{background:var(--gold-soft); color:var(--ink);}
+  html{-webkit-text-size-adjust:100%;}
+  body{text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;}
+  /* small-caps labels read better with a touch more tracking at small sizes */
+  label,.eyebrow,.k,.lbl,.from{font-variant-numeric:tabular-nums;}
+
   @media(prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important;}}
 </style>
 </head>
@@ -124,13 +146,13 @@
 <div class="wrap">
   <a class="logo" href="index.html">Freewheel<em>where can we all go?</em></a>
   <div class="sample-flag hidden" id="sampleFlag">
-    Sample prices — realistic placeholders, not live fares yet.
+    Sample prices: realistic placeholders, not live fares yet.
   </div>
   <div class="prog" id="prog"><i></i><i></i><i></i><i></i></div>
   <div class="stepno" id="stepno">Step 1 of 4</div>
 
   <!-- ====================================================== 1 · AIRPORT === -->
-  <!-- Value first. No account, no questions — pick an airport, see real prices.
+  <!-- Value first. No account, no questions. Pick an airport, see real prices.
        Signup is step 4, once there's something worth saving. -->
   <section id="s1">
     <h1>What's cheap from your airport right now?</h1>
@@ -157,14 +179,14 @@
       <div class="note" id="liveNote"></div>
     </div>
 
-    <button class="btn btn-primary" id="s1next">Good — now make it a group trip →</button>
+    <button class="btn btn-primary" id="s1next">Good. Now make it a group trip →</button>
     <button class="btn-link" id="s1skip">Skip this, just let me plan a trip</button>
   </section>
 
   <!-- ========================================================= 2 · CREW === -->
   <section id="s2" class="hidden">
     <h1>How many of you usually go?</h1>
-    <p class="sub">Freewheel is built for groups — it's why the dates work out, and it's why the
+    <p class="sub">Freewheel is built for groups. It's why the dates work out, and it's why the
       price drops the more of you there are.</p>
 
     <div class="card">
@@ -180,8 +202,8 @@
 
     <div class="live">
       <div class="lbl">What that means for you</div>
-      <div class="bignum" id="crewBig">—</div>
-      <div class="bigsub" id="crewSub">—</div>
+      <div class="bignum" id="crewBig">…</div>
+      <div class="bigsub" id="crewSub">…</div>
       <div class="note" id="crewNote"></div>
     </div>
 
@@ -192,7 +214,7 @@
   <!-- ====================================================== 3 · WINDOWS === -->
   <section id="s3" class="hidden">
     <h1>When could you all actually go?</h1>
-    <p class="sub">Roughly — not exact dates. It's how we decide whether a cheap fare is worth
+    <p class="sub">Roughly, not exact dates. It's how we decide whether a cheap fare is worth
       emailing you about.</p>
 
     <div class="card">
@@ -210,10 +232,12 @@
     </div>
 
     <div class="card">
-      <label>So you know exactly what you're signing up for</label>
+      <label>What an alert will look like</label>
       <div class="alert-preview" id="alertPreview"></div>
-      <div class="hint">Twice a week at most, and only when a route beats its typical price by more
-        than 20%. If we can't clear that bar, you hear nothing from us.</div>
+      <div class="hint"><b>Being straight with you: alerts aren't switched on yet.</b> We're still
+        building up enough price history to tell a real drop from noise. Your windows are saved now,
+        and you'll be in the first batch when they go live. When they do: twice a week at most, and
+        only when a route beats its typical price by more than 20%.</div>
     </div>
 
     <button class="btn btn-primary" id="s3next">Next →</button>
@@ -229,11 +253,11 @@
     <div class="pass">
       <div class="strip">FREEWHEEL · YOUR SETUP</div>
       <div class="inner">
-        <div class="prow"><span class="k">Flying from</span><span class="v" id="rHome">—</span></div>
-        <div class="prow"><span class="k">Crew size</span><span class="v" id="rCrew">—</span></div>
-        <div class="prow"><span class="k">Watching</span><span class="v" id="rWindows">—</span></div>
-        <div class="prow"><span class="k">Best find today</span><span class="v" id="rBest">—</span></div>
-        <div class="prow"><span class="k">After the free week</span><span class="v" id="rRate">—</span></div>
+        <div class="prow"><span class="k">Flying from</span><span class="v" id="rHome">…</span></div>
+        <div class="prow"><span class="k">Crew size</span><span class="v" id="rCrew">…</span></div>
+        <div class="prow"><span class="k">Watching</span><span class="v" id="rWindows">…</span></div>
+        <div class="prow"><span class="k">Best find today</span><span class="v" id="rBest">…</span></div>
+        <div class="prow"><span class="k">After the free week</span><span class="v" id="rRate">…</span></div>
       </div>
     </div>
 
@@ -256,7 +280,7 @@
         and the same bill date. Otherwise you'll get your own code to share.</div>
     </div>
 
-    <button class="btn btn-primary" id="s4next">Save my setup — 7 days free →</button>
+    <button class="btn btn-primary" id="s4next">Save my setup, 7 days free →</button>
     <button class="btn-link" id="s4skip">Skip for now, just let me look around</button>
     <button class="btn-link" id="s4back">← Back</button>
   </section>
@@ -269,7 +293,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ================= BACKEND (Supabase — optional) =================
+// ================= BACKEND (Supabase, optional) =================
 // Paste from Supabase → Project Settings → API. Leave blank = demo mode.
 const BACKEND = { url: "", anonKey: "" };
 const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
@@ -278,7 +302,7 @@ const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
 const SAMPLE_DATA = true;
 const FARES_STAMP = "";
 
-// ================= DATA (sample cache — replace via fetch_fares.py) =================
+// ================= DATA (sample cache, replaced by fetch_fares.py) =================
 const FARES_ALL = {"BOS":{"LGA":{"city":"New York","typ":128,"fares":[{"w":0,"p":154},{"w":1,"p":105},{"w":2,"p":102},{"w":3,"p":123},{"w":4,"p":104},{"w":5,"p":175},{"w":6,"p":132},{"w":7,"p":123},{"w":8,"p":177},{"w":9,"p":133},{"w":10,"p":104},{"w":11,"p":132}]},"DCA":{"city":"Washington DC","typ":148,"fares":[{"w":0,"p":101},{"w":1,"p":134},{"w":2,"p":183},{"w":3,"p":153},{"w":4,"p":86},{"w":5,"p":168},{"w":6,"p":188},{"w":7,"p":181},{"w":8,"p":175},{"w":9,"p":105},{"w":10,"p":143},{"w":11,"p":119}]},"ORD":{"city":"Chicago","typ":154,"fares":[{"w":0,"p":209},{"w":1,"p":146},{"w":2,"p":178},{"w":3,"p":176},{"w":4,"p":209},{"w":5,"p":108},{"w":6,"p":134},{"w":7,"p":148},{"w":8,"p":111},{"w":9,"p":142},{"w":10,"p":161},{"w":11,"p":188}]},"MIA":{"city":"Miami","typ":181,"fares":[{"w":0,"p":217},{"w":1,"p":180},{"w":2,"p":116},{"w":3,"p":212},{"w":4,"p":176},{"w":5,"p":129},{"w":6,"p":157},{"w":7,"p":229},{"w":8,"p":182},{"w":9,"p":144},{"w":10,"p":202},{"w":11,"p":207}]},"MCO":{"city":"Orlando","typ":168,"fares":[{"w":0,"p":193},{"w":1,"p":114},{"w":2,"p":179},{"w":3,"p":156},{"w":4,"p":163},{"w":5,"p":173},{"w":6,"p":238},{"w":7,"p":117},{"w":8,"p":160},{"w":9,"p":241},{"w":10,"p":130},{"w":11,"p":175}]},"ATL":{"city":"Atlanta","typ":172,"fares":[{"w":0,"p":176},{"w":1,"p":179},{"w":2,"p":169},{"w":3,"p":229},{"w":4,"p":147},{"w":5,"p":162},{"w":6,"p":220},{"w":7,"p":143},{"w":8,"p":157},{"w":9,"p":149},{"w":10,"p":180},{"w":11,"p":224}]},"MSY":{"city":"New Orleans","typ":194,"fares":[{"w":0,"p":133},{"w":1,"p":171},{"w":2,"p":172},{"w":3,"p":247},{"w":4,"p":235},{"w":5,"p":160},{"w":6,"p":217},{"w":7,"p":229},{"w":8,"p":284},{"w":9,"p":169},{"w":10,"p":165},{"w":11,"p":238}]},"DEN":{"city":"Denver","typ":218,"fares":[{"w":0,"p":254},{"w":1,"p":223},{"w":2,"p":204},{"w":3,"p":205},{"w":4,"p":237},{"w":5,"p":273},{"w":6,"p":161},{"w":7,"p":205},{"w":8,"p":214},{"w":9,"p":222},{"w":10,"p":180},{"w":11,"p":250}]},"LAS":{"city":"Las Vegas","typ":250,"fares":[{"w":0,"p":255},{"w":1,"p":271},{"w":2,"p":149},{"w":3,"p":252},{"w":4,"p":211},{"w":5,"p":249},{"w":6,"p":259},{"w":7,"p":210},{"w":8,"p":238},{"w":9,"p":262},{"w":10,"p":149},{"w":11,"p":255}]},"LAX":{"city":"Los Angeles","typ":273,"fares":[{"w":0,"p":208},{"w":1,"p":318},{"w":2,"p":281},{"w":3,"p":284},{"w":4,"p":315},{"w":5,"p":265},{"w":6,"p":318},{"w":7,"p":210},{"w":8,"p":286},{"w":9,"p":173},{"w":10,"p":216},{"w":11,"p":209}]},"SJU":{"city":"San Juan","typ":292,"fares":[{"w":0,"p":332},{"w":1,"p":215},{"w":2,"p":332},{"w":3,"p":337},{"w":4,"p":241},{"w":5,"p":295},{"w":6,"p":381},{"w":7,"p":225},{"w":8,"p":190},{"w":9,"p":385},{"w":10,"p":288},{"w":11,"p":215}]},"CUN":{"city":"Canc\u00fan","typ":389,"fares":[{"w":0,"p":334},{"w":1,"p":321},{"w":2,"p":473},{"w":3,"p":280},{"w":4,"p":323},{"w":5,"p":350},{"w":6,"p":510},{"w":7,"p":384},{"w":8,"p":397},{"w":9,"p":518},{"w":10,"p":394},{"w":11,"p":400}]},"NAS":{"city":"Nassau","typ":327,"fares":[{"w":0,"p":387},{"w":1,"p":388},{"w":2,"p":414},{"w":3,"p":248},{"w":4,"p":291},{"w":5,"p":242},{"w":6,"p":226},{"w":7,"p":350},{"w":8,"p":315},{"w":9,"p":408},{"w":10,"p":250},{"w":11,"p":339}]},"KEF":{"city":"Reykjav\u00edk","typ":458,"fares":[{"w":0,"p":485},{"w":1,"p":320},{"w":2,"p":309},{"w":3,"p":456},{"w":4,"p":379},{"w":5,"p":400},{"w":6,"p":579},{"w":7,"p":475},{"w":8,"p":466},{"w":9,"p":473},{"w":10,"p":461},{"w":11,"p":385}]},"DUB":{"city":"Dublin","typ":466,"fares":[{"w":0,"p":428},{"w":1,"p":526},{"w":2,"p":368},{"w":3,"p":649},{"w":4,"p":628},{"w":5,"p":351},{"w":6,"p":473},{"w":7,"p":458},{"w":8,"p":440},{"w":9,"p":484},{"w":10,"p":642},{"w":11,"p":456}]},"LHR":{"city":"London","typ":515,"fares":[{"w":0,"p":407},{"w":1,"p":699},{"w":2,"p":763},{"w":3,"p":368},{"w":4,"p":469},{"w":5,"p":369},{"w":6,"p":561},{"w":7,"p":654},{"w":8,"p":803},{"w":9,"p":370},{"w":10,"p":405},{"w":11,"p":754}]}},"JFK":{"BOS":{"city":"Boston","typ":123,"fares":[{"w":0,"p":149},{"w":1,"p":97},{"w":2,"p":78},{"w":3,"p":118},{"w":4,"p":125},{"w":5,"p":158},{"w":6,"p":109},{"w":7,"p":130},{"w":8,"p":83},{"w":9,"p":176},{"w":10,"p":121},{"w":11,"p":144}]},"DCA":{"city":"Washington DC","typ":130,"fares":[{"w":0,"p":106},{"w":1,"p":124},{"w":2,"p":156},{"w":3,"p":125},{"w":4,"p":77},{"w":5,"p":147},{"w":6,"p":136},{"w":7,"p":148},{"w":8,"p":175},{"w":9,"p":95},{"w":10,"p":134},{"w":11,"p":110}]},"ORD":{"city":"Chicago","typ":146,"fares":[{"w":0,"p":105},{"w":1,"p":178},{"w":2,"p":157},{"w":3,"p":192},{"w":4,"p":183},{"w":5,"p":94},{"w":6,"p":131},{"w":7,"p":128},{"w":8,"p":164},{"w":9,"p":165},{"w":10,"p":109},{"w":11,"p":135}]},"MIA":{"city":"Miami","typ":176,"fares":[{"w":0,"p":193},{"w":1,"p":134},{"w":2,"p":127},{"w":3,"p":179},{"w":4,"p":196},{"w":5,"p":159},{"w":6,"p":202},{"w":7,"p":123},{"w":8,"p":236},{"w":9,"p":172},{"w":10,"p":114},{"w":11,"p":200}]},"MCO":{"city":"Orlando","typ":170,"fares":[{"w":0,"p":139},{"w":1,"p":170},{"w":2,"p":137},{"w":3,"p":100},{"w":4,"p":101},{"w":5,"p":178},{"w":6,"p":184},{"w":7,"p":169},{"w":8,"p":197},{"w":9,"p":196},{"w":10,"p":180},{"w":11,"p":161}]},"ATL":{"city":"Atlanta","typ":159,"fares":[{"w":0,"p":164},{"w":1,"p":101},{"w":2,"p":169},{"w":3,"p":109},{"w":4,"p":168},{"w":5,"p":129},{"w":6,"p":109},{"w":7,"p":187},{"w":8,"p":120},{"w":9,"p":160},{"w":10,"p":158},{"w":11,"p":173}]},"MSY":{"city":"New Orleans","typ":165,"fares":[{"w":0,"p":137},{"w":1,"p":254},{"w":2,"p":165},{"w":3,"p":217},{"w":4,"p":165},{"w":5,"p":174},{"w":6,"p":228},{"w":7,"p":190},{"w":8,"p":160},{"w":9,"p":130},{"w":10,"p":127},{"w":11,"p":126}]},"DEN":{"city":"Denver","typ":202,"fares":[{"w":0,"p":225},{"w":1,"p":288},{"w":2,"p":164},{"w":3,"p":187},{"w":4,"p":270},{"w":5,"p":222},{"w":6,"p":135},{"w":7,"p":136},{"w":8,"p":180},{"w":9,"p":216},{"w":10,"p":157},{"w":11,"p":280}]},"LAS":{"city":"Las Vegas","typ":230,"fares":[{"w":0,"p":218},{"w":1,"p":238},{"w":2,"p":262},{"w":3,"p":278},{"w":4,"p":221},{"w":5,"p":308},{"w":6,"p":300},{"w":7,"p":220},{"w":8,"p":211},{"w":9,"p":177},{"w":10,"p":282},{"w":11,"p":217}]},"LAX":{"city":"Los Angeles","typ":236,"fares":[{"w":0,"p":252},{"w":1,"p":265},{"w":2,"p":219},{"w":3,"p":220},{"w":4,"p":215},{"w":5,"p":274},{"w":6,"p":357},{"w":7,"p":272},{"w":8,"p":192},{"w":9,"p":256},{"w":10,"p":159},{"w":11,"p":174}]},"SJU":{"city":"San Juan","typ":268,"fares":[{"w":0,"p":201},{"w":1,"p":230},{"w":2,"p":268},{"w":3,"p":203},{"w":4,"p":308},{"w":5,"p":241},{"w":6,"p":272},{"w":7,"p":287},{"w":8,"p":269},{"w":9,"p":284},{"w":10,"p":271},{"w":11,"p":242}]},"CUN":{"city":"Canc\u00fan","typ":375,"fares":[{"w":0,"p":395},{"w":1,"p":369},{"w":2,"p":381},{"w":3,"p":443},{"w":4,"p":258},{"w":5,"p":242},{"w":6,"p":359},{"w":7,"p":341},{"w":8,"p":467},{"w":9,"p":459},{"w":10,"p":349},{"w":11,"p":387}]},"NAS":{"city":"Nassau","typ":338,"fares":[{"w":0,"p":209},{"w":1,"p":329},{"w":2,"p":433},{"w":3,"p":360},{"w":4,"p":333},{"w":5,"p":270},{"w":6,"p":366},{"w":7,"p":345},{"w":8,"p":370},{"w":9,"p":222},{"w":10,"p":342},{"w":11,"p":322}]},"KEF":{"city":"Reykjav\u00edk","typ":398,"fares":[{"w":0,"p":378},{"w":1,"p":410},{"w":2,"p":460},{"w":3,"p":398},{"w":4,"p":262},{"w":5,"p":354},{"w":6,"p":437},{"w":7,"p":318},{"w":8,"p":497},{"w":9,"p":545},{"w":10,"p":398},{"w":11,"p":326}]},"DUB":{"city":"Dublin","typ":455,"fares":[{"w":0,"p":515},{"w":1,"p":665},{"w":2,"p":407},{"w":3,"p":567},{"w":4,"p":309},{"w":5,"p":466},{"w":6,"p":444},{"w":7,"p":385},{"w":8,"p":362},{"w":9,"p":537},{"w":10,"p":494},{"w":11,"p":355}]},"LHR":{"city":"London","typ":512,"fares":[{"w":0,"p":448},{"w":1,"p":652},{"w":2,"p":519},{"w":3,"p":512},{"w":4,"p":339},{"w":5,"p":513},{"w":6,"p":374},{"w":7,"p":575},{"w":8,"p":365},{"w":9,"p":453},{"w":10,"p":597},{"w":11,"p":645}]}},"ORD":{"LGA":{"city":"New York","typ":141,"fares":[{"w":0,"p":184},{"w":1,"p":134},{"w":2,"p":160},{"w":3,"p":119},{"w":4,"p":100},{"w":5,"p":95},{"w":6,"p":141},{"w":7,"p":141},{"w":8,"p":173},{"w":9,"p":112},{"w":10,"p":163},{"w":11,"p":197}]},"DCA":{"city":"Washington DC","typ":140,"fares":[{"w":0,"p":105},{"w":1,"p":146},{"w":2,"p":187},{"w":3,"p":89},{"w":4,"p":206},{"w":5,"p":96},{"w":6,"p":175},{"w":7,"p":90},{"w":8,"p":164},{"w":9,"p":135},{"w":10,"p":110},{"w":11,"p":146}]},"BOS":{"city":"Boston","typ":144,"fares":[{"w":0,"p":178},{"w":1,"p":124},{"w":2,"p":160},{"w":3,"p":102},{"w":4,"p":107},{"w":5,"p":172},{"w":6,"p":191},{"w":7,"p":140},{"w":8,"p":148},{"w":9,"p":157},{"w":10,"p":129},{"w":11,"p":125}]},"MIA":{"city":"Miami","typ":206,"fares":[{"w":0,"p":250},{"w":1,"p":221},{"w":2,"p":137},{"w":3,"p":208},{"w":4,"p":243},{"w":5,"p":173},{"w":6,"p":207},{"w":7,"p":145},{"w":8,"p":177},{"w":9,"p":206},{"w":10,"p":173},{"w":11,"p":239}]},"MCO":{"city":"Orlando","typ":193,"fares":[{"w":0,"p":196},{"w":1,"p":185},{"w":2,"p":195},{"w":3,"p":209},{"w":4,"p":205},{"w":5,"p":211},{"w":6,"p":176},{"w":7,"p":161},{"w":8,"p":184},{"w":9,"p":191},{"w":10,"p":118},{"w":11,"p":215}]},"ATL":{"city":"Atlanta","typ":158,"fares":[{"w":0,"p":120},{"w":1,"p":118},{"w":2,"p":179},{"w":3,"p":121},{"w":4,"p":155},{"w":5,"p":207},{"w":6,"p":129},{"w":7,"p":220},{"w":8,"p":162},{"w":9,"p":186},{"w":10,"p":113},{"w":11,"p":204}]},"MSY":{"city":"New Orleans","typ":181,"fares":[{"w":0,"p":177},{"w":1,"p":134},{"w":2,"p":190},{"w":3,"p":122},{"w":4,"p":121},{"w":5,"p":205},{"w":6,"p":106},{"w":7,"p":227},{"w":8,"p":108},{"w":9,"p":228},{"w":10,"p":185},{"w":11,"p":210}]},"DEN":{"city":"Denver","typ":148,"fares":[{"w":0,"p":126},{"w":1,"p":138},{"w":2,"p":134},{"w":3,"p":105},{"w":4,"p":183},{"w":5,"p":147},{"w":6,"p":166},{"w":7,"p":185},{"w":8,"p":109},{"w":9,"p":228},{"w":10,"p":188},{"w":11,"p":148}]},"LAS":{"city":"Las Vegas","typ":188,"fares":[{"w":0,"p":118},{"w":1,"p":194},{"w":2,"p":206},{"w":3,"p":204},{"w":4,"p":131},{"w":5,"p":128},{"w":6,"p":162},{"w":7,"p":188},{"w":8,"p":258},{"w":9,"p":189},{"w":10,"p":172},{"w":11,"p":206}]},"LAX":{"city":"Los Angeles","typ":198,"fares":[{"w":0,"p":225},{"w":1,"p":209},{"w":2,"p":273},{"w":3,"p":186},{"w":4,"p":181},{"w":5,"p":185},{"w":6,"p":218},{"w":7,"p":182},{"w":8,"p":249},{"w":9,"p":132},{"w":10,"p":224},{"w":11,"p":180}]},"SJU":{"city":"San Juan","typ":398,"fares":[{"w":0,"p":438},{"w":1,"p":363},{"w":2,"p":246},{"w":3,"p":397},{"w":4,"p":247},{"w":5,"p":267},{"w":6,"p":478},{"w":7,"p":432},{"w":8,"p":400},{"w":9,"p":505},{"w":10,"p":436},{"w":11,"p":258}]},"CUN":{"city":"Canc\u00fan","typ":317,"fares":[{"w":0,"p":338},{"w":1,"p":314},{"w":2,"p":224},{"w":3,"p":380},{"w":4,"p":339},{"w":5,"p":299},{"w":6,"p":198},{"w":7,"p":447},{"w":8,"p":374},{"w":9,"p":237},{"w":10,"p":320},{"w":11,"p":311}]},"NAS":{"city":"Nassau","typ":348,"fares":[{"w":0,"p":314},{"w":1,"p":257},{"w":2,"p":274},{"w":3,"p":447},{"w":4,"p":236},{"w":5,"p":456},{"w":6,"p":347},{"w":7,"p":350},{"w":8,"p":408},{"w":9,"p":471},{"w":10,"p":241},{"w":11,"p":424}]},"KEF":{"city":"Reykjav\u00edk","typ":454,"fares":[{"w":0,"p":575},{"w":1,"p":618},{"w":2,"p":499},{"w":3,"p":409},{"w":4,"p":321},{"w":5,"p":409},{"w":6,"p":529},{"w":7,"p":335},{"w":8,"p":321},{"w":9,"p":596},{"w":10,"p":658},{"w":11,"p":281}]},"DUB":{"city":"Dublin","typ":610,"fares":[{"w":0,"p":602},{"w":1,"p":500},{"w":2,"p":467},{"w":3,"p":706},{"w":4,"p":704},{"w":5,"p":756},{"w":6,"p":587},{"w":7,"p":449},{"w":8,"p":481},{"w":9,"p":637},{"w":10,"p":617},{"w":11,"p":644}]},"LHR":{"city":"London","typ":548,"fares":[{"w":0,"p":644},{"w":1,"p":655},{"w":2,"p":800},{"w":3,"p":854},{"w":4,"p":473},{"w":5,"p":401},{"w":6,"p":417},{"w":7,"p":522},{"w":8,"p":456},{"w":9,"p":510},{"w":10,"p":656},{"w":11,"p":574}]}},"ATL":{"LGA":{"city":"New York","typ":152,"fares":[{"w":0,"p":97},{"w":1,"p":151},{"w":2,"p":173},{"w":3,"p":105},{"w":4,"p":152},{"w":5,"p":115},{"w":6,"p":160},{"w":7,"p":161},{"w":8,"p":100},{"w":9,"p":187},{"w":10,"p":152},{"w":11,"p":142}]},"DCA":{"city":"Washington DC","typ":136,"fares":[{"w":0,"p":92},{"w":1,"p":147},{"w":2,"p":113},{"w":3,"p":198},{"w":4,"p":176},{"w":5,"p":157},{"w":6,"p":137},{"w":7,"p":135},{"w":8,"p":103},{"w":9,"p":159},{"w":10,"p":106},{"w":11,"p":123}]},"BOS":{"city":"Boston","typ":156,"fares":[{"w":0,"p":183},{"w":1,"p":205},{"w":2,"p":174},{"w":3,"p":102},{"w":4,"p":176},{"w":5,"p":152},{"w":6,"p":137},{"w":7,"p":107},{"w":8,"p":221},{"w":9,"p":160},{"w":10,"p":104},{"w":11,"p":111}]},"MIA":{"city":"Miami","typ":128,"fares":[{"w":0,"p":94},{"w":1,"p":146},{"w":2,"p":147},{"w":3,"p":151},{"w":4,"p":104},{"w":5,"p":122},{"w":6,"p":158},{"w":7,"p":113},{"w":8,"p":133},{"w":9,"p":143},{"w":10,"p":88},{"w":11,"p":119}]},"MCO":{"city":"Orlando","typ":144,"fares":[{"w":0,"p":141},{"w":1,"p":122},{"w":2,"p":150},{"w":3,"p":174},{"w":4,"p":132},{"w":5,"p":114},{"w":6,"p":148},{"w":7,"p":133},{"w":8,"p":161},{"w":9,"p":106},{"w":10,"p":161},{"w":11,"p":162}]},"ORD":{"city":"Chicago","typ":156,"fares":[{"w":0,"p":174},{"w":1,"p":156},{"w":2,"p":129},{"w":3,"p":208},{"w":4,"p":95},{"w":5,"p":130},{"w":6,"p":131},{"w":7,"p":181},{"w":8,"p":153},{"w":9,"p":156},{"w":10,"p":164},{"w":11,"p":176}]},"MSY":{"city":"New Orleans","typ":134,"fares":[{"w":0,"p":154},{"w":1,"p":160},{"w":2,"p":144},{"w":3,"p":194},{"w":4,"p":113},{"w":5,"p":131},{"w":6,"p":129},{"w":7,"p":90},{"w":8,"p":120},{"w":9,"p":156},{"w":10,"p":108},{"w":11,"p":137}]},"DEN":{"city":"Denver","typ":212,"fares":[{"w":0,"p":190},{"w":1,"p":208},{"w":2,"p":171},{"w":3,"p":233},{"w":4,"p":223},{"w":5,"p":200},{"w":6,"p":232},{"w":7,"p":264},{"w":8,"p":128},{"w":9,"p":215},{"w":10,"p":169},{"w":11,"p":255}]},"LAS":{"city":"Las Vegas","typ":216,"fares":[{"w":0,"p":214},{"w":1,"p":232},{"w":2,"p":150},{"w":3,"p":308},{"w":4,"p":210},{"w":5,"p":178},{"w":6,"p":235},{"w":7,"p":187},{"w":8,"p":190},{"w":9,"p":217},{"w":10,"p":287},{"w":11,"p":262}]},"LAX":{"city":"Los Angeles","typ":222,"fares":[{"w":0,"p":307},{"w":1,"p":212},{"w":2,"p":171},{"w":3,"p":206},{"w":4,"p":230},{"w":5,"p":193},{"w":6,"p":260},{"w":7,"p":264},{"w":8,"p":207},{"w":9,"p":214},{"w":10,"p":248},{"w":11,"p":233}]},"SJU":{"city":"San Juan","typ":292,"fares":[{"w":0,"p":293},{"w":1,"p":347},{"w":2,"p":254},{"w":3,"p":193},{"w":4,"p":346},{"w":5,"p":275},{"w":6,"p":210},{"w":7,"p":211},{"w":8,"p":380},{"w":9,"p":300},{"w":10,"p":319},{"w":11,"p":292}]},"CUN":{"city":"Canc\u00fan","typ":316,"fares":[{"w":0,"p":351},{"w":1,"p":268},{"w":2,"p":336},{"w":3,"p":320},{"w":4,"p":429},{"w":5,"p":280},{"w":6,"p":313},{"w":7,"p":454},{"w":8,"p":222},{"w":9,"p":276},{"w":10,"p":318},{"w":11,"p":234}]},"NAS":{"city":"Nassau","typ":342,"fares":[{"w":0,"p":444},{"w":1,"p":327},{"w":2,"p":347},{"w":3,"p":231},{"w":4,"p":407},{"w":5,"p":361},{"w":6,"p":336},{"w":7,"p":347},{"w":8,"p":224},{"w":9,"p":232},{"w":10,"p":316},{"w":11,"p":423}]},"MBJ":{"city":"Montego Bay","typ":318,"fares":[{"w":0,"p":402},{"w":1,"p":396},{"w":2,"p":315},{"w":3,"p":249},{"w":4,"p":320},{"w":5,"p":326},{"w":6,"p":312},{"w":7,"p":295},{"w":8,"p":487},{"w":9,"p":331},{"w":10,"p":268},{"w":11,"p":290}]},"DUB":{"city":"Dublin","typ":622,"fares":[{"w":0,"p":502},{"w":1,"p":708},{"w":2,"p":668},{"w":3,"p":458},{"w":4,"p":630},{"w":5,"p":614},{"w":6,"p":548},{"w":7,"p":669},{"w":8,"p":823},{"w":9,"p":546},{"w":10,"p":433},{"w":11,"p":739}]},"LHR":{"city":"London","typ":642,"fares":[{"w":0,"p":613},{"w":1,"p":515},{"w":2,"p":469},{"w":3,"p":489},{"w":4,"p":747},{"w":5,"p":407},{"w":6,"p":794},{"w":7,"p":687},{"w":8,"p":855},{"w":9,"p":579},{"w":10,"p":889},{"w":11,"p":671}]}},"LAX":{"SFO":{"city":"San Francisco","typ":124,"fares":[{"w":0,"p":109},{"w":1,"p":82},{"w":2,"p":100},{"w":3,"p":113},{"w":4,"p":147},{"w":5,"p":93},{"w":6,"p":134},{"w":7,"p":156},{"w":8,"p":135},{"w":9,"p":106},{"w":10,"p":148},{"w":11,"p":150}]},"LAS":{"city":"Las Vegas","typ":110,"fares":[{"w":0,"p":125},{"w":1,"p":162},{"w":2,"p":102},{"w":3,"p":120},{"w":4,"p":139},{"w":5,"p":106},{"w":6,"p":113},{"w":7,"p":104},{"w":8,"p":97},{"w":9,"p":122},{"w":10,"p":84},{"w":11,"p":105}]},"SEA":{"city":"Seattle","typ":168,"fares":[{"w":0,"p":101},{"w":1,"p":183},{"w":2,"p":103},{"w":3,"p":124},{"w":4,"p":234},{"w":5,"p":219},{"w":6,"p":193},{"w":7,"p":167},{"w":8,"p":177},{"w":9,"p":146},{"w":10,"p":167},{"w":11,"p":168}]},"DEN":{"city":"Denver","typ":172,"fares":[{"w":0,"p":203},{"w":1,"p":152},{"w":2,"p":217},{"w":3,"p":182},{"w":4,"p":120},{"w":5,"p":145},{"w":6,"p":166},{"w":7,"p":197},{"w":8,"p":122},{"w":9,"p":160},{"w":10,"p":196},{"w":11,"p":179}]},"AUS":{"city":"Austin","typ":183,"fares":[{"w":0,"p":264},{"w":1,"p":292},{"w":2,"p":151},{"w":3,"p":176},{"w":4,"p":179},{"w":5,"p":191},{"w":6,"p":237},{"w":7,"p":274},{"w":8,"p":182},{"w":9,"p":134},{"w":10,"p":184},{"w":11,"p":179}]},"ORD":{"city":"Chicago","typ":206,"fares":[{"w":0,"p":134},{"w":1,"p":217},{"w":2,"p":243},{"w":3,"p":165},{"w":4,"p":241},{"w":5,"p":200},{"w":6,"p":211},{"w":7,"p":209},{"w":8,"p":207},{"w":9,"p":205},{"w":10,"p":153},{"w":11,"p":155}]},"JFK":{"city":"New York","typ":233,"fares":[{"w":0,"p":160},{"w":1,"p":248},{"w":2,"p":229},{"w":3,"p":187},{"w":4,"p":209},{"w":5,"p":352},{"w":6,"p":191},{"w":7,"p":293},{"w":8,"p":237},{"w":9,"p":291},{"w":10,"p":192},{"w":11,"p":261}]},"MIA":{"city":"Miami","typ":240,"fares":[{"w":0,"p":266},{"w":1,"p":216},{"w":2,"p":200},{"w":3,"p":282},{"w":4,"p":191},{"w":5,"p":170},{"w":6,"p":364},{"w":7,"p":174},{"w":8,"p":248},{"w":9,"p":313},{"w":10,"p":268},{"w":11,"p":231}]},"SJD":{"city":"Cabo San Lucas","typ":280,"fares":[{"w":0,"p":242},{"w":1,"p":237},{"w":2,"p":301},{"w":3,"p":419},{"w":4,"p":280},{"w":5,"p":279},{"w":6,"p":255},{"w":7,"p":347},{"w":8,"p":220},{"w":9,"p":387},{"w":10,"p":307},{"w":11,"p":246}]},"PVR":{"city":"Puerto Vallarta","typ":326,"fares":[{"w":0,"p":300},{"w":1,"p":368},{"w":2,"p":270},{"w":3,"p":333},{"w":4,"p":270},{"w":5,"p":338},{"w":6,"p":357},{"w":7,"p":394},{"w":8,"p":413},{"w":9,"p":264},{"w":10,"p":306},{"w":11,"p":318}]},"MEX":{"city":"Mexico City","typ":324,"fares":[{"w":0,"p":326},{"w":1,"p":270},{"w":2,"p":250},{"w":3,"p":449},{"w":4,"p":361},{"w":5,"p":280},{"w":6,"p":321},{"w":7,"p":413},{"w":8,"p":214},{"w":9,"p":228},{"w":10,"p":345},{"w":11,"p":383}]},"HNL":{"city":"Honolulu","typ":340,"fares":[{"w":0,"p":451},{"w":1,"p":244},{"w":2,"p":280},{"w":3,"p":465},{"w":4,"p":336},{"w":5,"p":329},{"w":6,"p":285},{"w":7,"p":343},{"w":8,"p":373},{"w":9,"p":338},{"w":10,"p":350},{"w":11,"p":367}]},"CUN":{"city":"Canc\u00fan","typ":400,"fares":[{"w":0,"p":489},{"w":1,"p":411},{"w":2,"p":389},{"w":3,"p":347},{"w":4,"p":500},{"w":5,"p":457},{"w":6,"p":293},{"w":7,"p":359},{"w":8,"p":418},{"w":9,"p":252},{"w":10,"p":461},{"w":11,"p":350}]},"NRT":{"city":"Tokyo","typ":619,"fares":[{"w":0,"p":574},{"w":1,"p":932},{"w":2,"p":446},{"w":3,"p":877},{"w":4,"p":519},{"w":5,"p":659},{"w":6,"p":576},{"w":7,"p":724},{"w":8,"p":701},{"w":9,"p":579},{"w":10,"p":577},{"w":11,"p":788}]},"LHR":{"city":"London","typ":684,"fares":[{"w":0,"p":731},{"w":1,"p":735},{"w":2,"p":831},{"w":3,"p":452},{"w":4,"p":706},{"w":5,"p":440},{"w":6,"p":655},{"w":7,"p":662},{"w":8,"p":823},{"w":9,"p":508},{"w":10,"p":739},{"w":11,"p":656}]},"CDG":{"city":"Paris","typ":717,"fares":[{"w":0,"p":505},{"w":1,"p":772},{"w":2,"p":667},{"w":3,"p":813},{"w":4,"p":463},{"w":5,"p":718},{"w":6,"p":862},{"w":7,"p":762},{"w":8,"p":716},{"w":9,"p":563},{"w":10,"p":483},{"w":11,"p":763}]}},"SFO":{"LAX":{"city":"Los Angeles","typ":128,"fares":[{"w":0,"p":83},{"w":1,"p":116},{"w":2,"p":138},{"w":3,"p":132},{"w":4,"p":83},{"w":5,"p":123},{"w":6,"p":141},{"w":7,"p":99},{"w":8,"p":117},{"w":9,"p":138},{"w":10,"p":175},{"w":11,"p":145}]},"LAS":{"city":"Las Vegas","typ":143,"fares":[{"w":0,"p":143},{"w":1,"p":118},{"w":2,"p":183},{"w":3,"p":164},{"w":4,"p":180},{"w":5,"p":192},{"w":6,"p":178},{"w":7,"p":133},{"w":8,"p":128},{"w":9,"p":109},{"w":10,"p":119},{"w":11,"p":143}]},"SEA":{"city":"Seattle","typ":124,"fares":[{"w":0,"p":113},{"w":1,"p":134},{"w":2,"p":103},{"w":3,"p":190},{"w":4,"p":113},{"w":5,"p":160},{"w":6,"p":89},{"w":7,"p":89},{"w":8,"p":101},{"w":9,"p":180},{"w":10,"p":145},{"w":11,"p":158}]},"DEN":{"city":"Denver","typ":204,"fares":[{"w":0,"p":231},{"w":1,"p":226},{"w":2,"p":170},{"w":3,"p":201},{"w":4,"p":249},{"w":5,"p":257},{"w":6,"p":161},{"w":7,"p":194},{"w":8,"p":207},{"w":9,"p":202},{"w":10,"p":119},{"w":11,"p":227}]},"AUS":{"city":"Austin","typ":233,"fares":[{"w":0,"p":232},{"w":1,"p":231},{"w":2,"p":234},{"w":3,"p":274},{"w":4,"p":243},{"w":5,"p":236},{"w":6,"p":175},{"w":7,"p":180},{"w":8,"p":243},{"w":9,"p":314},{"w":10,"p":232},{"w":11,"p":221}]},"ORD":{"city":"Chicago","typ":227,"fares":[{"w":0,"p":222},{"w":1,"p":229},{"w":2,"p":223},{"w":3,"p":261},{"w":4,"p":260},{"w":5,"p":236},{"w":6,"p":217},{"w":7,"p":236},{"w":8,"p":220},{"w":9,"p":225},{"w":10,"p":314},{"w":11,"p":225}]},"JFK":{"city":"New York","typ":274,"fares":[{"w":0,"p":203},{"w":1,"p":315},{"w":2,"p":178},{"w":3,"p":266},{"w":4,"p":328},{"w":5,"p":289},{"w":6,"p":374},{"w":7,"p":241},{"w":8,"p":197},{"w":9,"p":283},{"w":10,"p":361},{"w":11,"p":180}]},"MIA":{"city":"Miami","typ":279,"fares":[{"w":0,"p":367},{"w":1,"p":305},{"w":2,"p":290},{"w":3,"p":253},{"w":4,"p":296},{"w":5,"p":178},{"w":6,"p":264},{"w":7,"p":177},{"w":8,"p":178},{"w":9,"p":268},{"w":10,"p":315},{"w":11,"p":293}]},"HNL":{"city":"Honolulu","typ":270,"fares":[{"w":0,"p":331},{"w":1,"p":228},{"w":2,"p":287},{"w":3,"p":314},{"w":4,"p":361},{"w":5,"p":368},{"w":6,"p":253},{"w":7,"p":369},{"w":8,"p":217},{"w":9,"p":242},{"w":10,"p":235},{"w":11,"p":207}]},"SJD":{"city":"Cabo San Lucas","typ":384,"fares":[{"w":0,"p":453},{"w":1,"p":480},{"w":2,"p":309},{"w":3,"p":397},{"w":4,"p":266},{"w":5,"p":443},{"w":6,"p":386},{"w":7,"p":208},{"w":8,"p":250},{"w":9,"p":304},{"w":10,"p":477},{"w":11,"p":382}]},"PVR":{"city":"Puerto Vallarta","typ":316,"fares":[{"w":0,"p":223},{"w":1,"p":292},{"w":2,"p":313},{"w":3,"p":338},{"w":4,"p":285},{"w":5,"p":320},{"w":6,"p":268},{"w":7,"p":418},{"w":8,"p":444},{"w":9,"p":234},{"w":10,"p":327},{"w":11,"p":472}]},"MEX":{"city":"Mexico City","typ":326,"fares":[{"w":0,"p":370},{"w":1,"p":453},{"w":2,"p":413},{"w":3,"p":254},{"w":4,"p":327},{"w":5,"p":289},{"w":6,"p":315},{"w":7,"p":277},{"w":8,"p":326},{"w":9,"p":352},{"w":10,"p":304},{"w":11,"p":363}]},"CUN":{"city":"Canc\u00fan","typ":410,"fares":[{"w":0,"p":393},{"w":1,"p":447},{"w":2,"p":395},{"w":3,"p":448},{"w":4,"p":422},{"w":5,"p":399},{"w":6,"p":519},{"w":7,"p":288},{"w":8,"p":253},{"w":9,"p":420},{"w":10,"p":369},{"w":11,"p":422}]},"NRT":{"city":"Tokyo","typ":690,"fares":[{"w":0,"p":755},{"w":1,"p":547},{"w":2,"p":770},{"w":3,"p":675},{"w":4,"p":828},{"w":5,"p":653},{"w":6,"p":746},{"w":7,"p":459},{"w":8,"p":705},{"w":9,"p":507},{"w":10,"p":838},{"w":11,"p":608}]},"LHR":{"city":"London","typ":722,"fares":[{"w":0,"p":426},{"w":1,"p":760},{"w":2,"p":818},{"w":3,"p":754},{"w":4,"p":518},{"w":5,"p":753},{"w":6,"p":704},{"w":7,"p":737},{"w":8,"p":435},{"w":9,"p":741},{"w":10,"p":694},{"w":11,"p":708}]},"CDG":{"city":"Paris","typ":714,"fares":[{"w":0,"p":725},{"w":1,"p":1010},{"w":2,"p":714},{"w":3,"p":563},{"w":4,"p":869},{"w":5,"p":997},{"w":6,"p":705},{"w":7,"p":471},{"w":8,"p":744},{"w":9,"p":714},{"w":10,"p":627},{"w":11,"p":714}]}}};
 
 // ================= CURRENCY =================
@@ -297,7 +321,7 @@ const RATES = {"USD":1,"CAD":1.4061,"GBP":0.7437,"EUR":0.8684,"AUD":1.4222,"NZD"
 const RATES_STAMP = "";
 
 // Guess from the browser's timezone, then its language. Whatever we pick is shown
-// in a dropdown the user can correct in one tap — a guess, never a silent decision.
+// in a dropdown the user can correct in one tap. A guess, never a silent decision.
 function detectCurrency(){
   try{
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
@@ -307,7 +331,7 @@ function detectCurrency(){
     if(/^Australia\//.test(tz)) return "AUD";
     if(/^Pacific\/(Auckland|Chatham)/.test(tz)) return "NZD";
     if(/^America\//.test(tz)) return "USD";
-  }catch(e){ /* old browser — fall through to language */ }
+  }catch(e){ /* old browser, fall through to language */ }
   const lang = (navigator.language || "").toLowerCase();
   if(lang.endsWith("-gb")) return "GBP";
   if(lang.endsWith("-ca")) return "CAD";
@@ -317,7 +341,7 @@ function detectCurrency(){
   return "USD";
 }
 
-// Timezone can't separate BOS from JFK from ATL — they're all America/New_York.
+// Timezone can't separate BOS from JFK from ATL, they're all America/New_York.
 // So we preselect the busiest airport in the detected zone and admit we guessed.
 function detectAirport(){
   try{
@@ -337,9 +361,14 @@ function money(usd){
 const isConverted = () => D.currency !== "USD";
 
 // ================= TRACKING =================
+// A per-visit id, so the dashboard can count how many PEOPLE reached each step
+// rather than how many times a step was viewed (going Back would double-count).
+// Random per page load, never stored, tied to nothing personal.
+const SID = Math.random().toString(36).slice(2, 10);
 function track(ev, props){
-  console.log("[track]", ev, props||{});
-  if(sb) sb.from("events").insert({name:ev, props:props||{}}).then(()=>{},()=>{});
+  const p = Object.assign({sid:SID}, props || {});
+  console.log("[track]", ev, p);
+  if(sb) sb.from("events").insert({name:ev, props:p}).then(()=>{},()=>{});
 }
 
 // ================= STATE =================
@@ -382,7 +411,7 @@ const WINDOW_NAMES = {
   postfinals:"after finals", summer:"summer break", thanksgiving:"Thanksgiving",
   flexible:"whenever it's cheap"
 };
-// framed monthly rate by crew size — same ladder as the landing page
+// framed monthly rate by crew size, same ladder as the landing page
 const RATE_BY_SIZE = {1:["$4.99","$59"], 2:["$3.29","$39"], 3:["$3.29","$39"],
                       4:["$2.49","$29"], 5:["$2.49","$29"], 6:["$1.49","$17"]};
 
@@ -429,7 +458,7 @@ function renderLive(){
   });
 
   const bits = ["Round trip, per person."];
-  if(isConverted()) bits.push("Converted from USD at ~" + RATES[D.currency] + " — approximate.");
+  if(isConverted()) bits.push("Converted from USD at ~" + RATES[D.currency] + ", approximate.");
   if(SAMPLE_DATA) bits.push("Sample prices until the nightly fetcher runs.");
   $("liveNote").textContent = bits.join(" ");
 }
@@ -505,12 +534,12 @@ function renderAlert(){
   clear(host);
   const best = D.best;
   const win = [...D.windows].map(w => WINDOW_NAMES[w]).filter(Boolean)[0] || "one of your windows";
-  host.appendChild(el("div", "from", "Freewheel · price alert"));
+  host.appendChild(el("div", "from", "Example · not sent yet"));
   const line = el("div");
   line.appendChild(el("b", null,
     (best ? best.city : "Cancún") + " dropped to " + (best ? money(best.low) : money(243))));
   line.appendChild(document.createTextNode(
-    " round trip from " + D.home + " — " + (best ? best.off : 35) +
+    " round trip from " + D.home + ", " + (best ? best.off : 35) +
     "% under typical, and it falls in " + win + "."));
   host.appendChild(line);
 }
@@ -525,7 +554,7 @@ $("windows").addEventListener("click", e => {
 });
 $("s3next").addEventListener("click", () => {
   if(D.windows.size === 0)
-    return err("s3err", "Pick at least one — otherwise we can't tell a useful deal from noise.");
+    return err("s3err", "Pick at least one, otherwise we can't tell a useful deal from noise.");
   err("s3err", "");
   renderRecap();
   showStep(4);
@@ -538,7 +567,7 @@ function renderRecap(){
   const [monthly, yearly] = RATE_BY_SIZE[Math.min(6, n)];
   $("rHome").textContent = AIRPORT_NAMES[D.home] + " (" + D.home + ")";
   $("rCrew").textContent = (n >= 6 ? "6+" : n) + " people";
-  $("rWindows").textContent = [...D.windows].map(w => WINDOW_NAMES[w]).join(", ") || "—";
+  $("rWindows").textContent = [...D.windows].map(w => WINDOW_NAMES[w]).join(", ") || "…";
 
   const best = $("rBest");
   clear(best);
@@ -546,7 +575,7 @@ function renderRecap(){
     best.appendChild(document.createTextNode(D.best.city + " " + money(D.best.low)));
     best.appendChild(el("small", null, D.best.off + "% under typical"));
   } else {
-    best.textContent = "—";
+    best.textContent = "…";
   }
   const rate = $("rRate");
   clear(rate);
@@ -592,8 +621,8 @@ $("s4next").addEventListener("click", async () => {
     const {error:sErr} = await sb.auth.signUp({email, password:pw});
     if(sErr){
       btn.disabled = false;
-      btn.textContent = "Save my setup — 7 days free →";
-      return err("s4err", sErr.message + " — already signed up? Log in instead.");
+      btn.textContent = "Save my setup, 7 days free →";
+      return err("s4err", sErr.message + ". Already signed up? Log in instead.");
     }
     track("signup", {mode:"supabase"});
 
@@ -609,10 +638,10 @@ $("s4next").addEventListener("click", async () => {
             crewId = crew.id; myCrewCode = crew.code;
             track("crew_joined", {code:D.crew});
           } else {
-            toast("That crew's free week has ended — starting your own");
+            toast("That crew's free week has ended, starting your own");
           }
         } else {
-          toast("Couldn't find that crew code — starting your own");
+          toast("Couldn't find that crew code, starting your own");
         }
       }
       if(!crewId){
@@ -625,7 +654,7 @@ $("s4next").addEventListener("click", async () => {
         id:user.id, name:D.name, handle:D.handle, home:D.home,
         prefs, plan:"trial", crew_id:crewId
       });
-      if(pErr && pErr.code === "23505"){          // handle already taken — suffix and retry
+      if(pErr && pErr.code === "23505"){          // handle already taken, suffix and retry
         D.handle = D.handle.slice(0, 12) + Math.floor(Math.random() * 900 + 100);
         await sb.from("profiles").insert({
           id:user.id, name:D.name, handle:D.handle, home:D.home,
@@ -656,7 +685,7 @@ $("s4next").addEventListener("click", async () => {
   buildSelects();
   $("detectNote").textContent =
     "Guessed " + AIRPORT_NAMES[D.home] + " and " + D.currency +
-    " from your device — change either if we got it wrong.";
+    " from your device. Change either if we got it wrong.";
   if(!saved) track("currency_set", {currency:D.currency, auto:true});
 
   renderLive();

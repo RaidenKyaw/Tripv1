@@ -1,6 +1,6 @@
 # Freewheel
 
-A membership **website** — never an app — that helps groups of young people actually take the trips
+A membership **website**, never an app, that helps groups of young people actually take the trips
 their group chat keeps talking about.
 
 The mechanism: fuse **group availability** (which weekends everyone can do) with **cheap flight
@@ -22,7 +22,7 @@ python -m http.server 8000
 
 Every page works standalone with zero configuration. With no backend keys it runs in **demo mode**:
 seeded state, nothing persists, prices are realistic placeholders. Paste Supabase keys in and the same
-files become the real thing — see [BACKEND.md](BACKEND.md).
+files become the real thing, see [BACKEND.md](BACKEND.md).
 
 ## The files
 
@@ -35,8 +35,8 @@ files become the real thing — see [BACKEND.md](BACKEND.md).
 | `app.html` | The trip tool. Create → share link → friends tap dates → boarding-pass result. **No account needed to join** |
 | `dashboard.html` | Founder metrics: group rate vs the 25% target, funnel, price test, trips/day |
 | `og-source.html` | Source for `og.png`. Screenshot it at 1200×630 to regenerate |
-| `supabase-schema.sql` | v1 — trips, members, events, waitlist + RLS |
-| `supabase-schema-v2.sql` | v2 — profiles, crews, friendships, trips.owner + RLS. Run after v1 |
+| `supabase-schema.sql` | v1, trips, members, events, waitlist + RLS |
+| `supabase-schema-v2.sql` | v2, profiles, crews, friendships, trips.owner + RLS. Run after v1 |
 | `fetch_fares.py` | Nightly fare cache builder. Rewrites the `FARES_ALL` blob in three pages. `--sample` regenerates placeholders offline |
 | `.github/workflows/refresh-fares.yml` | Runs the fetcher nightly and commits |
 
@@ -45,14 +45,14 @@ files become the real thing — see [BACKEND.md](BACKEND.md).
 Push to GitHub → **Settings → Pages → deploy from `main`, root**. That's it. Or drag the folder onto
 Netlify Drop for an instant URL.
 
-Then work through **[CHECKLIST.md](CHECKLIST.md)** — it separates what only you can do (accounts,
+Then work through **[CHECKLIST.md](CHECKLIST.md)**, it separates what only you can do (accounts,
 money, people) from what gets built next.
 
 ---
 
 ## Onboarding is deliberately value-first
 
-`onboard.html` shows the cheapest fares from a detected airport **before** asking for anything —
+`onboard.html` shows the cheapest fares from a detected airport **before** asking for anything,
 no account, no questions. Signup is the last step, once there's a saved setup worth keeping.
 That ordering is the point, not an accident: it matches rule 1 below, and every step in between
 changes something the user can see (crew size moves the per-person price and the pass rate;
@@ -70,7 +70,7 @@ visible warning banner while it is. `fetch_fares.py` flips it to `false` on its 
 Don't remove the banner, and don't share the link before real prices exist.
 
 **2. Joining a trip must never require an account.** `app.html` works for a stranger with a link and
-no signup. That is the entire growth loop — gating it kills the product. Signup comes *after* the
+no signup. That is the entire growth loop, gating it kills the product. Signup comes *after* the
 value, not before it.
 
 The rest of the principles are in [HANDOFF.md §4](HANDOFF.md).

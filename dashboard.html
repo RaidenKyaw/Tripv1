@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Freewheel — dashboard</title>
+<title>Freewheel · dashboard</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
 <meta name="robots" content="noindex">
 <style>
@@ -92,6 +92,27 @@
 
   @media(max-width:820px){ .tiles{grid-template-columns:repeat(2,1fr);} }
   @media(max-width:480px){ .tiles{grid-template-columns:1fr;} .days{height:88px;} }
+
+  /* ---------------------------------------------------- interaction polish */
+  a,button,select,input,summary,.chip,.size,.sort,.wk,.wchip,.opt,.checkrow,
+  .navbtn,.postcard,.tier,.card,.deal,.trip,.fr{
+    transition:background-color .18s ease, border-color .18s ease, color .18s ease,
+               box-shadow .18s ease, transform .18s ease, opacity .18s ease;
+  }
+  /* Visible keyboard focus everywhere. Mouse users never see it; keyboard and
+     screen-reader users can't navigate confidently without it. */
+  :focus-visible{outline:3px solid var(--terra); outline-offset:2px; border-radius:8px;}
+  .btn:hover{filter:brightness(1.03);}
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 9px 24px rgba(217,106,75,.30);}
+  .btn-ghost:hover{border-color:var(--teal); background:var(--teal-soft); border-style:solid;}
+  .btn-accent:hover{filter:brightness(1.08);}
+  .chip:hover,.size:hover,.sort:hover,.wk:hover{border-color:#D7C3A6;}
+  a:hover{opacity:.85;}
+  ::selection{background:var(--gold-soft); color:var(--ink);}
+  html{-webkit-text-size-adjust:100%;}
+  body{text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;}
+  /* small-caps labels read better with a touch more tracking at small sizes */
+  label,.eyebrow,.k,.lbl,.from{font-variant-numeric:tabular-nums;}
 </style>
 </head>
 <body>
@@ -105,23 +126,31 @@
     a group. Below 25%, nothing scales.</p>
 
   <div class="banner" id="demoBanner" hidden>
-    Demo numbers — no backend connected. Paste your Supabase keys into the <b>BACKEND</b> line in this
+    Demo numbers: no backend connected. Paste your Supabase keys into the <b>BACKEND</b> line in this
     file to read the real thing.
   </div>
 
   <div class="tiles" style="margin-top:20px;">
     <div class="tile hero" id="grTile">
       <div class="k">Group rate</div>
-      <div class="v" id="grVal">—</div>
-      <div class="n" id="grNote">—</div>
+      <div class="v" id="grVal">…</div>
+      <div class="n" id="grNote">…</div>
       <div class="meter"><i id="grBar"></i><span class="mark" style="left:25%"></span></div>
     </div>
-    <div class="tile"><div class="k">Trips created</div><div class="v" id="tTrips">—</div>
-      <div class="n" id="tTripsNote">—</div></div>
-    <div class="tile"><div class="k">Groups formed</div><div class="v" id="tGroups">—</div>
+    <div class="tile"><div class="k">Trips created</div><div class="v" id="tTrips">…</div>
+      <div class="n" id="tTripsNote">…</div></div>
+    <div class="tile"><div class="k">Groups formed</div><div class="v" id="tGroups">…</div>
       <div class="n">trips with 2+ people in</div></div>
-    <div class="tile"><div class="k">Founding list</div><div class="v" id="tWait">—</div>
+    <div class="tile"><div class="k">Founding list</div><div class="v" id="tWait">…</div>
       <div class="n">emails after a pass click</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Onboarding</h2>
+    <p class="h2sub">How far people get through signup. Counts people, not page views:
+      each visit carries a random id so going Back doesn't inflate a step.</p>
+    <div id="onboard"></div>
+    <div class="verdict" id="onboardVerdict"></div>
   </div>
 
   <div class="card">
@@ -154,20 +183,20 @@
 
   <div class="foot">
     Reads the same anon key the site ships with, so it only sees what the site's row-level security
-    allows: trips, members and events. It never sees emails — the founding-list number counts
+    allows: trips, members and events. It never sees emails. The founding-list number counts
     <code>waitlist_joined</code> events, not the waitlist table, which stays write-only.
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ================= BACKEND (Supabase — optional) =================
+// ================= BACKEND (Supabase, optional) =================
 // Paste from Supabase → Project Settings → API. Leave blank = demo numbers.
 const BACKEND = { url: "", anonKey: "" };
 const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
   ? window.supabase.createClient(BACKEND.url, BACKEND.anonKey) : null;
 
-const GROUP_TARGET = 0.25;      // below this, nothing scales — HANDOFF.md §1
+const GROUP_TARGET = 0.25;      // below this, nothing scales. HANDOFF.md §1
 const VARIANTS = ["$1.49/mo each", "$2.49/mo each"];
 
 const $ = id => document.getElementById(id);
@@ -181,14 +210,14 @@ function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); 
 const pct = (n, d) => d > 0 ? Math.round((n / d) * 100) : 0;
 
 // ================= DEMO NUMBERS =================
-// Shaped like a launch that is working but not yet proven — so the layout is
+// Shaped like a launch that is working but not yet proven, so the layout is
 // exercised honestly. Every one of these is replaced by real data once keys exist.
 function demoData(){
   const now = Date.now();
   const trips = [];
   const names = ["boys trip???","post-exam escape","mid sem somewhere","bali??","snow week",
                  "grad trip","cheap weekend","anywhere but here","reading week","surf trip"];
-  // Shaped like a launch that is barely clearing the bar, not a triumphant one —
+  // Shaped like a launch that is barely clearing the bar, not a triumphant one.
   // ~32% group rate. A demo that looks like a success teaches you nothing.
   for(let i = 0; i < 34; i++){
     const members = i % 3 === 0 ? (i % 6 === 0 ? 3 : 2) : 1;
@@ -201,9 +230,10 @@ function demoData(){
   }
   const groups = trips.filter(t => t.members >= 2).length;
   const funnel = {created:trips.length, opened:23, joined:groups, clickout:7};
+  const onboard = {starts:88, step2:61, step3:44, step4:33, completed:21, skipped:7};
   const events = {waitlist_joined:6};
   const ab = {"$1.49/mo each":{clicks:12, emails:4}, "$2.49/mo each":{clicks:7, emails:2}};
-  return {trips, funnel, events, ab, demo:true};
+  return {trips, funnel, onboard, events, ab, demo:true};
 }
 
 // ================= REAL DATA =================
@@ -221,7 +251,7 @@ async function loadReal(){
   const ab = {};
   VARIANTS.forEach(v => { ab[v] = {clicks:0, emails:0}; });
 
-  // A funnel has to be measured per trip, not per event — one trip opened by five
+  // A funnel has to be measured per trip, not per event. One trip opened by five
   // friends is one trip that got opened, not 500% of anything.
   const openedTrips = new Set(), clickoutTrips = new Set();
 
@@ -238,6 +268,27 @@ async function loadReal(){
     }
   });
 
+  // furthest step each visit reached, so the funnel only ever narrows
+  const maxStep = {};
+  const startIds = new Set(), doneIds = new Set(), skipIds = new Set();
+  (events || []).forEach(e => {
+    const sid = e.props && e.props.sid;
+    if(!sid) return;
+    if(e.name === "onboard_start") startIds.add(sid);
+    if(e.name === "onboard_complete") doneIds.add(sid);
+    if(e.name === "onboard_skip_account") skipIds.add(sid);
+    if(e.name === "onboard_step"){
+      const n = Number(e.props.step) || 1;
+      if(!maxStep[sid] || n > maxStep[sid]) maxStep[sid] = n;
+    }
+  });
+  const reached = n => Object.values(maxStep).filter(m => m >= n).length;
+  const onboard = {
+    starts: startIds.size || Object.keys(maxStep).length,
+    step2: reached(2), step3: reached(3), step4: reached(4),
+    completed: doneIds.size, skipped: skipIds.size
+  };
+
   const withMembers = (trips || []).map(t => ({...t, members:counts[t.code] || 0}));
   const funnel = {
     created:  withMembers.length,
@@ -246,7 +297,7 @@ async function loadReal(){
     clickout: clickoutTrips.size
   };
 
-  return {trips:withMembers, funnel, events:ev, ab, demo:false};
+  return {trips:withMembers, funnel, onboard, events:ev, ab, demo:false};
 }
 
 // ================= RENDER =================
@@ -255,7 +306,7 @@ function renderTiles(d){
   const groups = d.trips.filter(t => t.members >= 2).length;
   const rate = total > 0 ? groups / total : 0;
 
-  $("grVal").textContent = total ? Math.round(rate * 100) + "%" : "—";
+  $("grVal").textContent = total ? Math.round(rate * 100) + "%" : "…";
   $("grNote").textContent = total
     ? groups + " of " + total + " trips · target 25%"
     : "no trips yet";
@@ -269,6 +320,56 @@ function renderTiles(d){
     : "share a link to start";
   $("tGroups").textContent = groups;
   $("tWait").textContent = d.events.waitlist_joined || 0;
+}
+
+function renderOnboard(d){
+  const o = d.onboard || {starts:0, step2:0, step3:0, step4:0, completed:0, skipped:0};
+  const base = o.starts;
+  const steps = [
+    ["Started",            o.starts,    "opened the wizard"],
+    ["Saw crew pricing",   o.step2,     "reached step 2"],
+    ["Set their windows",  o.step3,     "reached step 3"],
+    ["Reached the signup", o.step4,     "reached step 4"],
+    ["Made an account",    o.completed, "finished"]
+  ];
+  const host = $("onboard");
+  clear(host);
+  steps.forEach(([label, n, note]) => {
+    const step = el("div", "fstep");
+    const row = el("div", "frow");
+    const left = el("div");
+    left.appendChild(el("span", "lbl", label));
+    left.appendChild(el("span", "pct", note));
+    const right = el("div");
+    right.appendChild(el("span", "num", String(n)));
+    if(base) right.appendChild(el("span", "pct", pct(n, base) + "%"));
+    row.appendChild(left); row.appendChild(right);
+    const bar = el("div", "bar");
+    const fill = el("i");
+    fill.style.width = (base ? Math.min(100, pct(n, base)) : 0) + "%";
+    bar.appendChild(fill);
+    step.appendChild(row); step.appendChild(bar);
+    host.appendChild(step);
+  });
+
+  // name the worst leak, since that is the only actionable thing here
+  const v = $("onboardVerdict");
+  clear(v);
+  if(!base){
+    v.appendChild(el("b", null, "No signups yet. "));
+    v.appendChild(document.createTextNode("Nothing to read until someone opens the wizard."));
+    return;
+  }
+  let worstLabel = "", worstDrop = -1;
+  for(let i = 1; i < steps.length; i++){
+    const drop = steps[i - 1][1] - steps[i][1];
+    if(drop > worstDrop){ worstDrop = drop; worstLabel = steps[i - 1][0] + " to " + steps[i][0]; }
+  }
+  v.appendChild(el("b", null, "Biggest leak: " + worstLabel + ". "));
+  v.appendChild(document.createTextNode(
+    worstDrop + " of " + base + " starts are lost there. " +
+    o.completed + " finished (" + pct(o.completed, base) + "%) and " + o.skipped +
+    " chose to skip the account and look around, which is a deliberate exit, not a loss."));
 }
 
 function renderFunnel(d){
@@ -312,7 +413,7 @@ function renderAB(d){
     tr.appendChild(el("td", null, v));
     tr.appendChild(el("td", "v", String(row.clicks)));
     tr.appendChild(el("td", "v", String(row.emails)));
-    tr.appendChild(el("td", null, row.clicks ? pct(row.emails, row.clicks) + "%" : "—"));
+    tr.appendChild(el("td", null, row.clicks ? pct(row.emails, row.clicks) + "%" : "…"));
     body.appendChild(tr);
   });
 
@@ -326,16 +427,16 @@ function renderAB(d){
   if(total < 100){
     verdict.appendChild(el("b", null, "Not yet. "));
     verdict.appendChild(document.createTextNode(
-      total + " of 100 pass clicks in. Don't reprice on this — it's noise until ~100."));
+      total + " of 100 pass clicks in. Don't reprice on this, it's noise until ~100."));
   } else if(dear.clicks >= cheap.clicks / 2){
     verdict.appendChild(el("b", null, "Raise the price. "));
     verdict.appendChild(document.createTextNode(
-      "$2.49 held " + pct(dear.clicks, cheap.clicks) + "% of $1.49's clicks — more than half, " +
+      "$2.49 held " + pct(dear.clicks, cheap.clicks) + "% of $1.49's clicks, more than half, " +
       "so the higher price earns more per person shown."));
   } else {
     verdict.appendChild(el("b", null, "Hold at $1.49. "));
     verdict.appendChild(document.createTextNode(
-      "$2.49 kept only " + pct(dear.clicks, cheap.clicks) + "% of $1.49's clicks — doubling cost " +
+      "$2.49 kept only " + pct(dear.clicks, cheap.clicks) + "% of $1.49's clicks, so doubling cost " +
       "you more than half, so it isn't paying for itself."));
   }
 }
@@ -402,6 +503,7 @@ function renderLatest(d){
   $("asof").textContent = "as of " + new Date().toLocaleString(undefined,
     {month:"short", day:"numeric", hour:"numeric", minute:"2-digit"});
   renderTiles(d);
+  renderOnboard(d);
   renderFunnel(d);
   renderAB(d);
   renderDays(d);

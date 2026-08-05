@@ -1,10 +1,10 @@
 -- ============================================================================
--- FREEWHEEL — schema v2 (accounts, crews, friends)
+-- FREEWHEEL: schema v2 (accounts, crews, friends)
 -- Run AFTER supabase-schema.sql.
 --
 -- v1 stays exactly as it is: anonymous trips still work, links still work,
 -- joining a trip still needs no account. v2 only adds the layer on top for
--- people who sign up — profile, crew rate, friends, trial clock.
+-- people who sign up, profile, crew rate, friends, trial clock.
 -- ============================================================================
 
 -- ------------------------------------------------------------ profiles -----
@@ -30,7 +30,7 @@ create table if not exists public.crews (
   id           uuid primary key default gen_random_uuid(),
   code         text unique not null,             -- short human-shareable code
   owner        uuid references auth.users(id) on delete set null,
-  locked_rate  text,                             -- e.g. 'crew' — the tier the crew locked
+  locked_rate  text,                             -- e.g. 'crew', the tier the crew locked
   created_at   timestamptz not null default now()
 );
 
@@ -75,7 +75,7 @@ alter table public.friendships enable row level security;
 
 -- profiles ------------------------------------------------------------------
 -- Signed-in users can read all profiles: adding a friend by @handle and showing
--- crew members both need it. Visible columns are name/handle/home/plan/prefs —
+-- crew members both need it. Visible columns are name/handle/home/plan/prefs,
 -- no email (that lives in auth.users) and no payment data (none exists).
 drop policy if exists "read profiles" on public.profiles;
 create policy "read profiles" on public.profiles
@@ -93,7 +93,7 @@ create policy "update own profile" on public.profiles
 -- Readable by any signed-in user so a code can be redeemed. Only the owner
 -- writes. NOTE: the "join only during the organiser's trial week" rule is
 -- currently enforced client-side (home.html). Move it into a SECURITY DEFINER
--- redeem function before money is involved — see HANDOFF.md §3B.6.
+-- redeem function before money is involved, see HANDOFF.md §3B.6.
 drop policy if exists "read crews" on public.crews;
 create policy "read crews" on public.crews
   for select to authenticated using (true);
@@ -131,7 +131,7 @@ create policy "owner updates trip" on public.trips
   for update to authenticated using (auth.uid() = owner) with check (auth.uid() = owner);
 
 -- ============================================================================
--- CONVENIENCE — crew fill state, used by the Friends tab (n/6)
+-- CONVENIENCE: crew fill state, used by the Friends tab (n/6)
 -- ============================================================================
 create or replace view public.crew_fill
 with (security_invoker = on) as
