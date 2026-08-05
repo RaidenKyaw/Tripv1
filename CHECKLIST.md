@@ -32,22 +32,27 @@ that doesn't exist.
 
 ### This month
 
-- [ ] **7. Name + domain.** "Freewheel" is a placeholder. Check domain availability and run an
-      IP Australia trademark search before printing it anywhere.
-- [ ] **8. Ten more chats, one at a time.** Societies are pre-formed groups — one committee post
-      reaches forty people who already travel together.
+- [ ] **7. Name + domain.** "Freewheel" is a placeholder. Check domain availability and run a
+      USPTO trademark search (TESS) before printing it anywhere.
+- [ ] **8. Ten more chats, one at a time.** Clubs, teams, dorm floors and Greek houses are
+      pre-formed groups — one post in a club GroupMe reaches forty people who already travel
+      together. Stay inside **one metro** until that airport clears ~500 users; a thin catchment
+      makes the deals look bad to everyone in it. Boston first.
 - [ ] **9. Decision gate.** 25%+ of trips become groups → tell me, we scale. Below → tell me the
       *failure shape* (no opens? opens but no joins? joins but no clickouts?) and we fix that step,
       not the whole thing.
 
 ### Only when real money enters (not now)
 
-- [ ] Legal opinion on the Australian regulatory position **before** taking any payment or building
-      booking. This is the blocker on Stripe, not the code.
-- [ ] ABN + business bank account before the first charge
+- [ ] Legal opinion on the **US** position before taking any payment: DOT full-fare advertising
+      (14 CFR 399.84) and state Seller of Travel registration (CA, FL, WA, HI, IA). Linking out
+      rather than selling probably keeps you clear of the latter — confirm, don't assume. This is
+      the blocker on Stripe, not the code.
+- [ ] Business entity + bank account before the first charge
 - [ ] Terms + privacy page before collecting emails at scale
-- [ ] Re-check UK **SI 2026/455** if you ever launch there — a fused flight+bed flow becomes a
-      regulated package from 6 Apr 2027 and needs an ATOL bond at 15% of revenue
+- [ ] **Before any UK/Ireland launch, not just before money:** SI 2026/455 makes a fused
+      flight+bed flow a regulated package from 6 Apr 2027, needing an ATOL bond at ~15% of
+      revenue. This build fuses them today. Decouple, geo-gate, or bond — with advice.
 
 ---
 
@@ -59,8 +64,11 @@ that doesn't exist.
 
 - [ ] **Abuse hardening** — rate-limit anonymous inserts (edge function or captcha on trip creation),
       handle-uniqueness errors that read like English. Worth doing before step 8, not before step 5.
-- [ ] **Australian regulatory research** — the AU equivalent of the UK ATOL analysis, properly sourced.
-      Matters only before payments, but it's the long pole, so it can start any time.
+- [ ] **US regulatory research** — DOT fare-advertising rules and state Seller of Travel laws,
+      properly sourced. Matters before payments, but it's the long pole, so it can start any time.
+- [ ] **Localisation groundwork** — currency, airports and booking domains are config now, but every
+      string is still hardcoded English across six files. Worth extracting before the second
+      language, not before the second city.
 
 ### Needs your steps 1–3
 

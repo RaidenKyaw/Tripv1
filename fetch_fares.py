@@ -31,7 +31,7 @@ import urllib.request
 from datetime import date, datetime, timedelta, timezone
 
 API = "https://api.travelpayouts.com/aviasales/v3/prices_for_dates"
-CURRENCY = "aud"
+CURRENCY = "usd"
 WEEKENDS = 12
 MIN_COVERAGE = 0.60          # below this we refuse to publish
 REQUEST_PAUSE = 0.25         # seconds between calls — be a good citizen
@@ -40,25 +40,61 @@ RETRIES = 3
 # Files that carry a `const FARES_ALL = {...};` line. All get the same blob.
 TARGETS = ["app.html", "home.html", "index.html"]
 
-# Routes we cache, per origin. Destination code -> display city.
+# Routes we cache, per origin: destination code -> (display city, typical return fare USD).
+#
+# Six origins, chosen for student density rather than airport size — the product needs
+# ~500 users sharing a departure airport before deal quality is credible, so a short
+# list that fills is worth more than a long one that doesn't. Add origins as catchments
+# fill, not before. The typical fare is only used to seed --sample data; live runs
+# compute it from the median of what the API actually returns.
 ROUTES = {
-    "SYD": {
-        "MEL": "Melbourne", "OOL": "Gold Coast", "BNE": "Brisbane", "ADL": "Adelaide",
-        "HBA": "Hobart", "CNS": "Cairns", "AKL": "Auckland", "ZQN": "Queenstown",
-        "CHC": "Christchurch", "DPS": "Bali", "NAN": "Fiji", "SGN": "Ho Chi Minh City",
-        "BKK": "Bangkok", "SIN": "Singapore", "KUL": "Kuala Lumpur", "MNL": "Manila",
+    "BOS": {   # Boston — highest student density per airport in the US
+        "LGA": ("New York", 130), "DCA": ("Washington DC", 140), "ORD": ("Chicago", 170),
+        "MIA": ("Miami", 190), "MCO": ("Orlando", 180), "ATL": ("Atlanta", 170),
+        "MSY": ("New Orleans", 210), "DEN": ("Denver", 230), "LAS": ("Las Vegas", 240),
+        "LAX": ("Los Angeles", 280), "SJU": ("San Juan", 300), "CUN": ("Cancún", 380),
+        "NAS": ("Nassau", 370), "KEF": ("Reykjavík", 430), "DUB": ("Dublin", 540),
+        "LHR": ("London", 620),
     },
-    "MEL": {
-        "SYD": "Sydney", "OOL": "Gold Coast", "BNE": "Brisbane", "ADL": "Adelaide",
-        "HBA": "Hobart", "CNS": "Cairns", "AKL": "Auckland", "ZQN": "Queenstown",
-        "CHC": "Christchurch", "DPS": "Bali", "NAN": "Fiji", "SGN": "Ho Chi Minh City",
-        "BKK": "Bangkok", "SIN": "Singapore", "KUL": "Kuala Lumpur", "MNL": "Manila",
+    "JFK": {   # New York
+        "BOS": ("Boston", 130), "DCA": ("Washington DC", 130), "ORD": ("Chicago", 160),
+        "MIA": ("Miami", 180), "MCO": ("Orlando", 170), "ATL": ("Atlanta", 160),
+        "MSY": ("New Orleans", 200), "DEN": ("Denver", 220), "LAS": ("Las Vegas", 230),
+        "LAX": ("Los Angeles", 260), "SJU": ("San Juan", 280), "CUN": ("Cancún", 350),
+        "NAS": ("Nassau", 350), "KEF": ("Reykjavík", 420), "DUB": ("Dublin", 520),
+        "LHR": ("London", 580),
     },
-    "BNE": {
-        "SYD": "Sydney", "MEL": "Melbourne", "OOL": "Gold Coast", "ADL": "Adelaide",
-        "HBA": "Hobart", "CNS": "Cairns", "AKL": "Auckland", "ZQN": "Queenstown",
-        "CHC": "Christchurch", "DPS": "Bali", "NAN": "Fiji", "SGN": "Ho Chi Minh City",
-        "BKK": "Bangkok", "SIN": "Singapore", "KUL": "Kuala Lumpur", "MNL": "Manila",
+    "ORD": {   # Chicago
+        "LGA": ("New York", 160), "DCA": ("Washington DC", 150), "BOS": ("Boston", 170),
+        "MIA": ("Miami", 200), "MCO": ("Orlando", 190), "ATL": ("Atlanta", 160),
+        "MSY": ("New Orleans", 180), "DEN": ("Denver", 170), "LAS": ("Las Vegas", 200),
+        "LAX": ("Los Angeles", 220), "SJU": ("San Juan", 380), "CUN": ("Cancún", 330),
+        "NAS": ("Nassau", 400), "KEF": ("Reykjavík", 480), "DUB": ("Dublin", 580),
+        "LHR": ("London", 640),
+    },
+    "ATL": {   # Atlanta
+        "LGA": ("New York", 160), "DCA": ("Washington DC", 150), "BOS": ("Boston", 170),
+        "MIA": ("Miami", 150), "MCO": ("Orlando", 140), "ORD": ("Chicago", 160),
+        "MSY": ("New Orleans", 150), "DEN": ("Denver", 200), "LAS": ("Las Vegas", 230),
+        "LAX": ("Los Angeles", 240), "SJU": ("San Juan", 330), "CUN": ("Cancún", 340),
+        "NAS": ("Nassau", 330), "MBJ": ("Montego Bay", 360), "DUB": ("Dublin", 620),
+        "LHR": ("London", 660),
+    },
+    "LAX": {   # Los Angeles
+        "SFO": ("San Francisco", 130), "LAS": ("Las Vegas", 120), "SEA": ("Seattle", 170),
+        "DEN": ("Denver", 190), "AUS": ("Austin", 220), "ORD": ("Chicago", 220),
+        "JFK": ("New York", 260), "MIA": ("Miami", 280), "SJD": ("Cabo San Lucas", 320),
+        "PVR": ("Puerto Vallarta", 330), "MEX": ("Mexico City", 350), "HNL": ("Honolulu", 350),
+        "CUN": ("Cancún", 400), "NRT": ("Tokyo", 700), "LHR": ("London", 700),
+        "CDG": ("Paris", 720),
+    },
+    "SFO": {   # San Francisco / Bay Area
+        "LAX": ("Los Angeles", 130), "LAS": ("Las Vegas", 140), "SEA": ("Seattle", 150),
+        "DEN": ("Denver", 190), "AUS": ("Austin", 230), "ORD": ("Chicago", 230),
+        "JFK": ("New York", 280), "MIA": ("Miami", 300), "HNL": ("Honolulu", 330),
+        "SJD": ("Cabo San Lucas", 350), "PVR": ("Puerto Vallarta", 360), "MEX": ("Mexico City", 370),
+        "CUN": ("Cancún", 430), "NRT": ("Tokyo", 680), "LHR": ("London", 720),
+        "CDG": ("Paris", 740),
     },
 }
 
@@ -135,7 +171,7 @@ def build(token, previous):
 
     for origin, dests in ROUTES.items():
         fares_all[origin] = {}
-        for dest, city in dests.items():
+        for dest, (city, _typical) in dests.items():
             prices = []
             for w, (dep, ret) in enumerate(weekends):
                 asked += 1
@@ -165,6 +201,34 @@ def build(token, previous):
     return fares_all, coverage
 
 
+def make_sample():
+    """Realistic placeholder fares, for when the route list changes and there's no
+    token to hand. Deterministic (fixed seed) so the committed blob only changes when
+    the routes do, not on every run.
+
+    This does NOT clear SAMPLE_DATA — pages keep showing the "these aren't real
+    prices" banner. Only a successful live fetch is allowed to clear that.
+    """
+    import random
+    rng = random.Random(20260805)
+    fares_all = {}
+    for origin, dests in ROUTES.items():
+        fares_all[origin] = {}
+        for dest, (city, typical) in dests.items():
+            prices = []
+            for w in range(WEEKENDS):
+                # log-ish spread around typical: mostly near it, occasional real dip
+                factor = rng.choice([0.62, 0.71, 0.78, 0.85, 0.92, 1.0, 1.0, 1.08, 1.15, 1.3])
+                factor *= rng.uniform(0.94, 1.06)
+                prices.append({"w": w, "p": max(29, int(round(typical * factor)))})
+            fares_all[origin][dest] = {
+                "city": city,
+                "typ": int(round(statistics.median(p["p"] for p in prices))),
+                "fares": prices,
+            }
+    return fares_all
+
+
 def previous_price(previous, origin, dest, w):
     try:
         for f in previous[origin][dest]["fares"]:
@@ -175,8 +239,10 @@ def previous_price(previous, origin, dest, w):
     return None
 
 
-def rewrite(path, blob, stamp):
-    """Swap the cache blob, clear the sample-data flag, stamp the refresh time."""
+def rewrite(path, blob, stamp, live=True):
+    """Swap the cache blob in. With live=True also clear the sample-data flag and
+    stamp the refresh time; with live=False the page keeps saying the prices are
+    placeholders, which is the whole point of --sample."""
     with open(path, encoding="utf-8") as f:
         src = f.read()
 
@@ -188,8 +254,9 @@ def rewrite(path, blob, stamp):
         raise SystemExit(f"{path}: no `const FARES_ALL = ...;` line found — did the file change shape?")
 
     # These two are optional per file; only app.html/home.html/index.html carry them today.
-    src = re.sub(r"^const SAMPLE_DATA = .*?;\r?$", "const SAMPLE_DATA = false;", src, count=1, flags=re.M)
-    src = re.sub(r'^const FARES_STAMP = ".*?";\r?$', f'const FARES_STAMP = "{stamp}";', src, count=1, flags=re.M)
+    if live:
+        src = re.sub(r"^const SAMPLE_DATA = .*?;\r?$", "const SAMPLE_DATA = false;", src, count=1, flags=re.M)
+        src = re.sub(r'^const FARES_STAMP = ".*?";\r?$', f'const FARES_STAMP = "{stamp}";', src, count=1, flags=re.M)
 
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(src)
@@ -202,7 +269,20 @@ def main():
                     help="Travelpayouts API token (or set TP_TOKEN)")
     ap.add_argument("--dry-run", action="store_true",
                     help="fetch and report, but don't touch any file")
+    ap.add_argument("--sample", action="store_true",
+                    help="write deterministic placeholder fares (no token, no network). "
+                         "Leaves the sample-price banners up.")
     args = ap.parse_args()
+
+    if args.sample:
+        blob = make_sample()
+        routes = sum(len(v) for v in blob.values())
+        print(f"Generated placeholder fares for {routes} routes across {len(blob)} origins.\n")
+        for path in TARGETS:
+            if os.path.exists(path):
+                rewrite(path, blob, stamp="", live=False)
+        print("\nDone. These are NOT real prices — the sample banners stay up until a live run.")
+        return
 
     if not args.token:
         raise SystemExit("No API token. Pass --token or set TP_TOKEN.\n"

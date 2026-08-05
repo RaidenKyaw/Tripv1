@@ -117,7 +117,7 @@
     <p class="sub">Seven days, everything unlocked, no card. We'll ask about payment only if you decide to stay.</p>
     <div class="card">
       <label for="email">Email</label>
-      <input id="email" type="email" autocomplete="email" placeholder="you@uni.edu.au">
+      <input id="email" type="email" autocomplete="email" placeholder="you@school.edu">
       <div class="gap"></div>
       <label for="pw">Password</label>
       <input id="pw" type="password" autocomplete="new-password" placeholder="At least 8 characters">
@@ -142,11 +142,14 @@
       <div class="gap"></div>
       <label for="home">Home airport</label>
       <select id="home">
-        <option value="SYD" selected>Sydney (SYD)</option>
-        <option value="MEL">Melbourne (MEL)</option>
-        <option value="BNE">Brisbane (BNE)</option>
+        <option value="BOS" selected>Boston (BOS)</option>
+        <option value="JFK">New York (JFK)</option>
+        <option value="ORD">Chicago (ORD)</option>
+        <option value="ATL">Atlanta (ATL)</option>
+        <option value="LAX">Los Angeles (LAX)</option>
+        <option value="SFO">San Francisco (SFO)</option>
       </select>
-      <div class="hint">Only these three at launch — deal quality depends on how many people fly the same routes.</div>
+      <div class="hint">Six to start — deal quality depends on how many people fly the same routes, so we open new ones as each fills.</div>
       <div class="err hidden" id="s2err"></div>
     </div>
     <button class="btn btn-primary" id="s2next">Next →</button>
@@ -194,10 +197,10 @@
       <div class="chips" id="windows">
         <button type="button" class="chip" data-w="weekends">Any weekend</button>
         <button type="button" class="chip" data-w="longweekend">Long weekends</button>
-        <button type="button" class="chip" data-w="midsem">Mid-sem break</button>
-        <button type="button" class="chip" data-w="postexam">Right after exams</button>
+        <button type="button" class="chip" data-w="spring">Spring break</button>
+        <button type="button" class="chip" data-w="postfinals">Right after finals</button>
         <button type="button" class="chip" data-w="summer">Summer break</button>
-        <button type="button" class="chip" data-w="winter">Winter break</button>
+        <button type="button" class="chip" data-w="thanksgiving">Thanksgiving</button>
         <button type="button" class="chip" data-w="flexible">Honestly, whenever it's cheap</button>
       </div>
       <div class="err hidden" id="s4err"></div>
@@ -218,15 +221,15 @@
       because a bigger crew genuinely makes the product work better.</p>
 
     <div class="pass">
-      <div class="strip">FREEWHEEL PASS · BILLED YEARLY · AUD</div>
+      <div class="strip">FREEWHEEL PASS · BILLED YEARLY · USD</div>
       <div class="inner">
         <div class="prow"><div><b>Solo</b><small>just you</small></div>
           <div class="amt">$4.99<small>$59 / year</small></div></div>
         <div class="prow"><div><b>Pair</b><small>2 people</small></div>
           <div class="amt">$3.29<small>$39 / year</small></div></div>
-        <div class="prow"><div><b>Squad</b><small>4 people · organiser free</small></div>
+        <div class="prow"><div><b>Squad</b><small>4 people · organizer free</small></div>
           <div class="amt">$2.49<small>$29 / year</small></div></div>
-        <div class="prow pick"><div><b>Crew</b><span class="pill">71% OFF</span><small>6 people · organiser free</small></div>
+        <div class="prow pick"><div><b>Crew</b><span class="pill">71% OFF</span><small>6 people · organizer free</small></div>
           <div class="amt">$1.49<small>$17 / year</small></div></div>
       </div>
     </div>
@@ -272,7 +275,7 @@ function track(ev, props){
 
 // ================= STATE =================
 const D = {
-  email:"", name:"", handle:"", home:"SYD",
+  email:"", name:"", handle:"", home:"BOS",
   vibes:new Set(), budget:"", windows:new Set(),
   crew:"", demo:false
 };

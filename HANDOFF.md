@@ -1,3 +1,30 @@
+> ## ⚠ SCOPE AMENDMENT — Aug 2026, supersedes parts of §1 and §4
+> **The target market is not Australia.** The goal is English-speaking colleges and
+> universities across the West, starting with the **US**, then expanding — including
+> non-English localisation later. The build now ships US defaults: USD, six origin
+> airports (BOS, JFK, ORD, ATL, LAX, SFO), `skyscanner.com`, and US vocabulary
+> (spring break, finals, `.edu`).
+>
+> **Three consequences the original brief got right and that now bite differently:**
+>
+> 1. **The UK is a legal problem, not just a later market.** §1 chose Australia
+>    specifically to dodge SI 2026/455 — from 6 Apr 2027 a fused flight + bed flow is a
+>    regulated package needing an ATOL bond at ~15% of revenue. This build fuses them:
+>    every deal row pairs `flights →` with `beds →` and prefills dates and party size.
+>    **Do not open UK/Ireland** until that's resolved (decouple the flows, geo-gate beds,
+>    or take the ATOL route). Get advice; don't read the statute yourself.
+> 2. **The AU regulatory task is now a US one** — DOT full-fare advertising rules
+>    (14 CFR 399.84) and state Seller of Travel registration (CA, FL, WA, HI, IA). Linking
+>    out rather than selling probably keeps you clear of the latter, but confirm before money.
+> 3. **Catchment density still governs sequencing.** §1's ~500 users per departure airport
+>    is unchanged, and it's the reason "every Western university" is a destination, not a
+>    launch. Fifty campuses across five countries is fifty airports at 10 users each —
+>    which is zero working airports. One dense catchment first. Boston is the recommended
+>    first target: the highest student density per airport in the US.
+>
+> Everything else below — the mechanism, the crew-code design, the metrics, the
+> honesty principles in §4 — stands unchanged.
+
 # FREEWHEEL — Complete handoff brief
 
 For any agent or developer picking this up. Everything below was produced in one working session

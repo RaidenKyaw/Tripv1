@@ -10,7 +10,7 @@ You need a free Supabase project and a free Travelpayouts token. Nothing here co
 ## 1 · Create the project (3 min)
 
 1. [supabase.com](https://supabase.com) → **New project**
-2. Pick a region close to your users — **Sydney (ap-southeast-2)** for an Australian launch
+2. Pick a region close to your users — **us-east-1** (N. Virginia) for a US launch
 3. Save the database password somewhere; you won't need it for the site, but you'll want it later
 
 ## 2 · Run the schema (2 min)
@@ -62,7 +62,7 @@ until you do this.
    - Value: your token
 3. **Actions → "Refresh fares nightly" → Run workflow**
 
-It fetches ~576 route/weekend prices, rewrites the `FARES_ALL` blob in `app.html`, `home.html` and
+It fetches ~1,152 route/weekend prices (6 origins × 16 routes × 12 weekends), rewrites the `FARES_ALL` blob in `app.html`, `home.html` and
 `index.html`, flips `SAMPLE_DATA` to `false`, stamps the refresh time, and commits.
 
 If fewer than 60% of prices come back it **aborts without writing anything** and fails the job — a
@@ -157,4 +157,9 @@ limit 20;
   `trial_ends` before applying a crew code. That's fine while nothing costs money. Move it into a
   `security definer` function before you take a single payment.
 - **No money anywhere.** The build never touches payments, and it must stay that way until the
-  Australian regulatory position is professionally confirmed (HANDOFF.md §4.4).
+  US regulatory position is professionally confirmed (HANDOFF.md §4.4 and the scope amendment
+  at the top of that file).
+- **Do not open the UK or Ireland without advice.** From 6 Apr 2027, SI 2026/455 makes a fused
+  flight + accommodation flow a regulated package, which would require an ATOL bond at ~15% of
+  revenue. Every deal row here shows flights and beds together and prefills dates and party size
+  into the bed link — that is close to the trigger. Resolve it before any UK user sees the site.

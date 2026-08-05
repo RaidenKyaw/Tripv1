@@ -37,7 +37,7 @@ files become the real thing — see [BACKEND.md](BACKEND.md).
 | `og-source.html` | Source for `og.png`. Screenshot it at 1200×630 to regenerate |
 | `supabase-schema.sql` | v1 — trips, members, events, waitlist + RLS |
 | `supabase-schema-v2.sql` | v2 — profiles, crews, friendships, trips.owner + RLS. Run after v1 |
-| `fetch_fares.py` | Nightly fare cache builder. Rewrites the `FARES_ALL` blob in three pages |
+| `fetch_fares.py` | Nightly fare cache builder. Rewrites the `FARES_ALL` blob in three pages. `--sample` regenerates placeholders offline |
 | `.github/workflows/refresh-fares.yml` | Runs the fetcher nightly and commits |
 
 ## Deploy
