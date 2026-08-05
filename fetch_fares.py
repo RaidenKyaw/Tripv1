@@ -36,9 +36,16 @@ WEEKENDS = 12
 MIN_COVERAGE = 0.60          # below this we refuse to publish
 REQUEST_PAUSE = 0.25         # seconds between calls — be a good citizen
 RETRIES = 3
+UA = "freewheel-fare-bot/1.0 (+https://github.com/RaidenKyaw/Tripv1)"
 
 # Files that carry a `const FARES_ALL = {...};` line. All get the same blob.
-TARGETS = ["app.html", "home.html", "index.html"]
+TARGETS = ["app.html", "home.html", "index.html", "onboard.html"]
+
+# Display currencies. The cache itself is USD; these are conversion rates written
+# into the pages so a converted price is at most a day stale rather than a guess
+# baked in months ago. Free, no key, no account.
+FX_API = "https://api.frankfurter.dev/v1/latest?base=USD&symbols=CAD,GBP,EUR,AUD,NZD"
+FX_CURRENCIES = ["CAD", "GBP", "EUR", "AUD", "NZD"]
 
 # Routes we cache, per origin: destination code -> (display city, typical return fare USD).
 #
@@ -131,7 +138,7 @@ def fetch_one(origin, dest, dep, ret, token):
 
     for attempt in range(RETRIES):
         try:
-            req = urllib.request.Request(url, headers={"Accept": "application/json"})
+            req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": UA})
             with urllib.request.urlopen(req, timeout=25) as resp:
                 payload = json.load(resp)
             rows = payload.get("data") or []
@@ -201,6 +208,28 @@ def build(token, previous):
     return fares_all, coverage
 
 
+def fetch_rates():
+    """Nightly FX snapshot. Returns None on any failure — the caller then leaves
+    whatever rates the pages already carry, which is better than zeroing them."""
+    try:
+        req = urllib.request.Request(FX_API, headers={"Accept": "application/json", "User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            payload = json.load(resp)
+        rates = payload.get("rates") or {}
+        out = {"USD": 1}
+        for c in FX_CURRENCIES:
+            if c in rates:
+                out[c] = round(float(rates[c]), 4)
+        if len(out) < 2:
+            return None
+        print("FX: " + ", ".join(f"{k} {v}" for k, v in out.items() if k != "USD"))
+        return out
+    except Exception as e:                       # noqa: BLE001 - FX is a nicety, never fatal
+        print(f"  ! FX rates unavailable ({e}) — keeping the rates already in the pages",
+              file=sys.stderr)
+        return None
+
+
 def make_sample():
     """Realistic placeholder fares, for when the route list changes and there's no
     token to hand. Deterministic (fixed seed) so the committed blob only changes when
@@ -239,7 +268,7 @@ def previous_price(previous, origin, dest, w):
     return None
 
 
-def rewrite(path, blob, stamp, live=True):
+def rewrite(path, blob, stamp, live=True, rates=None):
     """Swap the cache blob in. With live=True also clear the sample-data flag and
     stamp the refresh time; with live=False the page keeps saying the prices are
     placeholders, which is the whole point of --sample."""
@@ -305,11 +334,12 @@ def main():
         print("\nDry run — no files written.")
         return
 
+    rates = fetch_rates()
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     print()
     for path in TARGETS:
         if os.path.exists(path):
-            rewrite(path, blob, stamp)
+            rewrite(path, blob, stamp, rates=rates)
         else:
             print(f"  skipped {path} (not found)")
     print(f"\nDone. Cache stamped {stamp} UTC.")

@@ -66,6 +66,8 @@ that doesn't exist.
       handle-uniqueness errors that read like English. Worth doing before step 8, not before step 5.
 - [ ] **US regulatory research** — DOT fare-advertising rules and state Seller of Travel laws,
       properly sourced. Matters before payments, but it's the long pole, so it can start any time.
+- [ ] **Onboarding funnel read** — `onboard_step` fires on every step, so once there's traffic I can
+      tell you exactly which step people quit on and fix that one. Needs ~50 starts to mean anything.
 - [ ] **Localisation groundwork** — currency, airports and booking domains are config now, but every
       string is still hardcoded English across six files. Worth extracting before the second
       language, not before the second city.

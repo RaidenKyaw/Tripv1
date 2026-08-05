@@ -29,7 +29,7 @@ files become the real thing — see [BACKEND.md](BACKEND.md).
 | File | What it is |
 |---|---|
 | `index.html` | Landing page. Hero, fare ticker, how-it-works, product showcase, pricing, FAQ |
-| `onboard.html` | 5-step signup wizard → hands off to `home.html` |
+| `onboard.html` | 4-step wizard. Shows real prices at step 1, asks for the account at step 4 |
 | `login.html` | Returning users |
 | `home.html` | The logged-in shell: **Deals**, **Trips**, **Friends**, trial countdown, soft paywall |
 | `app.html` | The trip tool. Create → share link → friends tap dates → boarding-pass result. **No account needed to join** |
@@ -49,6 +49,19 @@ Then work through **[CHECKLIST.md](CHECKLIST.md)** — it separates what only yo
 money, people) from what gets built next.
 
 ---
+
+## Onboarding is deliberately value-first
+
+`onboard.html` shows the cheapest fares from a detected airport **before** asking for anything —
+no account, no questions. Signup is the last step, once there's a saved setup worth keeping.
+That ordering is the point, not an accident: it matches rule 1 below, and every step in between
+changes something the user can see (crew size moves the per-person price and the pass rate;
+windows rewrite a sample alert). Don't reorder it so the account comes first.
+
+Currency is guessed from the browser's timezone, shown in a dropdown that says it guessed, and
+carried to the other pages via `?cur=` and `localStorage`. Fares are cached in USD and converted
+at rates `fetch_fares.py` refreshes nightly; converted prices are labelled approximate because
+they are.
 
 ## Two rules that are easy to break by accident
 

@@ -310,9 +310,25 @@ const AIRPORTS = {
   ATL:"Atlanta", LAX:"Los Angeles", SFO:"San Francisco"
 };
 const DEFAULT_ORIGIN = "BOS";
-const CUR_NOTE = "USD";
 const FLIGHT_SEARCH = "https://www.skyscanner.com/transport/flights/";
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+// ================= CURRENCY =================
+// Fares are cached in USD; RATES converts for display and is refreshed nightly by
+// fetch_fares.py. The choice is made in onboarding and carried here by ?cur= or
+// localStorage. A converted price is approximate, and the UI says so.
+const CURRENCIES = {
+  USD:{sym:"$",   label:"USD"}, CAD:{sym:"C$",  label:"CAD"},
+  GBP:{sym:"£",   label:"GBP"}, EUR:{sym:"€",   label:"EUR"},
+  AUD:{sym:"A$",  label:"AUD"}, NZD:{sym:"NZ$", label:"NZD"}
+};
+const RATES = {"USD":1,"CAD":1.4061,"GBP":0.7437,"EUR":0.8684,"AUD":1.4222,"NZD":1.6993};
+const RATES_STAMP = "";
+function pickCurrency(fromUrl){
+  if(CURRENCIES[fromUrl]){ try{ localStorage.setItem("fw_currency", fromUrl); }catch(e){} return fromUrl; }
+  try{ const s = localStorage.getItem("fw_currency"); if(CURRENCIES[s]) return s; }catch(e){}
+  return "USD";
+}
 
 // ================= WEEKENDS (same basis as app.html) =================
 function nextWeekends(n = 12){
@@ -338,7 +354,8 @@ const U = {
   plan:  "trial",
   trialEnds: null,        // Date
   crewMembers: 1,
-  demo:  P.get("demo") === "1" || !sb
+  demo:  P.get("demo") === "1" || !sb,
+  currency: pickCurrency(P.get("cur"))
 };
 let friends = [], requests = [], trips = [], popularity = null;
 let sortMode = "cheapest";
@@ -352,6 +369,10 @@ function el(tag, cls, text){
   return n;
 }
 function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+function money(usd){
+  const rate = RATES[U.currency] || 1;
+  return CURRENCIES[U.currency].sym + Math.round(usd * rate).toLocaleString();
+}
 function initials(name){
   return (name || "?").trim().split(/\s+/).slice(0, 2).map(w => w[0].toUpperCase()).join("");
 }
@@ -450,7 +471,7 @@ function dealNode(r){
   left.appendChild(head);
   left.appendChild(el("div", "when",
     "Cheapest on " + MONTHS[wk.fri.getMonth()] + " " + wk.fri.getDate() + "–" + wk.mon.getDate() +
-    " · typically $" + r.typ));
+    " · typically " + money(r.typ)));
 
   const links = el("div", "links");
   const fl = el("a", null, "flights →");
@@ -469,7 +490,7 @@ function dealNode(r){
   left.appendChild(links);
 
   const box = el("div", "pricebox");
-  box.appendChild(el("div", "price", "$" + r.price));
+  box.appendChild(el("div", "price", money(r.price)));
   box.appendChild(el("span", "per", "round trip / person"));
 
   node.appendChild(left);
