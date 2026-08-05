@@ -53,15 +53,16 @@
   .navlinks{display:flex; align-items:center; gap:18px;}
   .navlinks a{font-size:14px; font-weight:600; text-decoration:none; color:var(--dim);}
   .navlinks a:hover{color:var(--ink);}
-  .btn{display:inline-block; border:none; border-radius:13px; padding:13px 22px; font-size:15px;
+  .btn{display:inline-block; border:none; border-radius:99px; padding:15px 28px; font-size:15.5px;
+       white-space:nowrap;
        font-weight:700; cursor:pointer; text-align:center; text-decoration:none; font-family:var(--sans);}
   .btn-primary{background:var(--terra); color:#FFF8F2; box-shadow:0 6px 18px rgba(217,106,75,.26);}
   .btn-primary:active{transform:scale(.985);}
   .btn-ghost{background:transparent; color:var(--teal); border:1.5px dashed var(--line);}
-  .btn-sm{padding:9px 16px; font-size:14px; border-radius:11px;}
+  .btn-sm{padding:10px 18px; font-size:14px; border-radius:99px;}
 
   /* ----------------------------------------------------------------- hero */
-  .hero{padding:64px 0 40px; position:relative; overflow:hidden;}
+  .hero{padding:48px 0 26px; position:relative; overflow:hidden;}
   .sky{position:absolute; inset:0; pointer-events:none; z-index:0;
     background:
       radial-gradient(1000px 420px at 82% -140px, #FDEBDD 0%, rgba(253,235,221,0) 62%),
@@ -80,7 +81,9 @@
   @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
 
   .hero .wrap{position:relative; z-index:1;}
-  .hero h1{font-size:clamp(36px,7.2vw,60px); line-height:1.08; margin-bottom:16px;}
+  .hero h1{font-size:clamp(34px,5.2vw,54px); line-height:1.08; margin-bottom:16px;
+           max-width:19ch; margin-left:auto; margin-right:auto; text-align:center;
+           text-wrap:balance;}
   /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
      is fragile here (any ancestor stacking context hides it), and --gold-soft is too
      close to the sand background to read, so this band is deliberately warmer. */
@@ -90,13 +93,19 @@
     background-size:100% .34em; background-position:0 78%; background-repeat:no-repeat;
     border-bottom:3px solid var(--gold);
   }
-  .hero .lead{font-size:17.5px; max-width:520px; margin-bottom:26px;}
-  .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
-  .cta-note{color:var(--dim); font-size:13px; margin-top:14px;}
+  .hero .lead{font-size:17px; max-width:520px; margin:0 auto 24px; text-align:center;}
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:center;}
+  .cta-note{color:var(--dim); font-size:13px; margin-top:16px; text-align:center;}
+  /* factual, checkable claims only. No user counts until they are real. */
+  .facts{display:flex; justify-content:center; gap:0; flex-wrap:wrap; margin-top:22px;}
+  .fact{padding:0 20px; text-align:center; border-right:1px solid var(--line);}
+  .fact:last-child{border-right:none;}
+  .fact b{display:block; font-family:var(--serif); font-size:22px; font-weight:700;}
+  .fact span{font-size:11.5px; color:var(--dim); font-weight:600; letter-spacing:.03em;}
   .cta-note b{color:var(--ink); font-weight:700;}
 
   /* flight path */
-  .flightpath{position:relative; height:132px; margin-top:6px;}
+  .flightpath{position:relative; height:104px; margin-top:2px;}
   .flightpath svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
   .fp-line{fill:none; stroke:var(--line); stroke-width:2; stroke-dasharray:7 7;}
   .fp-dot{fill:var(--terra);}
@@ -173,24 +182,37 @@
   .chat-note{font-size:12px; color:var(--dim); text-align:center; margin-top:12px; font-style:italic;}
 
   /* ------------------------------------------------------------ postcards */
-  .postcard{background:var(--card); border:1px solid var(--line); border-radius:14px;
-            overflow:hidden; position:relative;}
-  .postcard:hover{transform:translateY(-3px); box-shadow:0 12px 28px rgba(120,90,60,.13);}
-  .tier:hover{transform:translateY(-3px); box-shadow:0 12px 28px rgba(120,90,60,.13);}
-  .tier.pick:hover{box-shadow:0 14px 34px rgba(217,106,75,.22);}
-  .pc-top{height:96px; position:relative; display:flex; align-items:flex-end; padding:12px 14px;}
-  .pc-top .place{font-family:var(--serif); font-size:21px; font-weight:700; color:#FFFDF9;
-                 text-shadow:0 1px 8px rgba(0,0,0,.28); position:relative; z-index:2;}
-  .pc-stamp{position:absolute; top:9px; right:10px; z-index:2; background:rgba(255,253,249,.93);
-            border:1px dashed var(--ink); border-radius:4px; padding:3px 6px; font-size:8.5px;
-            font-weight:800; letter-spacing:.1em; color:var(--ink); transform:rotate(6deg);}
-  .pc-body{padding:13px 14px 15px;}
-  .pc-body .row{display:flex; justify-content:space-between; align-items:baseline;}
-  .pc-price{font-weight:800; font-size:20px; color:var(--teal);}
-  .pc-was{font-size:12px; color:var(--dim); text-decoration:line-through; margin-left:6px; font-weight:600;}
-  .pc-off{font-size:12px; font-weight:700; color:var(--dim);}
-  .pc-off.deal{color:#9A6E1B;}
-  .pc-meta{font-size:12px; color:var(--dim); margin-top:3px;}
+  /* Horizontal rail: a row of destinations you can flick through reads as
+     abundance, where a 3x2 grid reads as a short list. */
+  .rail{display:flex; gap:16px; overflow-x:auto; padding:4px 0 18px; scroll-snap-type:x mandatory;
+        -webkit-overflow-scrolling:touch; scrollbar-width:thin;}
+  .rail::-webkit-scrollbar{height:8px;}
+  .rail::-webkit-scrollbar-thumb{background:var(--line); border-radius:99px;}
+  .railwrap{position:relative;
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 96%,transparent);
+    mask-image:linear-gradient(90deg,#000 0,#000 96%,transparent);}
+  .dcard{flex:0 0 268px; scroll-snap-align:start; background:var(--card);
+         border:1px solid var(--line); border-radius:20px; overflow:hidden;
+         box-shadow:0 3px 14px rgba(120,90,60,.07);}
+  .dcard:hover{transform:translateY(-4px); box-shadow:0 16px 34px rgba(120,90,60,.16);}
+  .scene{position:relative; height:132px; overflow:hidden;}
+  .scene svg{position:absolute; inset:0; width:100%; height:100%; display:block;}
+  .scene .stamp{position:absolute; top:10px; left:11px; z-index:3; background:rgba(255,253,249,.92);
+                border:1px dashed var(--ink); border-radius:5px; padding:3px 8px; font-size:8px;
+                font-weight:800; letter-spacing:.12em; color:var(--ink); transform:rotate(-5deg);
+                white-space:nowrap; line-height:1.4;}
+  .scene .off{position:absolute; top:10px; right:11px; z-index:3; background:var(--gold);
+              color:#3A2A08; border-radius:99px; padding:4px 10px; font-size:11px; font-weight:800;
+              box-shadow:0 2px 8px rgba(0,0,0,.16);}
+  .dbody{padding:14px 15px 16px;}
+  .dplace{font-family:var(--serif); font-size:19px; font-weight:700; line-height:1.2;}
+  .dplace span{font-family:var(--sans); font-size:11.5px; font-weight:700; color:var(--dim);
+               margin-left:7px; letter-spacing:.04em;}
+  .dprice{display:flex; align-items:baseline; gap:9px; margin-top:9px;}
+  .dprice b{font-size:27px; font-weight:800; color:var(--teal); letter-spacing:-.02em;}
+  .dprice s{font-size:14px; color:var(--dim); font-weight:600;}
+  .dmeta{font-size:12px; color:var(--dim); margin-top:5px;}
+  .railhint{font-size:12.5px; color:var(--dim); text-align:center; margin-top:2px;}
 
   /* -------------------------------------------------------- boarding pass */
   .tiers{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:26px;}
@@ -235,6 +257,13 @@
   .honest b{color:var(--ink);}
 
   @media(max-width:860px){
+    /* the tagline and a roomy CTA don't both fit next to the wordmark on a phone */
+    .logo em{display:none;}
+    .navlinks{gap:14px;}
+    .navlinks a{font-size:14px;}
+    .btn-sm{padding:9px 15px; font-size:13.5px;}
+    .facts{margin-top:18px;}
+    .fact{padding:0 14px 10px;}
     .grid3,.sc-grid,.guarantees{grid-template-columns:1fr;}
     .tiers{grid-template-columns:repeat(2,1fr);}
     .grid2{grid-template-columns:1fr;}
@@ -297,7 +326,7 @@
     <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
   </div>
   <div class="wrap">
-    <h1>Your group chat has been<br>planning this trip <span class="u">since March</span>.</h1>
+    <h1>Your group chat has been planning this trip <span class="u">since March</span>.</h1>
     <p class="lead">Everyone taps the weekends they can actually do. Freewheel finds the windows you
       all share, then shows what's cheap from your airport on exactly those days.</p>
     <div class="cta-row">
@@ -305,6 +334,15 @@
       <a href="app.html" class="btn btn-ghost" data-cta="hero_try">Try it without signing up</a>
     </div>
     <p class="cta-note">No app to install. <b>Nobody needs an account to join your trip.</b> You send a link, they tap dates.</p>
+
+    <!-- Every number here is checkable against the repo. No user counts, no
+         testimonials, no partner badges, until those are real. -->
+    <div class="facts">
+      <div class="fact"><b id="factRoutes">96</b><span>ROUTES WATCHED</span></div>
+      <div class="fact"><b id="factAirports">6</b><span>US AIRPORTS</span></div>
+      <div class="fact"><b>Nightly</b><span>PRICE REFRESH</span></div>
+      <div class="fact"><b>$0</b><span>TO JOIN A TRIP</span></div>
+    </div>
 
     <div class="flightpath">
       <svg viewBox="0 0 800 132" preserveAspectRatio="none" aria-hidden="true">
@@ -443,9 +481,10 @@
       <div class="eyebrow">Sample deals</div>
       <h2>What a cheap window looks like</h2>
       <p class="lead" style="margin-top:10px;">Round-trip fares from Boston, refreshed nightly.
-        A route gets a stamp when it's more than 20% under its typical price.</p>
+        A route gets a badge when it's more than 20% under its typical price.</p>
     </div>
-    <div class="grid3" id="postcards"></div>
+    <div class="railwrap"><div class="rail" id="postcards"></div></div>
+    <p class="railhint">Scroll for more, or pick your own airport when you start.</p>
   </div>
 </section>
 
@@ -649,14 +688,78 @@ function el(tag, cls, text){
 }
 
 // ================= RENDER =================
-const GRADS = [
-  "linear-gradient(150deg,#F3B07A,#D96A4B)",
-  "linear-gradient(150deg,#7FB6A8,#2F6D62)",
-  "linear-gradient(150deg,#EFC978,#D9A441)",
-  "linear-gradient(150deg,#9DBBD6,#4E7A9B)",
-  "linear-gradient(150deg,#E39B9B,#B95F5F)",
-  "linear-gradient(150deg,#A9C99B,#5C8C57)"
-];
+// Destination artwork. Illustrated rather than photographic: it stays on-brand
+// with the postcard motif, needs no image licensing, and costs no bandwidth.
+// Each scene is a static string with nothing interpolated into it.
+const SKY = {
+  tropical:["#7FD4E8","#F6C177"], beach:["#8ED7E0","#FBD9A0"], city:["#9DB6D8","#E4CBB2"],
+  mountain:["#A9C4DA","#EDE3D2"], europe:["#B3C6E0","#F0D3B5"], desert:["#F2C48C","#E9A46B"]
+};
+const SCENES = {
+  tropical:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle cx="212" cy="38" r="19" fill="#FFF3D0" opacity=".95"/>
+    <path d="M0 96h268v36H0z" fill="#3E8FA8"/>
+    <path d="M0 96c30-8 54 6 84 0s54-10 88-2 66 4 96-2v40H0z" fill="#4FA7BE" opacity=".85"/>
+    <path d="M0 110c34 8 62-6 96 0s58 10 92 4 50-6 80-2v20H0z" fill="#EFD9AE"/>
+    <g fill="#2E6B4F"><path d="M52 116V78h5v38z"/>
+      <path d="M54 78c-14-10-26-8-32 0 10-4 20-3 30 4zM54 78c14-10 27-8 33 0-10-4-21-3-31 4zM54 78c-6-14-2-25 6-29-4 9-4 19-2 30z"/></g>
+    <g fill="#2E6B4F" opacity=".8"><path d="M96 118V92h4v26z"/>
+      <path d="M98 92c-10-7-19-6-23 0 7-3 14-2 21 3zM98 92c10-7 19-6 23 0-7-3-14-2-21 3z"/></g>
+  </svg>`,
+  beach:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle cx="60" cy="36" r="17" fill="#FFF0C8"/>
+    <path d="M0 88h268v44H0z" fill="#4C9DC0"/>
+    <path d="M0 100c26 10 48-8 74 0s48 12 74 2 44-8 64 2 34 2 56-4v32H0z" fill="#68B6D4" opacity=".8"/>
+    <path d="M0 112c30 6 58-4 88 2s60 6 92 0 58-4 88 2v16H0z" fill="#F2E0BC"/>
+    <g fill="#D96A4B" opacity=".9"><path d="M198 112V96h3v16z"/><path d="M186 96a14 8 0 0 1 28 0z"/></g>
+  </svg>`,
+  city:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle cx="222" cy="34" r="15" fill="#FFF3D6" opacity=".9"/>
+    <g fill="#3B5570" opacity=".28"><path d="M8 78h22v54H8zM40 62h18v70H40zM66 88h24v44H66z"/></g>
+    <g fill="#2F4A63"><path d="M96 56h26v76H96zM130 74h20v58h-20zM158 44h22v88h-22zM188 68h26v64h-26zM222 82h30v50h-30z"/></g>
+    <g fill="#F6DFA8" opacity=".85">
+      <path d="M102 64h5v6h-5zM112 64h5v6h-5zM102 78h5v6h-5zM112 78h5v6h-5zM102 92h5v6h-5z"/>
+      <path d="M164 54h5v6h-5zM172 54h5v6h-5zM164 68h5v6h-5zM172 68h5v6h-5zM164 82h5v6h-5zM172 82h5v6h-5z"/>
+      <path d="M194 78h5v6h-5zM204 78h5v6h-5zM194 92h5v6h-5zM204 92h5v6h-5z"/>
+    </g>
+    <path d="M0 126h268v6H0z" fill="#233B50"/>
+  </svg>`,
+  mountain:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle cx="44" cy="34" r="14" fill="#FFF6DE"/>
+    <path d="M0 132l74-86 46 54 30-34 60 66z" fill="#4A6B7C"/>
+    <path d="M74 46l24 28H50zM150 66l14-16 18 20z" fill="#F7F4EC"/>
+    <path d="M120 132l70-72 78 72z" fill="#5C7E8E" opacity=".9"/>
+    <path d="M190 60l20 18h-40z" fill="#F7F4EC" opacity=".95"/>
+    <path d="M0 124h268v8H0z" fill="#3C5A69"/>
+  </svg>`,
+  europe:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle cx="36" cy="32" r="13" fill="#FFF2D2" opacity=".9"/>
+    <g fill="#8C5A4A"><path d="M18 92h40v40H18zM64 80h34v52H64zM104 96h44v36h-44zM154 74h30v58h-30zM190 90h38v42h-38z"/></g>
+    <g fill="#B8705A"><path d="M14 92l24-18 24 18zM60 80l17-14 17 14zM100 96l22-16 22 16zM150 74l15-14 15 14zM186 90l19-15 19 15z"/></g>
+    <path d="M232 132V52l10-16 10 16v80z" fill="#7A4E42"/>
+    <path d="M242 22l6 14h-12z" fill="#D9A441"/>
+    <g fill="#F3DCB4" opacity=".9"><path d="M28 104h8v12h-8zM40 104h8v12h-8zM74 92h10v14H74zM118 108h10v12h-10zM162 88h10v14h-10zM202 102h10v14h-10z"/></g>
+    <path d="M0 126h268v6H0z" fill="#6B4438"/>
+  </svg>`,
+  desert:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle cx="204" cy="40" r="20" fill="#FFEBBC"/>
+    <path d="M0 96c40-18 70 6 104-4s58-22 92-10 46 8 72 2v48H0z" fill="#E0A76B"/>
+    <path d="M0 116c46-12 78 8 116 0s70-14 152-4v20H0z" fill="#CE9159"/>
+    <g fill="#4F7A52"><path d="M56 124V98h6v26z"/><path d="M44 106c0-8 4-12 12-10v8c-6 1-8 4-12 2zM74 100c0-8-4-12-12-10v8c6 1 8 4 12 2z"/></g>
+  </svg>`
+};
+// which scene each destination gets
+const SCENE_OF = {
+  CUN:"tropical", NAS:"tropical", SJU:"tropical", MBJ:"tropical", PVR:"tropical",
+  SJD:"tropical", HNL:"tropical",
+  MIA:"beach", MCO:"beach", LAX:"beach",
+  LGA:"city", DCA:"city", ORD:"city", ATL:"city", MSY:"city", JFK:"city", BOS:"city",
+  SEA:"city", AUS:"city", MEX:"city", NRT:"city", SFO:"city",
+  DEN:"mountain", KEF:"mountain",
+  LAS:"desert",
+  DUB:"europe", LHR:"europe", CDG:"europe"
+};
+const sceneFor = code => SCENE_OF[code] || "city";
 
 // cheapest cached fare per route, and how far under typical that is
 function routeSummary(origin){
@@ -668,7 +771,7 @@ function routeSummary(origin){
 
 function tickItem(r){
   const s = el("span", "tick");
-  s.appendChild(el("span", "r", HOME + " → " + r.code));
+  s.appendChild(el("span", "r", HOME + " \u2192 " + r.code));
   s.appendChild(el("span", "p", money(r.low)));
   if(r.off >= 20) s.appendChild(el("span", "d", r.off + "% off"));
   return s;
@@ -676,31 +779,35 @@ function tickItem(r){
 
 function buildTicker(){
   const rows = routeSummary(HOME), track = document.getElementById("tickerTrack");
-  // rendered twice so the -50% translate loops seamlessly
   for(let pass = 0; pass < 2; pass++) rows.forEach(r => track.appendChild(tickItem(r)));
 }
 
-function buildPostcards(){
+function buildCards(){
   const host = document.getElementById("postcards");
-  routeSummary(HOME).slice(0, 6).forEach((r, i) => {
-    const card = el("div", "postcard");
+  routeSummary(HOME).slice(0, 10).forEach(r => {
+    const card = el("article", "dcard");
 
-    const top = el("div", "pc-top");
-    top.style.background = GRADS[i % GRADS.length];
-    top.appendChild(el("div", "pc-stamp", "AIR MAIL"));
-    top.appendChild(el("div", "place", r.city));
-    card.appendChild(top);
+    const scene = el("div", "scene");
+    const kind = sceneFor(r.code);
+    const [top, bottom] = SKY[kind];
+    scene.style.background = "linear-gradient(180deg," + top + "," + bottom + ")";
+    const art = el("div");
+    art.innerHTML = SCENES[kind];          // static markup, nothing interpolated
+    scene.appendChild(art.firstElementChild);
+    scene.appendChild(el("span", "stamp", "AIR MAIL"));
+    if(r.off >= 20) scene.appendChild(el("span", "off", r.off + "% OFF"));
+    card.appendChild(scene);
 
-    const body = el("div", "pc-body");
-    const row = el("div", "row");
-    const prices = el("div");
-    prices.appendChild(el("span", "pc-price", money(r.low)));
-    prices.appendChild(el("span", "pc-was", money(r.typ)));
-    row.appendChild(prices);
-    row.appendChild(el("div", "pc-off" + (r.off >= 20 ? " deal" : ""),
-      r.off >= 20 ? r.off + "% under typical" : "around typical"));
-    body.appendChild(row);
-    body.appendChild(el("div", "pc-meta", HOME + " → " + r.code + " · round trip per person, " + CUR));
+    const body = el("div", "dbody");
+    const place = el("div", "dplace", r.city);
+    place.appendChild(el("span", null, r.code));
+    body.appendChild(place);
+
+    const price = el("div", "dprice");
+    price.appendChild(el("b", null, money(r.low)));
+    price.appendChild(el("s", null, money(r.typ)));
+    body.appendChild(price);
+    body.appendChild(el("div", "dmeta", HOME + " \u2192 " + r.code + " \u00b7 round trip per person, " + CUR));
     card.appendChild(body);
 
     host.appendChild(card);
@@ -711,7 +818,12 @@ function buildPostcards(){
 document.getElementById("sampleFlag").hidden = !SAMPLE_DATA;
 document.getElementById("yr").textContent = new Date().getFullYear();
 buildTicker();
-buildPostcards();
+buildCards();
+(function facts(){
+  const routes = Object.values(FARES_ALL).reduce((n, o) => n + Object.keys(o).length, 0);
+  document.getElementById("factRoutes").textContent = routes;
+  document.getElementById("factAirports").textContent = Object.keys(FARES_ALL).length;
+})();
 
 document.querySelectorAll("[data-cta]").forEach(a => {
   a.addEventListener("click", () => track("cta_click", {at:a.dataset.cta}));

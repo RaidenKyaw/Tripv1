@@ -95,7 +95,9 @@
   .deal .links a{color:var(--terra); font-size:12.5px; text-decoration:none; font-weight:700;}
   .deal .links span{color:var(--line); margin:0 7px;}
   .deal .pricebox{text-align:right; flex:0 0 auto;}
-  .deal .price{font-weight:800; font-size:18px; color:var(--teal);}
+  .deal .price{font-weight:800; font-size:22px; color:var(--teal); letter-spacing:-.02em;}
+  .deal .was{font-size:12.5px; color:var(--dim); text-decoration:line-through;
+             font-weight:600; margin-left:7px;}
   .deal .per{display:block; color:var(--dim); font-size:11px; font-weight:500;}
   .pill{display:inline-block; font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:99px;
         letter-spacing:.05em; margin-left:8px;}
@@ -496,8 +498,7 @@ function dealNode(r){
   if(r.off >= 20) head.appendChild(el("span", "pill pill-deal", r.off + "% OFF"));
   left.appendChild(head);
   left.appendChild(el("div", "when",
-    "Cheapest on " + MONTHS[wk.fri.getMonth()] + " " + wk.fri.getDate() + "–" + wk.mon.getDate() +
-    " · typically " + money(r.typ)));
+    "Cheapest on " + MONTHS[wk.fri.getMonth()] + " " + wk.fri.getDate() + "–" + wk.mon.getDate()));
 
   const links = el("div", "links");
   const fl = el("a", null, "flights →");
@@ -516,7 +517,9 @@ function dealNode(r){
   left.appendChild(links);
 
   const box = el("div", "pricebox");
-  box.appendChild(el("div", "price", money(r.price)));
+  const pr = el("div", "price", money(r.price));
+  pr.appendChild(el("span", "was", money(r.typ)));
+  box.appendChild(pr);
   box.appendChild(el("span", "per", "round trip / person"));
 
   node.appendChild(left);
