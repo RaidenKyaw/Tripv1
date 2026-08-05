@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Freewheel — where can we all go?</title>
+<meta name="description" content="Everyone taps the weekends they're free. Freewheel shows what's cheap from your airport on the days that work for all of you.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
+<!-- Set to your real deployed URL before launch — WhatsApp/iMessage previews need an absolute link -->
+<meta property="og:image" content="https://YOURDOMAIN.example/og.png">
+<meta property="og:title" content="Where can we all go?">
+<meta property="og:description" content="Tap the weekends you're free. See what's cheap when everyone can make it.">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#FBF5EC;
+    --card:#FFFFFF;
+    --card2:#FDF9F2;
+    --line:#EAD9C3;
+    --ink:#33302B;
+    --dim:#8C7F6D;
+    --terra:#D96A4B;
+    --terra-soft:#FBEDE6;
+    --teal:#2F6D62;
+    --teal-deep:#24504A;
+    --teal-soft:#E7F1EE;
+    --gold:#D9A441;
+    --gold-soft:#FAF1DC;
+    --radius:16px;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.55; overflow-x:hidden;}
+  .wrap{max-width:1020px; margin:0 auto; padding:0 20px;}
+  .narrow{max-width:720px; margin:0 auto;}
+  h1,h2,h3{font-family:var(--serif); font-weight:700; letter-spacing:-.015em; line-height:1.15;}
+  h2{font-size:clamp(25px,4.2vw,34px); margin-bottom:10px;}
+  h3{font-size:19px;}
+  .eyebrow{font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:var(--terra); margin-bottom:12px;}
+  .lead{color:var(--dim); font-size:16px; line-height:1.62;}
+  a{color:var(--teal);}
+  section{padding:74px 0; position:relative;}
+
+  /* ------------------------------------------------------------------ nav */
+  nav{position:sticky; top:0; z-index:40; background:rgba(251,245,236,.86);
+      backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:13px; padding-bottom:13px;}
+  .logo{font-family:var(--serif); font-weight:700; font-size:20px; color:var(--teal); text-decoration:none;}
+  .logo em{color:var(--dim); font-family:var(--sans); font-weight:500; font-size:12px; margin-left:9px; font-style:italic;}
+  .navlinks{display:flex; align-items:center; gap:18px;}
+  .navlinks a{font-size:14px; font-weight:600; text-decoration:none; color:var(--dim);}
+  .navlinks a:hover{color:var(--ink);}
+  .btn{display:inline-block; border:none; border-radius:13px; padding:13px 22px; font-size:15px;
+       font-weight:700; cursor:pointer; text-align:center; text-decoration:none; font-family:var(--sans);}
+  .btn-primary{background:var(--terra); color:#FFF8F2; box-shadow:0 6px 18px rgba(217,106,75,.26);}
+  .btn-primary:active{transform:scale(.985);}
+  .btn-ghost{background:transparent; color:var(--teal); border:1.5px dashed var(--line);}
+  .btn-sm{padding:9px 16px; font-size:14px; border-radius:11px;}
+
+  /* ----------------------------------------------------------------- hero */
+  .hero{padding:64px 0 40px; position:relative; overflow:hidden;}
+  .sky{position:absolute; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(1000px 420px at 82% -140px, #FDEBDD 0%, rgba(253,235,221,0) 62%),
+      radial-gradient(820px 380px at -8% -100px, #EDF3EE 0%, rgba(237,243,238,0) 58%);}
+  .cloud{position:absolute; border-radius:99px; background:#fff; opacity:.72; filter:blur(.4px);}
+  .cloud::before,.cloud::after{content:""; position:absolute; background:#fff; border-radius:50%;}
+  .c1{width:120px; height:26px; top:74px; left:-160px; animation:drift 46s linear infinite;}
+  .c1::before{width:52px; height:52px; top:-24px; left:20px;}
+  .c1::after{width:36px; height:36px; top:-14px; left:64px;}
+  .c2{width:88px; height:20px; top:186px; left:-140px; opacity:.55; animation:drift 64s linear infinite 6s;}
+  .c2::before{width:40px; height:40px; top:-18px; left:14px;}
+  .c2::after{width:26px; height:26px; top:-9px; left:48px;}
+  .c3{width:150px; height:30px; top:300px; left:-200px; opacity:.42; animation:drift 82s linear infinite 14s;}
+  .c3::before{width:64px; height:64px; top:-30px; left:26px;}
+  .c3::after{width:44px; height:44px; top:-17px; left:82px;}
+  @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
+
+  .hero .wrap{position:relative; z-index:1;}
+  .hero h1{font-size:clamp(36px,7.2vw,60px); line-height:1.08; margin-bottom:16px;}
+  /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
+     is fragile here (any ancestor stacking context hides it), and --gold-soft is too
+     close to the sand background to read — this band is deliberately warmer. */
+  .hero h1 .u{
+    white-space:nowrap;
+    background-image:linear-gradient(#F7E3B0, #F7E3B0);
+    background-size:100% .34em; background-position:0 78%; background-repeat:no-repeat;
+    border-bottom:3px solid var(--gold);
+  }
+  .hero .lead{font-size:17.5px; max-width:520px; margin-bottom:26px;}
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+  .cta-note{color:var(--dim); font-size:13px; margin-top:14px;}
+  .cta-note b{color:var(--ink); font-weight:700;}
+
+  /* flight path */
+  .flightpath{position:relative; height:132px; margin-top:6px;}
+  .flightpath svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .fp-line{fill:none; stroke:var(--line); stroke-width:2; stroke-dasharray:7 7;}
+  .fp-dot{fill:var(--terra);}
+  .plane{position:absolute; top:0; left:0; font-size:26px; line-height:1;
+         offset-path:path("M 10 104 C 150 104, 220 26, 380 26 S 640 96, 780 30");
+         offset-rotate:auto; animation:fly 13s ease-in-out infinite;}
+  @keyframes fly{
+    0%{offset-distance:0%; opacity:0;}
+    8%{opacity:1;}
+    88%{opacity:1;}
+    100%{offset-distance:100%; opacity:0;}
+  }
+  .fp-label{position:absolute; font-size:11px; font-weight:800; letter-spacing:.1em;
+            text-transform:uppercase; color:var(--dim);}
+
+  /* --------------------------------------------------------------- ticker */
+  .ticker{border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+          background:var(--card2); padding:13px 0; overflow:hidden; position:relative;}
+  .ticker-track{display:flex; gap:34px; width:max-content; animation:slide 44s linear infinite;}
+  .ticker:hover .ticker-track{animation-play-state:paused;}
+  @keyframes slide{to{transform:translateX(-50%);}}
+  .tick{display:flex; align-items:baseline; gap:8px; font-size:13.5px; white-space:nowrap;}
+  .tick .r{font-weight:700; color:var(--ink); letter-spacing:.02em;}
+  .tick .p{font-weight:800; color:var(--teal);}
+  .tick .d{font-size:10.5px; font-weight:800; color:#9A6E1B; background:var(--gold-soft);
+           border:1px solid #EBD9AE; border-radius:99px; padding:2px 7px;}
+  .sample-flag{background:var(--gold-soft); border-bottom:1px solid #EBD9AE; color:#8A6412;
+               font-size:12px; text-align:center; padding:7px 16px; font-weight:600;}
+
+  /* ---------------------------------------------------------------- cards */
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+        padding:22px; box-shadow:0 2px 10px rgba(120,90,60,.05);}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  .grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+
+  /* ------------------------------------------------------- passport stamp */
+  .stamp{width:62px; height:62px; border:2.5px dashed var(--teal); border-radius:50%;
+         display:flex; align-items:center; justify-content:center; transform:rotate(-8deg);
+         font-family:var(--serif); font-size:25px; font-weight:700; color:var(--teal);
+         background:var(--teal-soft); margin-bottom:16px;}
+  .step h3{margin-bottom:7px;}
+  .step p{color:var(--dim); font-size:14.5px;}
+
+  /* ------------------------------------------------------------- showcase */
+  .showcase{background:var(--teal-deep); color:#EAF3F0; border-radius:22px; padding:44px 34px;}
+  .showcase h2{color:#FFFDF9;}
+  .showcase .lead{color:#A9C7C0;}
+  .showcase .eyebrow{color:var(--gold);}
+  .sc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:28px;}
+  .sc{background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.13);
+      border-radius:14px; padding:18px;}
+  .sc h3{font-size:16.5px; color:#FFFDF9; margin-bottom:6px;}
+  .sc p{font-size:13.5px; color:#A9C7C0; margin-bottom:14px;}
+  .mini{background:#FBF7F0; border-radius:10px; padding:11px; color:var(--ink);}
+  .mini-row{display:flex; justify-content:space-between; align-items:center;
+            font-size:12px; padding:6px 0; border-bottom:1px dashed var(--line);}
+  .mini-row:last-child{border-bottom:none;}
+  .mini-row b{font-weight:800; color:var(--teal);}
+  .mini-chip{display:inline-block; font-size:10.5px; font-weight:700; padding:3px 8px;
+             border-radius:99px; background:var(--terra-soft); color:var(--terra); margin:2px 3px 2px 0;}
+  .mini-chip.on{background:var(--teal-soft); color:var(--teal);}
+  .mini-dim{color:var(--dim);}
+
+  /* ---------------------------------------------------------------- chats */
+  .chat{background:var(--card2); border:1px solid var(--line); border-radius:18px; padding:20px;}
+  .bub{max-width:78%; padding:10px 14px; border-radius:16px; font-size:14.5px; margin-bottom:9px;
+       line-height:1.45; position:relative;}
+  .bub.them{background:#fff; border:1px solid var(--line); border-bottom-left-radius:5px;}
+  .bub.you{background:var(--teal); color:#F2FAF7; margin-left:auto; border-bottom-right-radius:5px;}
+  .bub .who{display:block; font-size:10.5px; font-weight:800; letter-spacing:.08em;
+            text-transform:uppercase; color:var(--dim); margin-bottom:3px;}
+  .chat-note{font-size:12px; color:var(--dim); text-align:center; margin-top:12px; font-style:italic;}
+
+  /* ------------------------------------------------------------ postcards */
+  .postcard{background:var(--card); border:1px solid var(--line); border-radius:14px;
+            overflow:hidden; position:relative;}
+  .pc-top{height:96px; position:relative; display:flex; align-items:flex-end; padding:12px 14px;}
+  .pc-top .place{font-family:var(--serif); font-size:21px; font-weight:700; color:#FFFDF9;
+                 text-shadow:0 1px 8px rgba(0,0,0,.28); position:relative; z-index:2;}
+  .pc-stamp{position:absolute; top:9px; right:10px; z-index:2; background:rgba(255,253,249,.93);
+            border:1px dashed var(--ink); border-radius:4px; padding:3px 6px; font-size:8.5px;
+            font-weight:800; letter-spacing:.1em; color:var(--ink); transform:rotate(6deg);}
+  .pc-body{padding:13px 14px 15px;}
+  .pc-body .row{display:flex; justify-content:space-between; align-items:baseline;}
+  .pc-price{font-weight:800; font-size:20px; color:var(--teal);}
+  .pc-was{font-size:12px; color:var(--dim); text-decoration:line-through; margin-left:6px; font-weight:600;}
+  .pc-off{font-size:12px; font-weight:700; color:var(--dim);}
+  .pc-off.deal{color:#9A6E1B;}
+  .pc-meta{font-size:12px; color:var(--dim); margin-top:3px;}
+
+  /* -------------------------------------------------------- boarding pass */
+  .tiers{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:26px;}
+  .tier{background:var(--card); border:1px solid var(--line); border-radius:14px;
+        overflow:hidden; position:relative; display:flex; flex-direction:column;}
+  .tier.pick{border-color:var(--terra); box-shadow:0 8px 26px rgba(217,106,75,.16);}
+  .tier .strip{background:var(--teal); color:#DFEEEA; font-size:9px; font-weight:800;
+               letter-spacing:.18em; padding:7px 13px;}
+  .tier.pick .strip{background:var(--terra); color:#FFF3EE;}
+  .tier .body{padding:15px 14px 17px; border-top:2px dashed var(--line); flex:1;
+              display:flex; flex-direction:column;}
+  .tier .who{font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--dim);}
+  .tier .amt{font-family:var(--serif); font-size:30px; font-weight:700; margin:6px 0 1px;}
+  .tier .amt small{font-size:13px; font-weight:400; color:var(--dim); font-family:var(--sans);}
+  .tier .bill{font-size:12px; color:var(--dim);}
+  .tier .note{font-size:12.5px; color:var(--teal); font-weight:700; margin-top:9px;}
+  .tier .note.plain{color:var(--dim); font-weight:500;}
+  .tier .off{position:absolute; top:34px; right:10px; background:var(--gold-soft); border:1px solid #EBD9AE;
+             color:#9A6E1B; font-size:10px; font-weight:800; border-radius:99px; padding:3px 8px;}
+  .guarantees{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px;}
+  .guar{display:flex; gap:11px; align-items:flex-start; font-size:13.5px; color:var(--dim);}
+  .guar b{color:var(--ink); display:block; font-size:14px; margin-bottom:2px;}
+  .guar .ic{font-size:18px; line-height:1.2;}
+
+  /* ------------------------------------------------------------------ faq */
+  .faq details{border-bottom:1px solid var(--line); padding:16px 0;}
+  .faq summary{cursor:pointer; font-weight:700; font-size:16px; list-style:none;
+               display:flex; justify-content:space-between; gap:16px; align-items:center;}
+  .faq summary::-webkit-details-marker{display:none;}
+  .faq summary::after{content:"+"; color:var(--terra); font-size:22px; font-weight:400; line-height:1;}
+  .faq details[open] summary::after{content:"–";}
+  .faq p{color:var(--dim); font-size:14.5px; margin-top:10px;}
+
+  /* --------------------------------------------------------------- footer */
+  footer{background:var(--card2); border-top:1px solid var(--line); padding:44px 0 34px; font-size:13.5px;}
+  footer .cols{display:flex; justify-content:space-between; gap:28px; flex-wrap:wrap; margin-bottom:26px;}
+  footer h4{font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+            color:var(--dim); margin-bottom:9px;}
+  footer a{display:block; color:var(--ink); text-decoration:none; margin-bottom:6px;}
+  footer a:hover{color:var(--terra);}
+  .honest{color:var(--dim); font-size:12.5px; line-height:1.7; border-top:1px dashed var(--line); padding-top:20px;}
+  .honest b{color:var(--ink);}
+
+  @media(max-width:860px){
+    .grid3,.sc-grid,.guarantees{grid-template-columns:1fr;}
+    .tiers{grid-template-columns:repeat(2,1fr);}
+    .grid2{grid-template-columns:1fr;}
+    section{padding:56px 0;}
+    .showcase{padding:34px 20px; border-radius:18px;}
+    .navlinks .hide-sm{display:none;}
+    .flightpath{height:104px;}
+  }
+  @media(max-width:420px){ .tiers{grid-template-columns:1fr;} }
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
+    .plane{offset-distance:62%;}
+  }
+</style>
+</head>
+<body>
+
+<div class="sample-flag" id="sampleFlag" hidden>
+  Sample prices — these are realistic placeholders, not live fares. Real prices land once the nightly fetcher runs.
+</div>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="/">Freewheel<em>where can we all go?</em></a>
+    <div class="navlinks">
+      <a href="#how" class="hide-sm">How it works</a>
+      <a href="#pricing" class="hide-sm">Pricing</a>
+      <a href="login.html">Log in</a>
+      <a href="onboard.html" class="btn btn-primary btn-sm" data-cta="nav">Start free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================================================================ HERO -->
+<header class="hero">
+  <div class="sky">
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  </div>
+  <div class="wrap">
+    <h1>Your group chat has been<br>planning this trip <span class="u">since March</span>.</h1>
+    <p class="lead">Everyone taps the weekends they can actually do. Freewheel finds the windows you
+      all share — then shows what's cheap from your airport on exactly those days.</p>
+    <div class="cta-row">
+      <a href="onboard.html" class="btn btn-primary" data-cta="hero">Start free — 7 days, no card</a>
+      <a href="app.html" class="btn btn-ghost" data-cta="hero_try">Try it without signing up</a>
+    </div>
+    <p class="cta-note">No app to install. <b>Nobody needs an account to join your trip</b> — you send a link, they tap dates.</p>
+
+    <div class="flightpath">
+      <svg viewBox="0 0 800 132" preserveAspectRatio="none" aria-hidden="true">
+        <path class="fp-line" d="M 10 104 C 150 104, 220 26, 380 26 S 640 96, 780 30"/>
+        <circle class="fp-dot" cx="10" cy="104" r="4.5"/>
+        <circle class="fp-dot" cx="780" cy="30" r="4.5"/>
+      </svg>
+      <div class="plane" aria-hidden="true">✈️</div>
+      <div class="fp-label" style="left:0; top:114px;">Group chat</div>
+      <div class="fp-label" style="right:0; top:44px;">Actually going</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================== TICKER -->
+<div class="ticker" aria-label="Sample fares from Sydney">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ============================================================== PROBLEM -->
+<section>
+  <div class="wrap narrow" style="text-align:center;">
+    <div class="eyebrow">The actual problem</div>
+    <h2>Two questions nobody can answer at once</h2>
+    <p class="lead" style="margin-top:14px;">Planners tell you <em>when everyone's free</em>. Flight
+      tools tell you <em>when it's cheap</em>. Neither knows the other, so the group chat stalls at
+      "when's everyone free?" and dies at "that weekend's $480 now."</p>
+    <p class="lead" style="margin-top:14px;"><b style="color:var(--ink)">Freewheel fuses the two.</b>
+      Your shared free weekends, priced from your home airport, ranked cheapest first.</p>
+  </div>
+</section>
+
+<!-- ================================================================== HOW -->
+<section id="how" style="background:var(--card2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div style="text-align:center; margin-bottom:36px;">
+      <div class="eyebrow">How it works</div>
+      <h2>Three taps and a link</h2>
+    </div>
+    <div class="grid3">
+      <div class="step">
+        <div class="stamp">01</div>
+        <h3>Start a trip</h3>
+        <p>Name it, pick your airport, tap the weekends you could go. Add custom ranges too —
+          mid-sem break, the week after exams.</p>
+      </div>
+      <div class="step">
+        <div class="stamp">02</div>
+        <h3>Drop the link in the chat</h3>
+        <p>Your friends tap their own dates. No signup, no download, no "what's the password".
+          It works on the phone they already have open.</p>
+      </div>
+      <div class="step">
+        <div class="stamp">03</div>
+        <h3>See where you can all afford to go</h3>
+        <p>The overlap becomes a boarding pass: the weekend that works for the most people,
+          with the cheapest destinations from your airport on those exact dates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= SHOWCASE -->
+<section>
+  <div class="wrap">
+    <div class="showcase">
+      <div style="max-width:560px;">
+        <div class="eyebrow">Inside Freewheel</div>
+        <h2>Then it keeps working between trips</h2>
+        <p class="lead">Most of the year you're not booking anything. That's the point of the
+          membership — it watches your routes while nothing's happening.</p>
+      </div>
+      <div class="sc-grid">
+        <div class="sc">
+          <h3>Deals</h3>
+          <p>Every route we cache from your home airport, sorted by discount off typical price.</p>
+          <div class="mini">
+            <div class="mini-row"><span>Gold Coast <span class="mini-dim">OOL</span></span><b>$59</b></div>
+            <div class="mini-row"><span>Melbourne <span class="mini-dim">MEL</span></span><b>$74</b></div>
+            <div class="mini-row"><span>Bali <span class="mini-dim">DPS</span></span><b>$239</b></div>
+          </div>
+        </div>
+        <div class="sc">
+          <h3>Trips</h3>
+          <p>Every trip you've started or joined, live as friends add their dates.</p>
+          <div class="mini">
+            <div class="mini-row"><span>boys trip???</span><b>4 in</b></div>
+            <div class="mini-row"><span>post-exam escape</span><b>2 in</b></div>
+            <div style="margin-top:7px;">
+              <span class="mini-chip on">Sep 12–15 · 4/4</span>
+              <span class="mini-chip">Oct 3–6 · 2/4</span>
+            </div>
+          </div>
+        </div>
+        <div class="sc">
+          <h3>Friends</h3>
+          <p>Your crew code, your friends list, and one bill date for everyone in it.</p>
+          <div class="mini">
+            <div class="mini-row"><span>Crew code</span><b>FW-7QKD</b></div>
+            <div class="mini-row"><span>Crew filled</span><b>4/6</b></div>
+            <div class="mini-row"><span>Your rate</span><b>locked</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ CHATS -->
+<section style="background:var(--card2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="grid2" style="align-items:center; gap:34px;">
+      <div>
+        <div class="eyebrow">What changes</div>
+        <h2>The chat stops going in circles</h2>
+        <p class="lead" style="margin-top:12px;">Nobody has to be the person who makes the spreadsheet.
+          The link does the asking, and the answer comes back with prices attached.</p>
+        <a href="onboard.html" class="btn btn-primary" style="margin-top:22px;" data-cta="chat">Start free — 7 days, no card</a>
+      </div>
+      <div class="chat">
+        <div class="bub them"><span class="who">Mia</span>ok but WHEN is everyone free 😭</div>
+        <div class="bub them"><span class="who">Jack</span>i can't do the 12th. or the 26th. or exams</div>
+        <div class="bub you">sent a link — just tap the weekends you can do</div>
+        <div class="bub you">4/4 free Sep 12–15. Gold Coast is $59 return that weekend</div>
+        <div class="bub them"><span class="who">Mia</span>wait actually?? booking now</div>
+        <p class="chat-note">Illustrative — not a real conversation. We'll put real quotes here when we have them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ POSTCARDS -->
+<section>
+  <div class="wrap">
+    <div style="text-align:center; margin-bottom:32px;">
+      <div class="eyebrow">Sample deals</div>
+      <h2>What a cheap window looks like</h2>
+      <p class="lead" style="margin-top:10px;">Return fares from Sydney, refreshed nightly.
+        A route gets a stamp when it's more than 20% under its typical price.</p>
+    </div>
+    <div class="grid3" id="postcards"></div>
+  </div>
+</section>
+
+<!-- ============================================================== PRICING -->
+<section id="pricing" style="background:var(--card2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div style="text-align:center;">
+      <div class="eyebrow">Pricing</div>
+      <h2>Cheaper the more of you there are</h2>
+      <p class="lead" style="margin-top:10px; max-width:600px; margin-left:auto; margin-right:auto;">
+        Because that's how the product works — a bigger crew is a better product, not a bigger bill.
+        Billed once a year, in AUD. The organiser doesn't pay.</p>
+    </div>
+    <div class="tiers">
+      <div class="tier">
+        <div class="strip">FREEWHEEL PASS · SOLO</div>
+        <div class="body">
+          <div class="who">Just you</div>
+          <div class="amt">$4.99<small>/mo</small></div>
+          <div class="bill">billed $59/year</div>
+          <div class="note plain">Honestly — bring one friend and it nearly halves.</div>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="strip">FREEWHEEL PASS · PAIR</div>
+        <div class="body">
+          <div class="who">2 people</div>
+          <div class="amt">$3.29<small>/mo</small></div>
+          <div class="bill">billed $39/year</div>
+          <div class="note">34% off Solo</div>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="strip">FREEWHEEL PASS · SQUAD</div>
+        <div class="body">
+          <div class="who">4 people</div>
+          <div class="amt">$2.49<small>/mo</small></div>
+          <div class="bill">billed $29/year</div>
+          <div class="note">Organiser free</div>
+        </div>
+      </div>
+      <div class="tier pick">
+        <div class="strip">FREEWHEEL PASS · CREW</div>
+        <div class="off">71% off</div>
+        <div class="body">
+          <div class="who">6 people · most picked</div>
+          <div class="amt">$1.49<small>/mo</small></div>
+          <div class="bill">billed $17/year</div>
+          <div class="note">Organiser free</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="guarantees">
+      <div class="guar"><span class="ic">🎟️</span><div><b>7 days free, no card</b>
+        You only enter payment details if you decide to stay. Nothing auto-charges you.</div></div>
+      <div class="guar"><span class="ic">🔗</span><div><b>One bill for the whole crew</b>
+        Friends who join with your code during your free week lock the same rate and the same
+        renewal date. No "Dave joined four months late at a different price".</div></div>
+      <div class="guar"><span class="ic">🧳</span><div><b>Your trips never get locked</b>
+        If a membership lapses, the group's trips and dates stay open. We won't hold a plan hostage.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== FAQ -->
+<section>
+  <div class="wrap narrow">
+    <div style="text-align:center; margin-bottom:26px;">
+      <div class="eyebrow">Questions</div>
+      <h2>The ones people actually ask</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Do my friends need to sign up?</summary>
+        <p>No. That's deliberate. They tap your link, add their name and their dates, and they're in.
+          Signing up is only for the extras — saved trips, price alerts, your crew rate.</p></details>
+      <details><summary>Is this an app?</summary>
+        <p>No, and it won't be. It's a website, so a link in a group chat just works — no install,
+          no app store, no "download this first".</p></details>
+      <details><summary>Where do the prices come from?</summary>
+        <p>A nightly cache of return fares from your home airport, built from the Travelpayouts fare
+          data API. We show indicative prices per person and link you out to book — Freewheel never
+          takes your money for a flight or holds a booking.</p></details>
+      <details><summary>Can we use dates that aren't weekends?</summary>
+        <p>Yes — add a custom range with a label like "mid-sem break" and everyone can tap that too.
+          Custom ranges are priced off the nearest cached weekend, so they show with a <b>~</b>.</p></details>
+      <details><summary>Do you book anything or take commission from me?</summary>
+        <p>We don't book, and you never pay us for a trip. When you click through to an airline or a
+          hostel, we may earn a small affiliate fee from them at no cost to you. It's a rounding error
+          next to the membership — we'd rather tell you than have you find out.</p></details>
+      <details><summary>What if the group never books?</summary>
+        <p>Then the membership wasn't worth it, and you should cancel. The honest pitch is that most
+          of the year nothing happens, and the alerts are what you're paying for in those months.</p></details>
+      <details><summary>Which airports work?</summary>
+        <p>Sydney, Melbourne and Brisbane at launch. Deal quality depends on how many people fly from
+          the same airport, so we open new ones as the catchment fills rather than all at once.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== CLOSER -->
+<section style="padding-top:20px;">
+  <div class="wrap narrow" style="text-align:center;">
+    <h2>Where can you all go?</h2>
+    <p class="lead" style="margin:12px auto 24px; max-width:460px;">Takes about ninety seconds to find out.</p>
+    <a href="onboard.html" class="btn btn-primary" data-cta="closer">Start free — 7 days, no card</a>
+  </div>
+</section>
+
+<!-- =============================================================== FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div style="max-width:280px;">
+        <a class="logo" href="/" style="font-size:19px;">Freewheel</a>
+        <p style="color:var(--dim); margin-top:9px; font-size:13px;">
+          Group availability, fused with cheap flight windows from your airport.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="app.html">Start a trip</a>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <a href="onboard.html">Start free</a>
+        <a href="login.html">Log in</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <!-- TODO before launch: point this at an inbox you actually read -->
+        <a href="mailto:hello@YOURDOMAIN.example">hello@YOURDOMAIN.example</a>
+        <a href="app.html" id="feedbackLink">Tell us what's broken</a>
+      </div>
+    </div>
+    <div class="honest">
+      <b>Being straight with you:</b> Freewheel is new. Prices are indicative return fares per person
+      in AUD, cached nightly — always confirm on the airline's own site before you book, because
+      fares move. We don't sell flights, assemble packages, or take your booking money; every booking
+      link takes you to the airline or hotel directly, and some of those links pay us a small
+      affiliate fee. We don't publish user counts or reviews until they're real ones.
+      <br><br>
+      "Freewheel" is a working name pending a trademark check. © <span id="yr"></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ================= BACKEND (Supabase — optional) =================
+// Paste from Supabase → Project Settings → API. Leave blank = demo mode.
+const BACKEND = { url: "", anonKey: "" };
+const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
+  ? window.supabase.createClient(BACKEND.url, BACKEND.anonKey) : null;
+
+// SAMPLE_DATA is flipped to false by fetch_fares.py on its first successful run.
+// While true, every price on this page is a realistic placeholder and says so.
+const SAMPLE_DATA = true;
+// FARES_STAMP is filled in by fetch_fares.py with the UTC time of the last refresh.
+const FARES_STAMP = "";
+
+// ================= DATA (sample cache — replace via fetch_fares.py) =================
+const FARES_ALL = {"SYD":{"MEL":{"city":"Melbourne","typ":118,"fares":[{"w":0,"p":102},{"w":1,"p":74},{"w":2,"p":73},{"w":3,"p":79},{"w":4,"p":72},{"w":5,"p":141},{"w":6,"p":94},{"w":7,"p":151},{"w":8,"p":107},{"w":9,"p":80},{"w":10,"p":99},{"w":11,"p":85}]},"OOL":{"city":"Gold Coast","typ":109,"fares":[{"w":0,"p":133},{"w":1,"p":113},{"w":2,"p":96},{"w":3,"p":63},{"w":4,"p":121},{"w":5,"p":91},{"w":6,"p":102},{"w":7,"p":131},{"w":8,"p":85},{"w":9,"p":108},{"w":10,"p":125},{"w":11,"p":66}]},"BNE":{"city":"Brisbane","typ":121,"fares":[{"w":0,"p":139},{"w":1,"p":78},{"w":2,"p":140},{"w":3,"p":149},{"w":4,"p":134},{"w":5,"p":125},{"w":6,"p":146},{"w":7,"p":116},{"w":8,"p":83},{"w":9,"p":130},{"w":10,"p":144},{"w":11,"p":109}]},"ADL":{"city":"Adelaide","typ":158,"fares":[{"w":0,"p":105},{"w":1,"p":88},{"w":2,"p":183},{"w":3,"p":128},{"w":4,"p":97},{"w":5,"p":160},{"w":6,"p":188},{"w":7,"p":131},{"w":8,"p":140},{"w":9,"p":203},{"w":10,"p":121},{"w":11,"p":127}]},"HBA":{"city":"Hobart","typ":172,"fares":[{"w":0,"p":180},{"w":1,"p":103},{"w":2,"p":151},{"w":3,"p":227},{"w":4,"p":170},{"w":5,"p":117},{"w":6,"p":205},{"w":7,"p":207},{"w":8,"p":110},{"w":9,"p":99},{"w":10,"p":124},{"w":11,"p":98}]},"CNS":{"city":"Cairns","typ":248,"fares":[{"w":0,"p":157},{"w":1,"p":141},{"w":2,"p":266},{"w":3,"p":189},{"w":4,"p":213},{"w":5,"p":316},{"w":6,"p":235},{"w":7,"p":149},{"w":8,"p":192},{"w":9,"p":171},{"w":10,"p":248},{"w":11,"p":156}]},"AKL":{"city":"Auckland","typ":335,"fares":[{"w":0,"p":450},{"w":1,"p":378},{"w":2,"p":294},{"w":3,"p":397},{"w":4,"p":399},{"w":5,"p":257},{"w":6,"p":451},{"w":7,"p":406},{"w":8,"p":389},{"w":9,"p":332},{"w":10,"p":198},{"w":11,"p":266}]},"ZQN":{"city":"Queenstown","typ":419,"fares":[{"w":0,"p":573},{"w":1,"p":566},{"w":2,"p":572},{"w":3,"p":309},{"w":4,"p":300},{"w":5,"p":454},{"w":6,"p":531},{"w":7,"p":464},{"w":8,"p":260},{"w":9,"p":556},{"w":10,"p":499},{"w":11,"p":294}]},"CHC":{"city":"Christchurch","typ":358,"fares":[{"w":0,"p":305},{"w":1,"p":479},{"w":2,"p":324},{"w":3,"p":412},{"w":4,"p":249},{"w":5,"p":460},{"w":6,"p":254},{"w":7,"p":481},{"w":8,"p":310},{"w":9,"p":249},{"w":10,"p":391},{"w":11,"p":468}]},"DPS":{"city":"Bali","typ":462,"fares":[{"w":0,"p":613},{"w":1,"p":323},{"w":2,"p":359},{"w":3,"p":488},{"w":4,"p":414},{"w":5,"p":630},{"w":6,"p":432},{"w":7,"p":627},{"w":8,"p":633},{"w":9,"p":464},{"w":10,"p":239},{"w":11,"p":309}]},"NAN":{"city":"Fiji","typ":498,"fares":[{"w":0,"p":347},{"w":1,"p":582},{"w":2,"p":412},{"w":3,"p":510},{"w":4,"p":319},{"w":5,"p":379},{"w":6,"p":602},{"w":7,"p":513},{"w":8,"p":662},{"w":9,"p":534},{"w":10,"p":491},{"w":11,"p":466}]},"SGN":{"city":"Ho Chi Minh City","typ":578,"fares":[{"w":0,"p":556},{"w":1,"p":653},{"w":2,"p":760},{"w":3,"p":592},{"w":4,"p":715},{"w":5,"p":400},{"w":6,"p":378},{"w":7,"p":378},{"w":8,"p":691},{"w":9,"p":414},{"w":10,"p":636},{"w":11,"p":734}]},"BKK":{"city":"Bangkok","typ":612,"fares":[{"w":0,"p":469},{"w":1,"p":552},{"w":2,"p":827},{"w":3,"p":442},{"w":4,"p":607},{"w":5,"p":458},{"w":6,"p":387},{"w":7,"p":367},{"w":8,"p":657},{"w":9,"p":397},{"w":10,"p":733},{"w":11,"p":415}]},"SIN":{"city":"Singapore","typ":548,"fares":[{"w":0,"p":370},{"w":1,"p":454},{"w":2,"p":510},{"w":3,"p":654},{"w":4,"p":410},{"w":5,"p":564},{"w":6,"p":357},{"w":7,"p":378},{"w":8,"p":587},{"w":9,"p":386},{"w":10,"p":380},{"w":11,"p":521}]},"KUL":{"city":"Kuala Lumpur","typ":555,"fares":[{"w":0,"p":566},{"w":1,"p":445},{"w":2,"p":555},{"w":3,"p":379},{"w":4,"p":354},{"w":5,"p":464},{"w":6,"p":653},{"w":7,"p":543},{"w":8,"p":326},{"w":9,"p":339},{"w":10,"p":565},{"w":11,"p":533}]},"MNL":{"city":"Manila","typ":528,"fares":[{"w":0,"p":359},{"w":1,"p":490},{"w":2,"p":651},{"w":3,"p":520},{"w":4,"p":711},{"w":5,"p":650},{"w":6,"p":572},{"w":7,"p":300},{"w":8,"p":345},{"w":9,"p":419},{"w":10,"p":350},{"w":11,"p":666}]}}};
+
+// ================= TRACKING =================
+function track(ev, props){
+  console.log("[track]", ev, props||{});
+  if(sb) sb.from("events").insert({name:ev, props:props||{}}).then(()=>{},()=>{});
+}
+
+// ================= DOM HELPERS =================
+// Everything below builds nodes with textContent rather than innerHTML, so a
+// city name or route code can never become markup. Same discipline on every page.
+function el(tag, cls, text){
+  const n = document.createElement(tag);
+  if(cls) n.className = cls;
+  if(text !== undefined && text !== null) n.textContent = text;
+  return n;
+}
+
+// ================= RENDER =================
+const GRADS = [
+  "linear-gradient(150deg,#F3B07A,#D96A4B)",
+  "linear-gradient(150deg,#7FB6A8,#2F6D62)",
+  "linear-gradient(150deg,#EFC978,#D9A441)",
+  "linear-gradient(150deg,#9DBBD6,#4E7A9B)",
+  "linear-gradient(150deg,#E39B9B,#B95F5F)",
+  "linear-gradient(150deg,#A9C99B,#5C8C57)"
+];
+
+// cheapest cached fare per route, and how far under typical that is
+function routeSummary(origin){
+  return Object.entries(FARES_ALL[origin] || {}).map(([code, r]) => {
+    const low = r.fares.reduce((m, f) => f.p < m ? f.p : m, Infinity);
+    return {code, city:r.city, low, typ:r.typ, off:Math.round((1 - low / r.typ) * 100)};
+  }).sort((a, b) => b.off - a.off);
+}
+
+function tickItem(r){
+  const s = el("span", "tick");
+  s.appendChild(el("span", "r", "SYD → " + r.code));
+  s.appendChild(el("span", "p", "$" + r.low));
+  if(r.off >= 20) s.appendChild(el("span", "d", r.off + "% off"));
+  return s;
+}
+
+function buildTicker(){
+  const rows = routeSummary("SYD"), track = document.getElementById("tickerTrack");
+  // rendered twice so the -50% translate loops seamlessly
+  for(let pass = 0; pass < 2; pass++) rows.forEach(r => track.appendChild(tickItem(r)));
+}
+
+function buildPostcards(){
+  const host = document.getElementById("postcards");
+  routeSummary("SYD").slice(0, 6).forEach((r, i) => {
+    const card = el("div", "postcard");
+
+    const top = el("div", "pc-top");
+    top.style.background = GRADS[i % GRADS.length];
+    top.appendChild(el("div", "pc-stamp", "AIR MAIL"));
+    top.appendChild(el("div", "place", r.city));
+    card.appendChild(top);
+
+    const body = el("div", "pc-body");
+    const row = el("div", "row");
+    const prices = el("div");
+    prices.appendChild(el("span", "pc-price", "$" + r.low));
+    prices.appendChild(el("span", "pc-was", "$" + r.typ));
+    row.appendChild(prices);
+    row.appendChild(el("div", "pc-off" + (r.off >= 20 ? " deal" : ""),
+      r.off >= 20 ? r.off + "% under typical" : "around typical"));
+    body.appendChild(row);
+    body.appendChild(el("div", "pc-meta", "SYD → " + r.code + " · return per person, AUD"));
+    card.appendChild(body);
+
+    host.appendChild(card);
+  });
+}
+
+// ================= BOOT =================
+document.getElementById("sampleFlag").hidden = !SAMPLE_DATA;
+document.getElementById("yr").textContent = new Date().getFullYear();
+buildTicker();
+buildPostcards();
+
+document.querySelectorAll("[data-cta]").forEach(a => {
+  a.addEventListener("click", () => track("cta_click", {at:a.dataset.cta}));
+});
+document.getElementById("feedbackLink").addEventListener("click", () => track("feedback"));
+track("landing_view");
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Keep LF everywhere. fetch_fares.py rewrites the FARES_ALL line with a regex
+# anchored on the end of line; CRLF checkouts on Windows would break the match,
+# and the nightly Action would silently stop finding it.
+* text=auto eol=lf
+
+*.png binary

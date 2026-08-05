@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Freewheel</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --bg:#FBF5EC; --card:#FFFFFF; --card2:#FDF9F2; --line:#EAD9C3;
+    --ink:#33302B; --dim:#8C7F6D;
+    --terra:#D96A4B; --terra-soft:#FBEDE6;
+    --teal:#2F6D62; --teal-deep:#24504A; --teal-soft:#E7F1EE;
+    --gold:#D9A441; --gold-soft:#FAF1DC;
+    --radius:16px;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --nav-h:74px;   /* mobile bottom bar height */
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  body{background:var(--bg); color:var(--ink); font-family:var(--sans); min-height:100vh;}
+  .app{display:flex; min-height:100vh;}
+
+  /* ================================================================ panel */
+  .panel{
+    width:246px; flex:0 0 246px; background:var(--teal-deep); color:#EAF3F0;
+    display:flex; flex-direction:column; padding:20px 16px;
+    position:sticky; top:0; height:100vh;
+  }
+  .panel .logo{font-family:var(--serif); font-weight:700; font-size:20px; color:#FFFDF9;
+               text-decoration:none; display:block; margin-bottom:26px;}
+  .navbtn{
+    display:flex; align-items:center; gap:11px; width:100%; background:none; border:none;
+    color:#A9C7C0; font-family:var(--sans); font-size:15px; font-weight:600; text-align:left;
+    padding:11px 12px; border-radius:11px; cursor:pointer; margin-bottom:4px;
+  }
+  .navbtn .ic{font-size:17px; line-height:1;}
+  .navbtn:hover{background:rgba(255,255,255,.06); color:#EAF3F0;}
+  .navbtn.on{background:rgba(255,255,255,.11); color:#FFFDF9;}
+  .navbtn .badge{margin-left:auto; background:var(--terra); color:#FFF3EE; font-size:11px;
+                 font-weight:800; border-radius:99px; padding:2px 7px; min-width:20px; text-align:center;}
+  .me{margin-top:auto; border-top:1px solid rgba(255,255,255,.14); padding-top:14px;}
+  .me .nm{font-weight:700; font-size:14.5px; color:#FFFDF9;}
+  .me .hd{font-size:12.5px; color:#A9C7C0; margin-top:1px;}
+  .me .signout{background:none; border:none; color:#A9C7C0; font-size:12.5px; text-decoration:underline;
+                cursor:pointer; padding:0; margin-top:9px; font-family:var(--sans);}
+
+  /* ================================================================= main */
+  .main{flex:1; min-width:0; padding:24px 26px 60px; max-width:820px;}
+  h1{font-family:var(--serif); font-size:27px; font-weight:700; letter-spacing:-.01em;}
+  .sub{color:var(--dim); font-size:14px; margin-top:4px; line-height:1.55;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+        padding:16px; margin-bottom:14px; box-shadow:0 2px 10px rgba(120,90,60,.05);}
+  label{display:block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+        color:var(--dim); margin:0 0 6px;}
+  input,select{width:100%; background:var(--card2); color:var(--ink); border:1px solid var(--line);
+    border-radius:11px; padding:12px 14px; font-size:16px; outline:none; font-family:var(--sans);}
+  input::placeholder{color:#BCAE9A;}
+  input:focus,select:focus{border-color:var(--terra);}
+  .btn{display:block; width:100%; border:none; border-radius:13px; padding:14px; font-size:15.5px;
+       font-weight:700; cursor:pointer; text-align:center; font-family:var(--sans); text-decoration:none;}
+  .btn-primary{background:var(--terra); color:#FFF8F2; box-shadow:0 6px 16px rgba(217,106,75,.25);}
+  .btn-primary:active{transform:scale(.985);}
+  .btn-ghost{background:transparent; color:var(--teal); border:1.5px dashed var(--line);}
+  .btn-accent{background:var(--teal); color:#F2FAF7;}
+  .btn-sm{padding:9px 15px; font-size:13.5px; border-radius:10px; width:auto; display:inline-block;}
+  .row{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+
+  /* -------------------------------------------------------- trial banner */
+  .trial{display:flex; align-items:center; gap:12px; background:var(--gold-soft);
+         border:1px solid #EBD9AE; border-radius:13px; padding:12px 15px; margin-bottom:18px;
+         font-size:13.5px; color:#7C5A12; line-height:1.5;}
+  .trial b{font-weight:800;}
+  .trial.expired{background:var(--terra-soft); border-color:#F0CDBE; color:#9A4327;}
+  .trial .ic{font-size:19px;}
+  .trial .act{margin-left:auto; flex:0 0 auto;}
+
+  /* --------------------------------------------------------------- deals */
+  .sorts{display:flex; gap:8px; overflow-x:auto; padding-bottom:12px; -webkit-overflow-scrolling:touch;}
+  .sort{flex:0 0 auto; background:var(--card); border:1.5px solid var(--line); border-radius:99px;
+        padding:8px 14px; font-size:13px; color:var(--dim); cursor:pointer; font-family:var(--sans);
+        font-weight:600;}
+  .sort.on{border-color:var(--terra); background:var(--terra-soft); color:var(--terra);}
+  .stamp-line{font-size:12px; color:var(--dim); margin-bottom:12px;}
+  .deal{padding:13px 0; border-bottom:1px dashed var(--line); display:flex;
+        justify-content:space-between; gap:12px; align-items:flex-start;}
+  .deal:last-child{border-bottom:none;}
+  .deal .city{font-weight:700; font-size:16px;}
+  .deal .code{color:var(--dim); font-size:12px; margin-left:6px; font-weight:500;}
+  .deal .when{color:var(--dim); font-size:12.5px; margin-top:2px;}
+  .deal .links{margin-top:5px;}
+  .deal .links a{color:var(--terra); font-size:12.5px; text-decoration:none; font-weight:700;}
+  .deal .links span{color:var(--line); margin:0 7px;}
+  .deal .pricebox{text-align:right; flex:0 0 auto;}
+  .deal .price{font-weight:800; font-size:18px; color:var(--teal);}
+  .deal .per{display:block; color:var(--dim); font-size:11px; font-weight:500;}
+  .pill{display:inline-block; font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:99px;
+        letter-spacing:.05em; margin-left:8px;}
+  .pill-deal{background:var(--gold-soft); color:#9A6E1B; border:1px solid #EBD9AE;}
+  .locked{position:relative;}
+  .locked .deal{filter:blur(4.5px); opacity:.55; pointer-events:none; user-select:none;}
+  .lockmsg{background:var(--teal-soft); border:1px solid #CFE2DC; border-radius:12px;
+           padding:14px 15px; font-size:13.5px; color:var(--teal-deep); line-height:1.55; margin-top:14px;}
+
+  /* --------------------------------------------------------------- trips */
+  .trip{display:flex; justify-content:space-between; align-items:center; gap:12px;
+        padding:14px 0; border-bottom:1px dashed var(--line);}
+  .trip:last-child{border-bottom:none;}
+  .trip .nm{font-weight:700; font-size:15.5px;}
+  .trip .meta{color:var(--dim); font-size:12.5px; margin-top:2px;}
+  .trip a{color:var(--terra); font-weight:700; font-size:13.5px; text-decoration:none; flex:0 0 auto;}
+  .empty{color:var(--dim); font-size:14px; text-align:center; padding:22px 10px; line-height:1.6;}
+
+  /* ------------------------------------------------------------- friends */
+  .crewcard{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+            overflow:hidden; margin-bottom:14px;}
+  .crewcard .strip{background:var(--teal); color:#DFEEEA; font-size:9.5px; font-weight:800;
+                   letter-spacing:.2em; padding:7px 16px;}
+  .crewcard .inner{padding:15px 16px 17px; border-top:2px dashed var(--line);}
+  .code{font-family:var(--serif); font-size:30px; font-weight:700; letter-spacing:.06em; color:var(--ink);}
+  .fill{display:flex; gap:5px; margin:11px 0 4px;}
+  .fill i{flex:1; height:7px; border-radius:99px; background:var(--line);}
+  .fill i.on{background:var(--teal);}
+  .fr{display:flex; justify-content:space-between; align-items:center; gap:12px;
+      padding:12px 0; border-bottom:1px dashed var(--line);}
+  .fr:last-child{border-bottom:none;}
+  .fr .nm{font-weight:700; font-size:15px;}
+  .fr .hd{color:var(--dim); font-size:12.5px; margin-top:1px;}
+  .avatar{background:var(--teal-soft); border:1px solid #CFE2DC; color:var(--teal);
+          font-size:13px; font-weight:800; width:36px; height:36px; border-radius:50%;
+          display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
+  .frleft{display:flex; align-items:center; gap:11px; min-width:0;}
+  .checkrow{display:flex; align-items:center; gap:11px; padding:11px 0;
+            border-bottom:1px dashed var(--line); cursor:pointer;}
+  .checkrow:last-child{border-bottom:none;}
+  .box{width:21px; height:21px; border:1.5px solid var(--line); border-radius:6px; flex:0 0 auto;
+       display:flex; align-items:center; justify-content:center; color:#FFF8F2; font-size:13px;
+       font-weight:800; background:var(--card2);}
+  .checkrow.on .box{background:var(--terra); border-color:var(--terra);}
+
+  .toast{position:fixed; bottom:calc(var(--nav-h) + 18px); left:50%; transform:translateX(-50%);
+    background:var(--ink); color:#FBF5EC; font-weight:700; font-size:14px; padding:11px 20px;
+    border-radius:99px; opacity:0; transition:opacity .25s; pointer-events:none; white-space:nowrap;
+    z-index:60; box-shadow:0 8px 24px rgba(51,48,43,.25);}
+  .toast.show{opacity:1;}
+  .hidden{display:none;}
+  .foot{color:var(--dim); font-size:11.5px; margin-top:26px; line-height:1.7;}
+  .sample-flag{background:var(--gold-soft); border:1px solid #EBD9AE; color:#8A6412; font-size:12px;
+               padding:9px 13px; border-radius:11px; margin-bottom:16px; font-weight:600; line-height:1.5;}
+
+  /* ============================================================== mobile */
+  @media(max-width:820px){
+    .app{flex-direction:column;}
+    .panel{
+      width:100%; flex:none; height:auto; position:fixed; bottom:0; left:0; right:0; top:auto;
+      flex-direction:row; align-items:center; justify-content:space-around;
+      padding:9px 8px calc(9px + env(safe-area-inset-bottom, 0px));
+      border-top:1px solid rgba(255,255,255,.12); z-index:50;
+    }
+    .panel .logo, .me{display:none;}
+    .navbtn{flex-direction:column; gap:3px; font-size:11px; font-weight:700; padding:6px 4px;
+            margin:0; text-align:center; border-radius:10px;}
+    .navbtn .ic{font-size:19px;}
+    .navbtn .badge{position:absolute; transform:translate(14px,-6px); margin:0;}
+    /* the bottom bar is fixed, so main needs clearance or it covers the last row —
+       this is the padding fix from HANDOFF.md §2 "known bug" */
+    .main{padding:18px 16px 130px; max-width:none;}
+    .fr,.card,.deal,.trip,.crewcard{scroll-margin-bottom:130px;}
+    h1{font-size:24px;}
+  }
+  @media(min-width:821px){ :root{--nav-h:0px;} }
+  @media(prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important;}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============================================================== PANEL -->
+  <aside class="panel">
+    <a class="logo" href="index.html">Freewheel</a>
+    <button class="navbtn on" data-tab="deals"><span class="ic">🏷️</span>Deals</button>
+    <button class="navbtn" data-tab="trips"><span class="ic">🧳</span>Trips</button>
+    <button class="navbtn" data-tab="friends"><span class="ic">👥</span>Friends<span class="badge hidden" id="frBadge">0</span></button>
+    <div class="me">
+      <div class="nm" id="meName">—</div>
+      <div class="hd" id="meHandle">—</div>
+      <button class="signout" id="signout">Sign out</button>
+    </div>
+  </aside>
+
+  <!-- =============================================================== MAIN -->
+  <main class="main">
+    <div class="sample-flag" id="sampleFlag" hidden>
+      Sample prices — realistic placeholders, not live fares. Real prices land once the nightly fetcher runs.
+    </div>
+
+    <div class="trial hidden" id="trialBanner">
+      <span class="ic">🎟️</span>
+      <div id="trialText"></div>
+      <div class="act"><button class="btn btn-primary btn-sm" id="trialCta">See plans</button></div>
+    </div>
+
+    <!-- ---------------------------------------------------------- DEALS -->
+    <section id="tab-deals">
+      <div class="row" style="align-items:flex-end;">
+        <div>
+          <h1 id="dealsTitle">Deals from Sydney</h1>
+          <p class="sub">Cheapest cached return fare on each route, per person, AUD.</p>
+        </div>
+      </div>
+      <div class="sorts" id="sorts" style="margin-top:16px;">
+        <button class="sort on" data-sort="cheapest">Cheapest</button>
+        <button class="sort" data-sort="discount">Biggest drop</button>
+        <button class="sort" data-sort="soonest">Soonest</button>
+        <button class="sort" data-sort="popular">Popular</button>
+      </div>
+      <div class="stamp-line" id="stampLine"></div>
+      <div class="card" id="dealsCard"><div id="dealsList"></div></div>
+      <div class="lockmsg hidden" id="lockMsg"></div>
+    </section>
+
+    <!-- ---------------------------------------------------------- TRIPS -->
+    <section id="tab-trips" class="hidden">
+      <h1>Your trips</h1>
+      <p class="sub">Every trip you started or joined. Friends never need an account to join one.</p>
+
+      <div style="display:flex; gap:10px; margin:18px 0 16px; flex-wrap:wrap;">
+        <a class="btn btn-primary btn-sm" href="app.html" id="newTripBtn">＋ New trip</a>
+        <button class="btn btn-ghost btn-sm" id="planBtn">Plan with friends</button>
+      </div>
+
+      <div class="card hidden" id="planCard">
+        <label for="planName">Trip name</label>
+        <input id="planName" placeholder="e.g. post-exam escape" maxlength="40">
+        <div style="height:14px"></div>
+        <label>Who's coming?</label>
+        <div id="planFriends"></div>
+        <button class="btn btn-primary" style="margin-top:14px;" id="planCreate">Create trip &amp; get the link</button>
+      </div>
+
+      <div class="card"><div id="tripsList"></div></div>
+    </section>
+
+    <!-- -------------------------------------------------------- FRIENDS -->
+    <section id="tab-friends" class="hidden">
+      <h1>Your crew</h1>
+      <p class="sub">Share your code during your free week and everyone locks the same rate and bill date.</p>
+
+      <div class="crewcard" style="margin-top:18px;">
+        <div class="strip">FREEWHEEL CREW · SHARE THIS CODE</div>
+        <div class="inner">
+          <div class="row">
+            <div class="code" id="crewCode">—</div>
+            <button class="btn btn-accent btn-sm" id="copyCrew">Copy</button>
+          </div>
+          <div class="fill" id="crewFill"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="sub" id="crewMeta">—</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <label for="handleAdd">Add a friend by handle</label>
+        <div style="display:flex; gap:8px;">
+          <input id="handleAdd" placeholder="@theirhandle" maxlength="21" autocapitalize="none" autocorrect="off">
+          <button class="btn btn-accent btn-sm" id="addFriend" style="flex:0 0 auto;">Add</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="reqCard">
+        <label>Friend requests</label>
+        <div id="reqList"></div>
+      </div>
+
+      <div class="card">
+        <label>Friends</label>
+        <div id="friendsList"></div>
+      </div>
+    </section>
+
+    <div class="foot">
+      Prices are indicative return fares per person in AUD, cached nightly — always confirm on the
+      airline's site before booking. We don't sell flights or hold booking money; some outbound links
+      pay us a small affiliate fee.
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ================= BACKEND (Supabase — optional) =================
+// Paste from Supabase → Project Settings → API. Leave blank = demo mode
+// (seeded sample state, nothing persists). Run schema v1 then v2 first.
+const BACKEND = { url: "", anonKey: "" };
+const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
+  ? window.supabase.createClient(BACKEND.url, BACKEND.anonKey) : null;
+
+// SAMPLE_DATA is flipped to false by fetch_fares.py on its first successful run.
+const SAMPLE_DATA = true;
+// FARES_STAMP is filled in by fetch_fares.py with the UTC time of the last refresh.
+const FARES_STAMP = "";
+
+// ================= DATA (sample cache — replace via fetch_fares.py) =================
+const FARES_ALL = {"SYD":{"MEL":{"city":"Melbourne","typ":118,"fares":[{"w":0,"p":102},{"w":1,"p":74},{"w":2,"p":73},{"w":3,"p":79},{"w":4,"p":72},{"w":5,"p":141},{"w":6,"p":94},{"w":7,"p":151},{"w":8,"p":107},{"w":9,"p":80},{"w":10,"p":99},{"w":11,"p":85}]},"OOL":{"city":"Gold Coast","typ":109,"fares":[{"w":0,"p":133},{"w":1,"p":113},{"w":2,"p":96},{"w":3,"p":63},{"w":4,"p":121},{"w":5,"p":91},{"w":6,"p":102},{"w":7,"p":131},{"w":8,"p":85},{"w":9,"p":108},{"w":10,"p":125},{"w":11,"p":66}]},"BNE":{"city":"Brisbane","typ":121,"fares":[{"w":0,"p":139},{"w":1,"p":78},{"w":2,"p":140},{"w":3,"p":149},{"w":4,"p":134},{"w":5,"p":125},{"w":6,"p":146},{"w":7,"p":116},{"w":8,"p":83},{"w":9,"p":130},{"w":10,"p":144},{"w":11,"p":109}]},"ADL":{"city":"Adelaide","typ":158,"fares":[{"w":0,"p":105},{"w":1,"p":88},{"w":2,"p":183},{"w":3,"p":128},{"w":4,"p":97},{"w":5,"p":160},{"w":6,"p":188},{"w":7,"p":131},{"w":8,"p":140},{"w":9,"p":203},{"w":10,"p":121},{"w":11,"p":127}]},"HBA":{"city":"Hobart","typ":172,"fares":[{"w":0,"p":180},{"w":1,"p":103},{"w":2,"p":151},{"w":3,"p":227},{"w":4,"p":170},{"w":5,"p":117},{"w":6,"p":205},{"w":7,"p":207},{"w":8,"p":110},{"w":9,"p":99},{"w":10,"p":124},{"w":11,"p":98}]},"CNS":{"city":"Cairns","typ":248,"fares":[{"w":0,"p":157},{"w":1,"p":141},{"w":2,"p":266},{"w":3,"p":189},{"w":4,"p":213},{"w":5,"p":316},{"w":6,"p":235},{"w":7,"p":149},{"w":8,"p":192},{"w":9,"p":171},{"w":10,"p":248},{"w":11,"p":156}]},"AKL":{"city":"Auckland","typ":335,"fares":[{"w":0,"p":450},{"w":1,"p":378},{"w":2,"p":294},{"w":3,"p":397},{"w":4,"p":399},{"w":5,"p":257},{"w":6,"p":451},{"w":7,"p":406},{"w":8,"p":389},{"w":9,"p":332},{"w":10,"p":198},{"w":11,"p":266}]},"ZQN":{"city":"Queenstown","typ":419,"fares":[{"w":0,"p":573},{"w":1,"p":566},{"w":2,"p":572},{"w":3,"p":309},{"w":4,"p":300},{"w":5,"p":454},{"w":6,"p":531},{"w":7,"p":464},{"w":8,"p":260},{"w":9,"p":556},{"w":10,"p":499},{"w":11,"p":294}]},"CHC":{"city":"Christchurch","typ":358,"fares":[{"w":0,"p":305},{"w":1,"p":479},{"w":2,"p":324},{"w":3,"p":412},{"w":4,"p":249},{"w":5,"p":460},{"w":6,"p":254},{"w":7,"p":481},{"w":8,"p":310},{"w":9,"p":249},{"w":10,"p":391},{"w":11,"p":468}]},"DPS":{"city":"Bali","typ":462,"fares":[{"w":0,"p":613},{"w":1,"p":323},{"w":2,"p":359},{"w":3,"p":488},{"w":4,"p":414},{"w":5,"p":630},{"w":6,"p":432},{"w":7,"p":627},{"w":8,"p":633},{"w":9,"p":464},{"w":10,"p":239},{"w":11,"p":309}]},"NAN":{"city":"Fiji","typ":498,"fares":[{"w":0,"p":347},{"w":1,"p":582},{"w":2,"p":412},{"w":3,"p":510},{"w":4,"p":319},{"w":5,"p":379},{"w":6,"p":602},{"w":7,"p":513},{"w":8,"p":662},{"w":9,"p":534},{"w":10,"p":491},{"w":11,"p":466}]},"SGN":{"city":"Ho Chi Minh City","typ":578,"fares":[{"w":0,"p":556},{"w":1,"p":653},{"w":2,"p":760},{"w":3,"p":592},{"w":4,"p":715},{"w":5,"p":400},{"w":6,"p":378},{"w":7,"p":378},{"w":8,"p":691},{"w":9,"p":414},{"w":10,"p":636},{"w":11,"p":734}]},"BKK":{"city":"Bangkok","typ":612,"fares":[{"w":0,"p":469},{"w":1,"p":552},{"w":2,"p":827},{"w":3,"p":442},{"w":4,"p":607},{"w":5,"p":458},{"w":6,"p":387},{"w":7,"p":367},{"w":8,"p":657},{"w":9,"p":397},{"w":10,"p":733},{"w":11,"p":415}]},"SIN":{"city":"Singapore","typ":548,"fares":[{"w":0,"p":370},{"w":1,"p":454},{"w":2,"p":510},{"w":3,"p":654},{"w":4,"p":410},{"w":5,"p":564},{"w":6,"p":357},{"w":7,"p":378},{"w":8,"p":587},{"w":9,"p":386},{"w":10,"p":380},{"w":11,"p":521}]},"KUL":{"city":"Kuala Lumpur","typ":555,"fares":[{"w":0,"p":566},{"w":1,"p":445},{"w":2,"p":555},{"w":3,"p":379},{"w":4,"p":354},{"w":5,"p":464},{"w":6,"p":653},{"w":7,"p":543},{"w":8,"p":326},{"w":9,"p":339},{"w":10,"p":565},{"w":11,"p":533}]},"MNL":{"city":"Manila","typ":528,"fares":[{"w":0,"p":359},{"w":1,"p":490},{"w":2,"p":651},{"w":3,"p":520},{"w":4,"p":711},{"w":5,"p":650},{"w":6,"p":572},{"w":7,"p":300},{"w":8,"p":345},{"w":9,"p":419},{"w":10,"p":350},{"w":11,"p":666}]}},"MEL":{"SYD":{"city":"Sydney","typ":115,"fares":[{"w":0,"p":96},{"w":1,"p":97},{"w":2,"p":86},{"w":3,"p":94},{"w":4,"p":149},{"w":5,"p":93},{"w":6,"p":98},{"w":7,"p":74},{"w":8,"p":111},{"w":9,"p":90},{"w":10,"p":75},{"w":11,"p":81}]},"OOL":{"city":"Gold Coast","typ":139,"fares":[{"w":0,"p":82},{"w":1,"p":107},{"w":2,"p":139},{"w":3,"p":152},{"w":4,"p":176},{"w":5,"p":117},{"w":6,"p":99},{"w":7,"p":93},{"w":8,"p":177},{"w":9,"p":160},{"w":10,"p":98},{"w":11,"p":136}]},"BNE":{"city":"Brisbane","typ":149,"fares":[{"w":0,"p":176},{"w":1,"p":154},{"w":2,"p":164},{"w":3,"p":84},{"w":4,"p":100},{"w":5,"p":152},{"w":6,"p":158},{"w":7,"p":99},{"w":8,"p":170},{"w":9,"p":149},{"w":10,"p":103},{"w":11,"p":87}]},"ADL":{"city":"Adelaide","typ":118,"fares":[{"w":0,"p":133},{"w":1,"p":134},{"w":2,"p":115},{"w":3,"p":114},{"w":4,"p":136},{"w":5,"p":67},{"w":6,"p":96},{"w":7,"p":100},{"w":8,"p":69},{"w":9,"p":129},{"w":10,"p":129},{"w":11,"p":117}]},"HBA":{"city":"Hobart","typ":98,"fares":[{"w":0,"p":67},{"w":1,"p":73},{"w":2,"p":60},{"w":3,"p":119},{"w":4,"p":92},{"w":5,"p":74},{"w":6,"p":74},{"w":7,"p":69},{"w":8,"p":129},{"w":9,"p":119},{"w":10,"p":124},{"w":11,"p":76}]},"CNS":{"city":"Cairns","typ":289,"fares":[{"w":0,"p":159},{"w":1,"p":280},{"w":2,"p":233},{"w":3,"p":243},{"w":4,"p":191},{"w":5,"p":366},{"w":6,"p":387},{"w":7,"p":381},{"w":8,"p":250},{"w":9,"p":405},{"w":10,"p":248},{"w":11,"p":163}]},"AKL":{"city":"Auckland","typ":345,"fares":[{"w":0,"p":425},{"w":1,"p":452},{"w":2,"p":276},{"w":3,"p":256},{"w":4,"p":457},{"w":5,"p":419},{"w":6,"p":446},{"w":7,"p":351},{"w":8,"p":219},{"w":9,"p":325},{"w":10,"p":375},{"w":11,"p":219}]},"ZQN":{"city":"Queenstown","typ":379,"fares":[{"w":0,"p":249},{"w":1,"p":319},{"w":2,"p":447},{"w":3,"p":292},{"w":4,"p":305},{"w":5,"p":336},{"w":6,"p":260},{"w":7,"p":502},{"w":8,"p":279},{"w":9,"p":531},{"w":10,"p":253},{"w":11,"p":237}]},"CHC":{"city":"Christchurch","typ":339,"fares":[{"w":0,"p":226},{"w":1,"p":269},{"w":2,"p":431},{"w":3,"p":309},{"w":4,"p":338},{"w":5,"p":200},{"w":6,"p":452},{"w":7,"p":333},{"w":8,"p":425},{"w":9,"p":273},{"w":10,"p":306},{"w":11,"p":449}]},"DPS":{"city":"Bali","typ":478,"fares":[{"w":0,"p":265},{"w":1,"p":561},{"w":2,"p":453},{"w":3,"p":239},{"w":4,"p":659},{"w":5,"p":627},{"w":6,"p":273},{"w":7,"p":476},{"w":8,"p":666},{"w":9,"p":532},{"w":10,"p":446},{"w":11,"p":256}]},"NAN":{"city":"Fiji","typ":545,"fares":[{"w":0,"p":408},{"w":1,"p":600},{"w":2,"p":359},{"w":3,"p":596},{"w":4,"p":342},{"w":5,"p":571},{"w":6,"p":403},{"w":7,"p":304},{"w":8,"p":514},{"w":9,"p":600},{"w":10,"p":521},{"w":11,"p":414}]},"SGN":{"city":"Ho Chi Minh City","typ":565,"fares":[{"w":0,"p":641},{"w":1,"p":348},{"w":2,"p":628},{"w":3,"p":449},{"w":4,"p":736},{"w":5,"p":353},{"w":6,"p":519},{"w":7,"p":424},{"w":8,"p":656},{"w":9,"p":427},{"w":10,"p":472},{"w":11,"p":438}]},"BKK":{"city":"Bangkok","typ":598,"fares":[{"w":0,"p":704},{"w":1,"p":791},{"w":2,"p":443},{"w":3,"p":548},{"w":4,"p":789},{"w":5,"p":537},{"w":6,"p":801},{"w":7,"p":364},{"w":8,"p":766},{"w":9,"p":691},{"w":10,"p":782},{"w":11,"p":443}]},"SIN":{"city":"Singapore","typ":535,"fares":[{"w":0,"p":347},{"w":1,"p":482},{"w":2,"p":465},{"w":3,"p":348},{"w":4,"p":472},{"w":5,"p":391},{"w":6,"p":421},{"w":7,"p":640},{"w":8,"p":332},{"w":9,"p":480},{"w":10,"p":416},{"w":11,"p":327}]}},"BNE":{"SYD":{"city":"Sydney","typ":119,"fares":[{"w":0,"p":141},{"w":1,"p":66},{"w":2,"p":150},{"w":3,"p":136},{"w":4,"p":104},{"w":5,"p":153},{"w":6,"p":98},{"w":7,"p":102},{"w":8,"p":77},{"w":9,"p":149},{"w":10,"p":69},{"w":11,"p":114}]},"MEL":{"city":"Melbourne","typ":149,"fares":[{"w":0,"p":197},{"w":1,"p":117},{"w":2,"p":145},{"w":3,"p":110},{"w":4,"p":173},{"w":5,"p":176},{"w":6,"p":126},{"w":7,"p":130},{"w":8,"p":98},{"w":9,"p":174},{"w":10,"p":94},{"w":11,"p":126}]},"CNS":{"city":"Cairns","typ":188,"fares":[{"w":0,"p":239},{"w":1,"p":106},{"w":2,"p":184},{"w":3,"p":176},{"w":4,"p":172},{"w":5,"p":209},{"w":6,"p":233},{"w":7,"p":130},{"w":8,"p":154},{"w":9,"p":166},{"w":10,"p":141},{"w":11,"p":147}]},"ADL":{"city":"Adelaide","typ":198,"fares":[{"w":0,"p":245},{"w":1,"p":171},{"w":2,"p":259},{"w":3,"p":159},{"w":4,"p":214},{"w":5,"p":142},{"w":6,"p":236},{"w":7,"p":117},{"w":8,"p":144},{"w":9,"p":256},{"w":10,"p":251},{"w":11,"p":242}]},"HBA":{"city":"Hobart","typ":229,"fares":[{"w":0,"p":182},{"w":1,"p":146},{"w":2,"p":245},{"w":3,"p":201},{"w":4,"p":172},{"w":5,"p":241},{"w":6,"p":137},{"w":7,"p":255},{"w":8,"p":191},{"w":9,"p":275},{"w":10,"p":139},{"w":11,"p":233}]},"OOL":{"city":"Gold Coast","typ":59,"fares":[{"w":0,"p":44},{"w":1,"p":64},{"w":2,"p":50},{"w":3,"p":73},{"w":4,"p":60},{"w":5,"p":55},{"w":6,"p":74},{"w":7,"p":47},{"w":8,"p":40},{"w":9,"p":55},{"w":10,"p":54},{"w":11,"p":56}]},"AKL":{"city":"Auckland","typ":315,"fares":[{"w":0,"p":192},{"w":1,"p":342},{"w":2,"p":210},{"w":3,"p":277},{"w":4,"p":223},{"w":5,"p":313},{"w":6,"p":215},{"w":7,"p":381},{"w":8,"p":236},{"w":9,"p":414},{"w":10,"p":217},{"w":11,"p":281}]},"ZQN":{"city":"Queenstown","typ":439,"fares":[{"w":0,"p":474},{"w":1,"p":301},{"w":2,"p":324},{"w":3,"p":559},{"w":4,"p":310},{"w":5,"p":391},{"w":6,"p":385},{"w":7,"p":334},{"w":8,"p":278},{"w":9,"p":296},{"w":10,"p":285},{"w":11,"p":447}]},"CHC":{"city":"Christchurch","typ":369,"fares":[{"w":0,"p":307},{"w":1,"p":384},{"w":2,"p":406},{"w":3,"p":237},{"w":4,"p":358},{"w":5,"p":435},{"w":6,"p":349},{"w":7,"p":210},{"w":8,"p":227},{"w":9,"p":238},{"w":10,"p":244},{"w":11,"p":439}]},"DPS":{"city":"Bali","typ":449,"fares":[{"w":0,"p":247},{"w":1,"p":385},{"w":2,"p":282},{"w":3,"p":649},{"w":4,"p":572},{"w":5,"p":643},{"w":6,"p":632},{"w":7,"p":294},{"w":8,"p":270},{"w":9,"p":547},{"w":10,"p":606},{"w":11,"p":572}]},"NAN":{"city":"Fiji","typ":459,"fares":[{"w":0,"p":449},{"w":1,"p":334},{"w":2,"p":451},{"w":3,"p":266},{"w":4,"p":315},{"w":5,"p":519},{"w":6,"p":318},{"w":7,"p":297},{"w":8,"p":502},{"w":9,"p":595},{"w":10,"p":480},{"w":11,"p":293}]},"SGN":{"city":"Ho Chi Minh City","typ":598,"fares":[{"w":0,"p":645},{"w":1,"p":721},{"w":2,"p":808},{"w":3,"p":522},{"w":4,"p":559},{"w":5,"p":402},{"w":6,"p":474},{"w":7,"p":806},{"w":8,"p":660},{"w":9,"p":342},{"w":10,"p":638},{"w":11,"p":591}]},"BKK":{"city":"Bangkok","typ":629,"fares":[{"w":0,"p":440},{"w":1,"p":346},{"w":2,"p":379},{"w":3,"p":484},{"w":4,"p":659},{"w":5,"p":675},{"w":6,"p":441},{"w":7,"p":493},{"w":8,"p":423},{"w":9,"p":793},{"w":10,"p":569},{"w":11,"p":382}]},"SIN":{"city":"Singapore","typ":559,"fares":[{"w":0,"p":572},{"w":1,"p":603},{"w":2,"p":711},{"w":3,"p":455},{"w":4,"p":379},{"w":5,"p":514},{"w":6,"p":385},{"w":7,"p":367},{"w":8,"p":713},{"w":9,"p":437},{"w":10,"p":551},{"w":11,"p":665}]}}};
+
+const AIRPORTS = {SYD:"Sydney", MEL:"Melbourne", BNE:"Brisbane"};
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+// ================= WEEKENDS (same basis as app.html) =================
+function nextWeekends(n = 12){
+  const out = [], d = new Date();
+  d.setDate(d.getDate() + ((5 - d.getDay() + 7) % 7 || 7));   // next Friday
+  for(let i = 0; i < n; i++){
+    const fri = new Date(d); fri.setDate(d.getDate() + i * 7);
+    const mon = new Date(fri); mon.setDate(fri.getDate() + 3);
+    out.push({fri, mon});
+  }
+  return out;
+}
+const WEEKENDS = nextWeekends();
+const iso = d => d.toISOString().slice(0, 10);
+
+// ================= STATE =================
+const P = new URLSearchParams(location.search);
+const U = {
+  name:  P.get("n") || "You",
+  handle:P.get("h") || "you",
+  home:  AIRPORTS[P.get("o")] ? P.get("o") : "SYD",
+  crew:  P.get("c") || "FW-DEMO",
+  plan:  "trial",
+  trialEnds: null,        // Date
+  crewMembers: 1,
+  demo:  P.get("demo") === "1" || !sb
+};
+let friends = [], requests = [], trips = [], popularity = null;
+let sortMode = "cheapest";
+const planPicked = new Set();
+
+const $ = id => document.getElementById(id);
+function el(tag, cls, text){
+  const n = document.createElement(tag);
+  if(cls) n.className = cls;
+  if(text !== undefined && text !== null) n.textContent = text;
+  return n;
+}
+function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+function initials(name){
+  return (name || "?").trim().split(/\s+/).slice(0, 2).map(w => w[0].toUpperCase()).join("");
+}
+let toastTimer;
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+function track(ev, props){
+  console.log("[track]", ev, props||{});
+  if(sb) sb.from("events").insert({name:ev, props:props||{}}).then(()=>{},()=>{});
+}
+
+// ================= TABS =================
+document.querySelectorAll(".navbtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll(".navbtn").forEach(b => b.classList.toggle("on", b === btn));
+    ["deals","trips","friends"].forEach(t => $("tab-" + t).classList.toggle("hidden", t !== tab));
+    window.scrollTo({top:0, behavior:"instant"});
+    track("tab_" + tab);
+  });
+});
+
+// ================= TRIAL / PAYWALL =================
+function daysLeft(){
+  if(!U.trialEnds) return 0;
+  return Math.ceil((U.trialEnds - new Date()) / 86400000);
+}
+function isLocked(){ return U.plan === "expired"; }
+
+function renderTrial(){
+  const banner = $("trialBanner"), text = $("trialText"), cta = $("trialCta");
+  if(U.plan === "trial"){
+    const d = daysLeft();
+    if(d <= 0){ U.plan = "expired"; return renderTrial(); }
+    banner.classList.remove("hidden", "expired");
+    clear(text);
+    text.appendChild(el("b", null, d === 1 ? "Last day of your free week" : d + " days left in your free week"));
+    text.appendChild(el("div", null,
+      "Share your crew code while it's running — friends who join now lock your rate and bill date."));
+    cta.textContent = "See plans";
+  } else if(U.plan === "expired"){
+    banner.classList.remove("hidden");
+    banner.classList.add("expired");
+    clear(text);
+    text.appendChild(el("b", null, "Your free week has ended"));
+    text.appendChild(el("div", null,
+      "Your trips and dates stay open — deals and alerts are paused until you pick a plan."));
+    cta.textContent = "Pick a plan";
+  } else {
+    banner.classList.add("hidden");
+  }
+}
+$("trialCta").addEventListener("click", () => {
+  track("pass_click", {from:"home", plan:U.plan});
+  location.href = "index.html#pricing";
+});
+
+// ================= DEALS =================
+// cheapest cached fare per route + which weekend it falls on
+function dealRows(){
+  return Object.entries(FARES_ALL[U.home] || {}).map(([code, r]) => {
+    let best = r.fares[0];
+    r.fares.forEach(f => { if(f.p < best.p) best = f; });
+    return {
+      code, city:r.city, price:best.p, w:best.w, typ:r.typ,
+      off:Math.round((1 - best.p / r.typ) * 100)
+    };
+  });
+}
+function sortRows(rows){
+  const by = {
+    cheapest:  (a, b) => a.price - b.price,
+    discount:  (a, b) => b.off - a.off,
+    soonest:   (a, b) => a.w - b.w || a.price - b.price,
+    // popularity is null until real clickout data loads — fall back to cheapest
+    // rather than inventing an order (and rather than throwing on a null lookup)
+    popular:   (a, b) => popularity
+      ? ((popularity[b.code] || 0) - (popularity[a.code] || 0) || a.price - b.price)
+      : a.price - b.price
+  };
+  return rows.sort(by[sortMode] || by.cheapest);
+}
+
+function dealNode(r){
+  const wk = WEEKENDS[r.w], dep = iso(wk.fri), ret = iso(wk.mon);
+  const node = el("div", "deal");
+
+  const left = el("div");
+  const head = el("div");
+  head.appendChild(el("span", "city", r.city));
+  head.appendChild(el("span", "code", r.code));
+  if(r.off >= 20) head.appendChild(el("span", "pill pill-deal", r.off + "% OFF"));
+  left.appendChild(head);
+  left.appendChild(el("div", "when",
+    "Cheapest on " + MONTHS[wk.fri.getMonth()] + " " + wk.fri.getDate() + "–" + wk.mon.getDate() +
+    " · typically $" + r.typ));
+
+  const links = el("div", "links");
+  const fl = el("a", null, "flights →");
+  fl.href = "https://www.skyscanner.com.au/transport/flights/" +
+            U.home.toLowerCase() + "/" + r.code.toLowerCase() + "/";
+  fl.target = "_blank"; fl.rel = "noopener";
+  fl.addEventListener("click", () => track("clickout", {d:r.code, from:"deals"}));
+  links.appendChild(fl);
+  links.appendChild(el("span", null, "·"));
+  const bd = el("a", null, "beds →");
+  bd.href = "https://www.booking.com/searchresults.html?ss=" + encodeURIComponent(r.city) +
+            "&checkin=" + dep + "&checkout=" + ret + "&group_adults=2";
+  bd.target = "_blank"; bd.rel = "noopener";
+  bd.addEventListener("click", () => track("clickout_beds", {d:r.code, from:"deals"}));
+  links.appendChild(bd);
+  left.appendChild(links);
+
+  const box = el("div", "pricebox");
+  box.appendChild(el("div", "price", "$" + r.price));
+  box.appendChild(el("span", "per", "return / person"));
+
+  node.appendChild(left);
+  node.appendChild(box);
+  return node;
+}
+
+function renderDeals(){
+  $("dealsTitle").textContent = "Deals from " + AIRPORTS[U.home];
+  const list = $("dealsList");
+  clear(list);
+
+  const rows = sortRows(dealRows());
+  rows.forEach(r => list.appendChild(dealNode(r)));
+
+  // soft paywall: blur the list, keep trips reachable. Never hold a group's plan hostage.
+  $("dealsCard").classList.toggle("locked", isLocked());
+  const lock = $("lockMsg");
+  lock.classList.toggle("hidden", !isLocked());
+  if(isLocked()){
+    clear(lock);
+    lock.appendChild(el("b", null, "Deals are paused."));
+    lock.appendChild(document.createTextNode(
+      " Your trips, dates and friends are all still here and always will be. Pick a plan to turn " +
+      "deals and price alerts back on — from $1.49/month if six of you are on it."));
+  }
+
+  const stamp = $("stampLine");
+  clear(stamp);
+  if(sortMode === "popular" && !popularity){
+    stamp.appendChild(el("span", null,
+      "Popular ranks by real click-throughs. No click data yet, so this is cheapest-first for now."));
+  } else if(FARES_STAMP){
+    stamp.appendChild(el("span", null, "Prices refreshed " + FARES_STAMP + " UTC."));
+  }
+}
+
+$("sorts").addEventListener("click", async e => {
+  const btn = e.target.closest(".sort");
+  if(!btn) return;
+  sortMode = btn.dataset.sort;
+  document.querySelectorAll(".sort").forEach(b => b.classList.toggle("on", b === btn));
+  if(sortMode === "popular" && popularity === null) await loadPopularity();
+  renderDeals();
+  track("deals_sorted", {sort:sortMode});
+});
+
+// "Popular" is real click data or it doesn't exist — we never invent a ranking.
+async function loadPopularity(){
+  if(!sb) return;
+  const {data} = await sb.from("events").select("props").eq("name", "clickout").limit(1000);
+  if(!data || !data.length) return;
+  const counts = {};
+  data.forEach(row => { const d = row.props && row.props.d; if(d) counts[d] = (counts[d] || 0) + 1; });
+  if(Object.keys(counts).length) popularity = counts;
+}
+
+// ================= TRIPS =================
+function tripNode(t){
+  const node = el("div", "trip");
+  const left = el("div");
+  left.appendChild(el("div", "nm", t.name));
+  left.appendChild(el("div", "meta",
+    t.members + (t.members === 1 ? " person in" : " people in") +
+    (t.best ? " · best window " + t.best : " · waiting on the group")));
+  const open = el("a", null, "Open →");
+  open.href = "app.html" + (t.code ? "?t=" + encodeURIComponent(t.code) : "");
+  open.addEventListener("click", () => track("trip_opened", {from:"home"}));
+  node.appendChild(left);
+  node.appendChild(open);
+  return node;
+}
+function renderTrips(){
+  const list = $("tripsList");
+  clear(list);
+  if(!trips.length){
+    const e = el("div", "empty");
+    e.appendChild(el("div", null, "No trips yet."));
+    e.appendChild(el("div", null, "Start one, drop the link in the chat, and watch the dates come in."));
+    list.appendChild(e);
+    return;
+  }
+  trips.forEach(t => list.appendChild(tripNode(t)));
+}
+
+$("newTripBtn").addEventListener("click", () => track("trip_new_click"));
+
+$("planBtn").addEventListener("click", () => {
+  const card = $("planCard");
+  card.classList.toggle("hidden");
+  if(!card.classList.contains("hidden")){
+    renderPlanFriends();
+    track("plan_with_friends_open");
+  }
+});
+
+function renderPlanFriends(){
+  const host = $("planFriends");
+  clear(host);
+  if(!friends.length){
+    host.appendChild(el("div", "empty", "Add a friend first — or just create a trip and share the link."));
+    return;
+  }
+  friends.forEach(f => {
+    const row = el("div", "checkrow" + (planPicked.has(f.id) ? " on" : ""));
+    row.appendChild(el("div", "box", "✓"));
+    const who = el("div");
+    who.appendChild(el("div", "nm", f.name));
+    who.appendChild(el("div", "hd", "@" + f.handle));
+    row.appendChild(who);
+    row.addEventListener("click", () => {
+      planPicked.has(f.id) ? planPicked.delete(f.id) : planPicked.add(f.id);
+      row.classList.toggle("on");
+    });
+    host.appendChild(row);
+  });
+}
+
+function newTripCode(){
+  return Array.from(crypto.getRandomValues(new Uint8Array(8)),
+    b => "abcdefghjkmnpqrstuvwxyz23456789"[b % 31]).join("");
+}
+
+$("planCreate").addEventListener("click", async () => {
+  const name = $("planName").value.trim() || "Our trip";
+  const code = newTripCode();
+  const picked = friends.filter(f => planPicked.has(f.id));
+
+  if(sb){
+    const {data:{user}} = await sb.auth.getUser();
+    const {error} = await sb.from("trips").insert({
+      code, name, origin:U.home, windows:[], owner:user ? user.id : null
+    });
+    if(error){ toast("Couldn't create that — try again"); return; }
+    // the organiser is member #1; invited friends still join by link, no account needed
+    await sb.from("members").insert({trip_code:code, name:U.name, weekends:[]});
+  }
+
+  trips.unshift({name, code, members:1, best:null});
+  planPicked.clear();
+  $("planName").value = "";
+  $("planCard").classList.add("hidden");
+  renderTrips();
+  track("trip_created", {from:"plan_with_friends", invited:picked.length});
+
+  const url = location.origin + location.pathname.replace(/home\.html$/, "") + "app.html?t=" + code;
+  const text = name + " — tap the weekends you're free and see what's cheap: ";
+  if(navigator.share){
+    navigator.share({title:name, text, url}).catch(() => {});
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(text + url).then(
+      () => toast("Link copied — paste it in the chat"), () => toast("Trip created"));
+  } else {
+    toast("Trip created");
+  }
+  track("share_click", {from:"plan_with_friends"});
+});
+
+// ================= FRIENDS =================
+function renderCrew(){
+  $("crewCode").textContent = U.crew;
+  const fill = $("crewFill");
+  [...fill.children].forEach((bar, i) => bar.classList.toggle("on", i < U.crewMembers));
+  const meta = $("crewMeta");
+  clear(meta);
+  const n = U.crewMembers;
+  meta.appendChild(el("span", null,
+    n + " of 6 in your crew · " +
+    (n >= 6 ? "Crew rate unlocked — $1.49/month each."
+            : "At 6 it's $1.49/month each. Right now you'd be on " +
+              (n >= 4 ? "$2.49" : n >= 2 ? "$3.29" : "$4.99") + "/month.")));
+}
+
+$("copyCrew").addEventListener("click", () => {
+  const text = "Join my Freewheel crew with code " + U.crew + " — " +
+               location.origin + location.pathname.replace(/home\.html$/, "") + "onboard.html";
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(
+      () => toast("Crew code copied"), () => toast(U.crew));
+  } else {
+    toast(U.crew);
+  }
+  track("crew_code_copied");
+});
+
+function friendNode(f){
+  const node = el("div", "fr");
+  const left = el("div", "frleft");
+  left.appendChild(el("div", "avatar", initials(f.name)));
+  const who = el("div");
+  who.appendChild(el("div", "nm", f.name));
+  who.appendChild(el("div", "hd", "@" + f.handle + (f.home ? " · " + f.home : "")));
+  left.appendChild(who);
+  node.appendChild(left);
+  return node;
+}
+
+function renderFriends(){
+  const list = $("friendsList");
+  clear(list);
+  if(!friends.length){
+    list.appendChild(el("div", "empty", "Nobody yet. Add someone by their handle, or share your crew code."));
+  } else {
+    friends.forEach(f => list.appendChild(friendNode(f)));
+  }
+
+  const reqCard = $("reqCard"), reqList = $("reqList"), badge = $("frBadge");
+  reqCard.classList.toggle("hidden", requests.length === 0);
+  badge.classList.toggle("hidden", requests.length === 0);
+  badge.textContent = String(requests.length);
+  clear(reqList);
+  requests.forEach(r => {
+    const node = el("div", "fr");
+    const left = el("div", "frleft");
+    left.appendChild(el("div", "avatar", initials(r.name)));
+    const who = el("div");
+    who.appendChild(el("div", "nm", r.name));
+    who.appendChild(el("div", "hd", "@" + r.handle + " wants to be friends"));
+    left.appendChild(who);
+    const accept = el("button", "btn btn-accent btn-sm", "Accept");
+    accept.addEventListener("click", () => acceptRequest(r));
+    node.appendChild(left);
+    node.appendChild(accept);
+    reqList.appendChild(node);
+  });
+}
+
+async function acceptRequest(r){
+  if(sb && r.rowId){
+    const {error} = await sb.from("friendships").update({status:"accepted"}).eq("id", r.rowId);
+    if(error){ toast("Couldn't accept that — try again"); return; }
+  }
+  requests = requests.filter(x => x.id !== r.id);
+  friends.push({id:r.id, name:r.name, handle:r.handle, home:r.home});
+  renderFriends();
+  toast(r.name + " is in");
+  track("friend_accept");
+}
+
+$("addFriend").addEventListener("click", async () => {
+  const handle = $("handleAdd").value.trim().replace(/^@+/, "");
+  if(!handle) return toast("Type a handle first");
+  if(handle.toLowerCase() === U.handle.toLowerCase()) return toast("That's you");
+
+  if(sb){
+    const {data:them} = await sb.from("profiles")
+      .select("id, name, handle, home").ilike("handle", handle).maybeSingle();
+    if(!them){ toast("No @" + handle + " here — check the spelling"); return; }
+    if(friends.some(f => f.id === them.id)){ toast("Already friends with @" + handle); return; }
+    const {data:{user}} = await sb.auth.getUser();
+    const {error} = await sb.from("friendships").insert({requester:user.id, addressee:them.id});
+    if(error){
+      toast(error.code === "23505" ? "You've already asked @" + handle : "Couldn't send that — try again");
+      return;
+    }
+    toast("Request sent to @" + handle);
+  } else {
+    if(friends.some(f => f.handle.toLowerCase() === handle.toLowerCase())){
+      toast("Already friends with @" + handle); return;
+    }
+    toast("Request sent to @" + handle);
+  }
+  $("handleAdd").value = "";
+  track("friend_request");
+});
+
+// ================= SIGN OUT =================
+$("signout").addEventListener("click", async () => {
+  if(sb) await sb.auth.signOut();
+  location.href = "index.html";
+});
+
+// ================= LOAD =================
+function seedDemo(){
+  U.trialEnds = new Date(Date.now() + 5 * 86400000);
+  U.crewMembers = 3;
+  friends = [
+    {id:"d1", name:"Mia Tran",   handle:"miatran", home:"SYD"},
+    {id:"d2", name:"Jack Rowe",  handle:"jrowe",   home:"SYD"}
+  ];
+  requests = [{id:"d3", name:"Sam Okafor", handle:"samo", home:"MEL"}];
+  trips = [
+    {name:"boys trip???",     code:null, members:4, best:"Sep 12–15"},
+    {name:"post-exam escape", code:null, members:2, best:null}
+  ];
+}
+
+async function loadFromBackend(){
+  const {data:{user}} = await sb.auth.getUser();
+  if(!user) return false;
+
+  const {data:me} = await sb.from("profiles")
+    .select("name, handle, home, plan, trial_ends, crew_id").eq("id", user.id).maybeSingle();
+  if(!me) return false;
+
+  U.name = me.name || U.name;
+  U.handle = me.handle || U.handle;
+  U.home = AIRPORTS[me.home] ? me.home : "SYD";
+  U.plan = me.plan || "trial";
+  U.trialEnds = me.trial_ends ? new Date(me.trial_ends) : null;
+  if(U.plan === "trial" && U.trialEnds && U.trialEnds <= new Date()) U.plan = "expired";
+
+  if(me.crew_id){
+    const {data:crew} = await sb.from("crew_fill").select("code, members").eq("crew_id", me.crew_id).maybeSingle();
+    if(crew){ U.crew = crew.code; U.crewMembers = Number(crew.members) || 1; }
+  }
+
+  // friends: accepted rows in either direction
+  const {data:fr} = await sb.from("friendships")
+    .select("id, requester, addressee, status")
+    .or("requester.eq." + user.id + ",addressee.eq." + user.id);
+  const rows = fr || [];
+  const otherIds = rows.map(r => r.requester === user.id ? r.addressee : r.requester);
+  let byId = {};
+  if(otherIds.length){
+    const {data:profs} = await sb.from("profiles").select("id, name, handle, home").in("id", otherIds);
+    (profs || []).forEach(p => { byId[p.id] = p; });
+  }
+  friends = rows.filter(r => r.status === "accepted").map(r => {
+    const p = byId[r.requester === user.id ? r.addressee : r.requester] || {};
+    return {id:p.id, name:p.name || "Someone", handle:p.handle || "friend", home:p.home};
+  });
+  requests = rows.filter(r => r.status === "pending" && r.addressee === user.id).map(r => {
+    const p = byId[r.requester] || {};
+    return {rowId:r.id, id:p.id, name:p.name || "Someone", handle:p.handle || "friend", home:p.home};
+  });
+
+  // trips this user owns, plus how many people are in each
+  const {data:ts} = await sb.from("trips")
+    .select("code, name").eq("owner", user.id).order("created_at", {ascending:false});
+  trips = [];
+  for(const t of (ts || [])){
+    const {count} = await sb.from("members")
+      .select("id", {count:"exact", head:true}).eq("trip_code", t.code);
+    trips.push({name:t.name, code:t.code, members:count || 0, best:null});
+  }
+  return true;
+}
+
+(async () => {
+  $("sampleFlag").hidden = !SAMPLE_DATA;
+  let loaded = false;
+  if(sb && !U.demo){
+    try{ loaded = await loadFromBackend(); }
+    catch(e){ console.log("backend load failed, falling back to demo", e); }
+  }
+  if(!loaded) seedDemo();
+
+  $("meName").textContent = U.name;
+  $("meHandle").textContent = "@" + U.handle + " · " + U.home;
+  renderTrial();
+  renderDeals();
+  renderTrips();
+  renderCrew();
+  renderFriends();
+  track("home_opened", {plan:U.plan, demo:!loaded});
+})();
+</script>
+</body>
+</html>

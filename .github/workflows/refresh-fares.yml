@@ -1,0 +1,43 @@
+name: Refresh fares nightly
+
+# 17:30 UTC = 03:30 in Sydney during AEST. Sydney shifts to AEDT (UTC+11) in
+# October, so the job lands at 04:30 local for that half of the year. Both are
+# the middle of the night, which is all that matters — nobody is looking.
+on:
+  schedule:
+    - cron: "30 17 * * *"
+  workflow_dispatch:        # "Run workflow" button — use this for the first run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-fares
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rebuild the fare cache
+        env:
+          TP_TOKEN: ${{ secrets.TP_TOKEN }}
+        run: python fetch_fares.py
+
+      - name: Commit the new cache
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Prices unchanged — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "freewheel-bot"
+          git config user.email "actions@github.com"
+          git add app.html home.html index.html
+          git commit -m "chore: refresh fare cache $(date -u +'%Y-%m-%d')"
+          git push

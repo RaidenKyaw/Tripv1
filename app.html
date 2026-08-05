@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Freewheel — where can we all go?</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
+<!-- Set to your real deployed URL before launch — WhatsApp/iMessage previews need an absolute link -->
+<meta property="og:image" content="https://YOURDOMAIN.example/og.png">
+<meta property="og:title" content="Where can we all go?">
+<meta property="og:description" content="Tap the weekends you're free. See what's cheap when everyone can make it.">
+<style>
+  :root{
+    --bg:#FBF5EC;            /* warm sand */
+    --card:#FFFFFF;
+    --card2:#FDF9F2;
+    --line:#EAD9C3;
+    --ink:#33302B;           /* warm near-black */
+    --dim:#8C7F6D;
+    --terra:#D96A4B;         /* sunset terracotta — primary action */
+    --terra-soft:#FBEDE6;
+    --teal:#2F6D62;          /* deep sea — trust, links */
+    --teal-soft:#E7F1EE;
+    --gold:#D9A441;          /* sun — deals, highlights */
+    --gold-soft:#FAF1DC;
+    --radius:16px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  body{
+    background:
+      radial-gradient(1200px 500px at 85% -180px, #FDEBDD 0%, rgba(253,235,221,0) 60%),
+      radial-gradient(900px 420px at -10% -120px, #EDF3EE 0%, rgba(237,243,238,0) 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100vh; padding-bottom:60px;
+  }
+  .wrap{max-width:480px; margin:0 auto; padding:20px 16px;}
+  .logo{font-family:Georgia,"Times New Roman",serif; font-weight:700; font-size:19px; color:var(--teal); letter-spacing:.01em;}
+  .logo span{color:var(--dim); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-weight:500; font-size:12px; margin-left:8px; font-style:italic;}
+  h1{font-family:Georgia,"Times New Roman",serif; font-size:clamp(27px,7vw,34px); line-height:1.16; margin:18px 0 8px; font-weight:700; letter-spacing:-.01em;}
+  .sub{color:var(--dim); font-size:14.5px; line-height:1.55; margin-bottom:22px;}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px; margin-bottom:14px; box-shadow:0 2px 10px rgba(120,90,60,.05);
+  }
+  label{display:block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--dim); margin:0 0 6px;}
+  input,select{
+    width:100%; background:var(--card2); color:var(--ink); border:1px solid var(--line);
+    border-radius:11px; padding:12px 14px; font-size:16px; outline:none;
+  }
+  input::placeholder{color:#BCAE9A;}
+  input:focus,select:focus{border-color:var(--terra);}
+  .btn{
+    display:block; width:100%; border:none; border-radius:13px; padding:15px;
+    font-size:16px; font-weight:700; cursor:pointer; text-align:center; margin-top:6px;
+  }
+  .btn-primary{background:var(--terra); color:#FFF8F2; box-shadow:0 6px 16px rgba(217,106,75,.25);}
+  .btn-primary:active{transform:scale(.985);}
+  .btn-ghost{background:transparent; color:var(--teal); border:1.5px dashed var(--line);}
+  .btn-accent{background:var(--teal); color:#F2FAF7;}
+  .weekends{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+  .wk{
+    background:var(--card2); border:1.5px solid var(--line); border-radius:11px;
+    padding:10px 6px; text-align:center; cursor:pointer; user-select:none;
+  }
+  .wk .m{font-size:10px; font-weight:700; letter-spacing:.07em; color:var(--dim); text-transform:uppercase;}
+  .wk .d{font-size:15px; font-weight:800; margin-top:2px; color:var(--ink);}
+  .wk.on{border-color:var(--terra); background:var(--terra-soft);}
+  .wk.on .m{color:var(--terra);}
+  .wk.win{border-style:dashed;}
+  .pill{display:inline-block; font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:99px; letter-spacing:.05em;}
+  .pill-deal{background:var(--gold-soft); color:#9A6E1B; border:1px solid #EBD9AE;}
+  .row{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .dest{padding:13px 0; border-bottom:1px dashed var(--line);}
+  .dest:last-child{border-bottom:none;}
+  .dest .city{font-weight:700; font-size:16px; color:var(--ink);}
+  .dest .code{color:var(--dim); font-size:12px; margin-left:6px; font-weight:500;}
+  .dest .price{font-weight:800; font-size:18px; text-align:right; color:var(--teal);}
+  .dest .per{display:block; color:var(--dim); font-size:11px; font-weight:500;}
+  .dest a{color:var(--terra); font-size:12.5px; text-decoration:none; font-weight:700;}
+  .people{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;}
+  .avatar{
+    background:var(--teal-soft); border:1px solid #CFE2DC; color:var(--teal);
+    font-size:12.5px; font-weight:700; padding:5px 11px; border-radius:99px;
+  }
+  .avatar.you{background:var(--terra-soft); border-color:#F0CDBE; color:var(--terra);}
+
+  /* ---- boarding-pass result card ---- */
+  .best{
+    position:relative; background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); overflow:hidden;
+  }
+  .best::before{
+    content:"BOARDING PASS · FREEWHEEL AIR"; display:block;
+    background:var(--teal); color:#DFEeea; font-size:9.5px; font-weight:800;
+    letter-spacing:.22em; padding:7px 16px 6px;
+  }
+  .best::after{ /* perforation notches */
+    content:""; position:absolute; left:-9px; top:54%; width:18px; height:18px;
+    border-radius:50%; background:var(--bg); border:1px solid var(--line);
+    box-shadow:calc(100% + 480px) 0 0 0 transparent;
+  }
+  .best .notch-r{position:absolute; right:-9px; top:54%; width:18px; height:18px;
+    border-radius:50%; background:var(--bg); border:1px solid var(--line);}
+  .best .when{font-size:12.5px; color:var(--terra); font-weight:800; letter-spacing:.06em; text-transform:uppercase;}
+  .best .big{font-family:Georgia,serif; font-size:23px; font-weight:700; margin-top:5px; line-height:1.25; color:var(--ink);}
+  .best .inner{padding:14px 16px 15px; border-top:2px dashed var(--line);}
+  .muted{color:var(--dim); font-size:12.5px; line-height:1.55;}
+
+  .wchips{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 12px; -webkit-overflow-scrolling:touch;}
+  .wchip{
+    flex:0 0 auto; background:var(--card); border:1.5px solid var(--line); border-radius:99px;
+    padding:7px 13px; font-size:12.5px; color:var(--dim); cursor:pointer; display:flex; gap:7px; align-items:center;
+  }
+  .wchip b{color:var(--ink); font-size:12.5px;}
+  .wchip.full b{color:var(--gold);}
+  .wchip.full{border-color:#EBD9AE; background:var(--gold-soft);}
+  .wchip.full b{color:#9A6E1B;}
+  .wchip.sel{border-color:var(--terra); background:var(--terra-soft); color:var(--terra);}
+  .wchip.sel b{color:var(--terra);}
+  .toast{
+    position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+    background:var(--ink); color:#FBF5EC; font-weight:700; font-size:14px;
+    padding:11px 20px; border-radius:99px; opacity:0; transition:opacity .25s; pointer-events:none;
+    white-space:nowrap; z-index:50; box-shadow:0 8px 24px rgba(51,48,43,.25);
+  }
+  .toast.show{opacity:1;}
+  .foot{color:var(--dim); font-size:11px; text-align:center; margin-top:26px; line-height:1.7;}
+  .foot a{color:var(--dim);}
+  .sample-flag{background:var(--gold-soft); border:1px solid #EBD9AE; color:#8A6412; font-size:12px;
+               padding:9px 13px; border-radius:11px; margin:14px 0 0; font-weight:600; line-height:1.5;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">Freewheel<span>where can we all go?</span></div>
+  <div class="sample-flag hidden" id="sampleFlag">
+    Sample prices — realistic placeholders, not live fares. Don't share this link yet.
+  </div>
+
+  <!-- ============ CREATE ============ -->
+  <div id="v-create">
+    <h1>Round up the crew.<br>Find your window.</h1>
+    <p class="sub">Start a trip, drop the link in the chat, and everyone taps the dates they can do. We'll show what's cheap from your airport on the days that work for <em>all of you</em>.</p>
+    <div class="card">
+      <label>Trip name</label>
+      <input id="tripName" placeholder="e.g. boys trip???" maxlength="40">
+      <div style="height:14px"></div>
+      <label>Flying from</label>
+      <select id="origin">
+        <option value="SYD" selected>Sydney (SYD)</option>
+        <option value="MEL">Melbourne (MEL)</option>
+        <option value="BNE">Brisbane (BNE)</option>
+      </select>
+      <div style="height:14px"></div>
+      <label>Your name</label>
+      <input id="creatorName" placeholder="Your name" maxlength="20">
+    </div>
+    <div class="card">
+      <label>Tap every weekend you could go</label>
+      <div class="weekends" id="wk-create"></div>
+      <div id="addwin" class="hidden" style="margin-top:12px;">
+        <label>Add a date range (mid-sem break, exam-end, etc.)</label>
+        <input id="winLabel" placeholder="Label — e.g. mid-sem break" maxlength="20" style="margin-bottom:8px;">
+        <div style="display:flex; gap:8px;">
+          <input id="winStart" type="date" style="flex:1;">
+          <input id="winEnd" type="date" style="flex:1;">
+        </div>
+        <button class="btn btn-ghost" style="margin-top:8px;" onclick="addWindow()">Add range</button>
+      </div>
+      <button class="btn btn-ghost" style="margin-top:10px;" id="addwinBtn"
+        onclick="document.getElementById('addwin').classList.remove('hidden');this.classList.add('hidden')">
+        ＋ Not just weekends? Add a date range</button>
+    </div>
+    <button class="btn btn-primary" onclick="createTrip()">Create trip →</button>
+  </div>
+
+  <!-- ============ RESPOND ============ -->
+  <div id="v-respond" class="hidden">
+    <h1 id="r-title"></h1>
+    <p class="sub" id="r-sub"></p>
+    <div class="card">
+      <div class="row"><label style="margin:0">Who's in so far</label></div>
+      <div class="people" id="r-people"></div>
+    </div>
+    <div class="card" id="r-join">
+      <label>Your name</label>
+      <input id="joinName" placeholder="Your name" maxlength="20">
+      <div style="height:14px"></div>
+      <label>Tap every weekend you could go</label>
+      <div class="weekends" id="wk-respond"></div>
+      <button class="btn btn-primary" onclick="joinTrip()">I'm in — add my dates</button>
+    </div>
+    <div id="results"></div>
+    <button class="btn btn-ghost" onclick="share()" id="shareBtn">Share with the group chat</button>
+  </div>
+
+  <div class="foot">
+    Prices are indicative return fares per person, refreshed nightly · Prototype —
+    <a href="#" onclick="track('feedback');return false;">tell us what's broken</a>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ================= BACKEND (Supabase — optional) =================
+// Paste from Supabase → Project Settings → API. Leave blank = demo mode
+// (state lives in the URL, nothing persists). Run supabase-schema.sql first.
+const BACKEND = { url: "", anonKey: "" };
+const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
+  ? window.supabase.createClient(BACKEND.url, BACKEND.anonKey) : null;
+const tripCode = () => new URLSearchParams(location.search).get("t");
+const newCode  = () => Array.from(crypto.getRandomValues(new Uint8Array(8)),
+                       b => "abcdefghjkmnpqrstuvwxyz23456789"[b % 31]).join("");
+
+// SAMPLE_DATA is flipped to false by fetch_fares.py on its first successful run.
+// While it's true, every price here is a realistic placeholder and the page says so.
+const SAMPLE_DATA = true;
+// FARES_STAMP is filled in by fetch_fares.py with the UTC time of the last refresh.
+const FARES_STAMP = "";
+
+// ================= DATA (sample cache — replace via fetch_fares.py) =================
+const FARES_ALL = {"SYD":{"MEL":{"city":"Melbourne","typ":118,"fares":[{"w":0,"p":102},{"w":1,"p":74},{"w":2,"p":73},{"w":3,"p":79},{"w":4,"p":72},{"w":5,"p":141},{"w":6,"p":94},{"w":7,"p":151},{"w":8,"p":107},{"w":9,"p":80},{"w":10,"p":99},{"w":11,"p":85}]},"OOL":{"city":"Gold Coast","typ":109,"fares":[{"w":0,"p":133},{"w":1,"p":113},{"w":2,"p":96},{"w":3,"p":63},{"w":4,"p":121},{"w":5,"p":91},{"w":6,"p":102},{"w":7,"p":131},{"w":8,"p":85},{"w":9,"p":108},{"w":10,"p":125},{"w":11,"p":66}]},"BNE":{"city":"Brisbane","typ":121,"fares":[{"w":0,"p":139},{"w":1,"p":78},{"w":2,"p":140},{"w":3,"p":149},{"w":4,"p":134},{"w":5,"p":125},{"w":6,"p":146},{"w":7,"p":116},{"w":8,"p":83},{"w":9,"p":130},{"w":10,"p":144},{"w":11,"p":109}]},"ADL":{"city":"Adelaide","typ":158,"fares":[{"w":0,"p":105},{"w":1,"p":88},{"w":2,"p":183},{"w":3,"p":128},{"w":4,"p":97},{"w":5,"p":160},{"w":6,"p":188},{"w":7,"p":131},{"w":8,"p":140},{"w":9,"p":203},{"w":10,"p":121},{"w":11,"p":127}]},"HBA":{"city":"Hobart","typ":172,"fares":[{"w":0,"p":180},{"w":1,"p":103},{"w":2,"p":151},{"w":3,"p":227},{"w":4,"p":170},{"w":5,"p":117},{"w":6,"p":205},{"w":7,"p":207},{"w":8,"p":110},{"w":9,"p":99},{"w":10,"p":124},{"w":11,"p":98}]},"CNS":{"city":"Cairns","typ":248,"fares":[{"w":0,"p":157},{"w":1,"p":141},{"w":2,"p":266},{"w":3,"p":189},{"w":4,"p":213},{"w":5,"p":316},{"w":6,"p":235},{"w":7,"p":149},{"w":8,"p":192},{"w":9,"p":171},{"w":10,"p":248},{"w":11,"p":156}]},"AKL":{"city":"Auckland","typ":335,"fares":[{"w":0,"p":450},{"w":1,"p":378},{"w":2,"p":294},{"w":3,"p":397},{"w":4,"p":399},{"w":5,"p":257},{"w":6,"p":451},{"w":7,"p":406},{"w":8,"p":389},{"w":9,"p":332},{"w":10,"p":198},{"w":11,"p":266}]},"ZQN":{"city":"Queenstown","typ":419,"fares":[{"w":0,"p":573},{"w":1,"p":566},{"w":2,"p":572},{"w":3,"p":309},{"w":4,"p":300},{"w":5,"p":454},{"w":6,"p":531},{"w":7,"p":464},{"w":8,"p":260},{"w":9,"p":556},{"w":10,"p":499},{"w":11,"p":294}]},"CHC":{"city":"Christchurch","typ":358,"fares":[{"w":0,"p":305},{"w":1,"p":479},{"w":2,"p":324},{"w":3,"p":412},{"w":4,"p":249},{"w":5,"p":460},{"w":6,"p":254},{"w":7,"p":481},{"w":8,"p":310},{"w":9,"p":249},{"w":10,"p":391},{"w":11,"p":468}]},"DPS":{"city":"Bali","typ":462,"fares":[{"w":0,"p":613},{"w":1,"p":323},{"w":2,"p":359},{"w":3,"p":488},{"w":4,"p":414},{"w":5,"p":630},{"w":6,"p":432},{"w":7,"p":627},{"w":8,"p":633},{"w":9,"p":464},{"w":10,"p":239},{"w":11,"p":309}]},"NAN":{"city":"Fiji","typ":498,"fares":[{"w":0,"p":347},{"w":1,"p":582},{"w":2,"p":412},{"w":3,"p":510},{"w":4,"p":319},{"w":5,"p":379},{"w":6,"p":602},{"w":7,"p":513},{"w":8,"p":662},{"w":9,"p":534},{"w":10,"p":491},{"w":11,"p":466}]},"SGN":{"city":"Ho Chi Minh City","typ":578,"fares":[{"w":0,"p":556},{"w":1,"p":653},{"w":2,"p":760},{"w":3,"p":592},{"w":4,"p":715},{"w":5,"p":400},{"w":6,"p":378},{"w":7,"p":378},{"w":8,"p":691},{"w":9,"p":414},{"w":10,"p":636},{"w":11,"p":734}]},"BKK":{"city":"Bangkok","typ":612,"fares":[{"w":0,"p":469},{"w":1,"p":552},{"w":2,"p":827},{"w":3,"p":442},{"w":4,"p":607},{"w":5,"p":458},{"w":6,"p":387},{"w":7,"p":367},{"w":8,"p":657},{"w":9,"p":397},{"w":10,"p":733},{"w":11,"p":415}]},"SIN":{"city":"Singapore","typ":548,"fares":[{"w":0,"p":370},{"w":1,"p":454},{"w":2,"p":510},{"w":3,"p":654},{"w":4,"p":410},{"w":5,"p":564},{"w":6,"p":357},{"w":7,"p":378},{"w":8,"p":587},{"w":9,"p":386},{"w":10,"p":380},{"w":11,"p":521}]},"KUL":{"city":"Kuala Lumpur","typ":555,"fares":[{"w":0,"p":566},{"w":1,"p":445},{"w":2,"p":555},{"w":3,"p":379},{"w":4,"p":354},{"w":5,"p":464},{"w":6,"p":653},{"w":7,"p":543},{"w":8,"p":326},{"w":9,"p":339},{"w":10,"p":565},{"w":11,"p":533}]},"MNL":{"city":"Manila","typ":528,"fares":[{"w":0,"p":359},{"w":1,"p":490},{"w":2,"p":651},{"w":3,"p":520},{"w":4,"p":711},{"w":5,"p":650},{"w":6,"p":572},{"w":7,"p":300},{"w":8,"p":345},{"w":9,"p":419},{"w":10,"p":350},{"w":11,"p":666}]}},"MEL":{"SYD":{"city":"Sydney","typ":115,"fares":[{"w":0,"p":96},{"w":1,"p":97},{"w":2,"p":86},{"w":3,"p":94},{"w":4,"p":149},{"w":5,"p":93},{"w":6,"p":98},{"w":7,"p":74},{"w":8,"p":111},{"w":9,"p":90},{"w":10,"p":75},{"w":11,"p":81}]},"OOL":{"city":"Gold Coast","typ":139,"fares":[{"w":0,"p":82},{"w":1,"p":107},{"w":2,"p":139},{"w":3,"p":152},{"w":4,"p":176},{"w":5,"p":117},{"w":6,"p":99},{"w":7,"p":93},{"w":8,"p":177},{"w":9,"p":160},{"w":10,"p":98},{"w":11,"p":136}]},"BNE":{"city":"Brisbane","typ":149,"fares":[{"w":0,"p":176},{"w":1,"p":154},{"w":2,"p":164},{"w":3,"p":84},{"w":4,"p":100},{"w":5,"p":152},{"w":6,"p":158},{"w":7,"p":99},{"w":8,"p":170},{"w":9,"p":149},{"w":10,"p":103},{"w":11,"p":87}]},"ADL":{"city":"Adelaide","typ":118,"fares":[{"w":0,"p":133},{"w":1,"p":134},{"w":2,"p":115},{"w":3,"p":114},{"w":4,"p":136},{"w":5,"p":67},{"w":6,"p":96},{"w":7,"p":100},{"w":8,"p":69},{"w":9,"p":129},{"w":10,"p":129},{"w":11,"p":117}]},"HBA":{"city":"Hobart","typ":98,"fares":[{"w":0,"p":67},{"w":1,"p":73},{"w":2,"p":60},{"w":3,"p":119},{"w":4,"p":92},{"w":5,"p":74},{"w":6,"p":74},{"w":7,"p":69},{"w":8,"p":129},{"w":9,"p":119},{"w":10,"p":124},{"w":11,"p":76}]},"CNS":{"city":"Cairns","typ":289,"fares":[{"w":0,"p":159},{"w":1,"p":280},{"w":2,"p":233},{"w":3,"p":243},{"w":4,"p":191},{"w":5,"p":366},{"w":6,"p":387},{"w":7,"p":381},{"w":8,"p":250},{"w":9,"p":405},{"w":10,"p":248},{"w":11,"p":163}]},"AKL":{"city":"Auckland","typ":345,"fares":[{"w":0,"p":425},{"w":1,"p":452},{"w":2,"p":276},{"w":3,"p":256},{"w":4,"p":457},{"w":5,"p":419},{"w":6,"p":446},{"w":7,"p":351},{"w":8,"p":219},{"w":9,"p":325},{"w":10,"p":375},{"w":11,"p":219}]},"ZQN":{"city":"Queenstown","typ":379,"fares":[{"w":0,"p":249},{"w":1,"p":319},{"w":2,"p":447},{"w":3,"p":292},{"w":4,"p":305},{"w":5,"p":336},{"w":6,"p":260},{"w":7,"p":502},{"w":8,"p":279},{"w":9,"p":531},{"w":10,"p":253},{"w":11,"p":237}]},"CHC":{"city":"Christchurch","typ":339,"fares":[{"w":0,"p":226},{"w":1,"p":269},{"w":2,"p":431},{"w":3,"p":309},{"w":4,"p":338},{"w":5,"p":200},{"w":6,"p":452},{"w":7,"p":333},{"w":8,"p":425},{"w":9,"p":273},{"w":10,"p":306},{"w":11,"p":449}]},"DPS":{"city":"Bali","typ":478,"fares":[{"w":0,"p":265},{"w":1,"p":561},{"w":2,"p":453},{"w":3,"p":239},{"w":4,"p":659},{"w":5,"p":627},{"w":6,"p":273},{"w":7,"p":476},{"w":8,"p":666},{"w":9,"p":532},{"w":10,"p":446},{"w":11,"p":256}]},"NAN":{"city":"Fiji","typ":545,"fares":[{"w":0,"p":408},{"w":1,"p":600},{"w":2,"p":359},{"w":3,"p":596},{"w":4,"p":342},{"w":5,"p":571},{"w":6,"p":403},{"w":7,"p":304},{"w":8,"p":514},{"w":9,"p":600},{"w":10,"p":521},{"w":11,"p":414}]},"SGN":{"city":"Ho Chi Minh City","typ":565,"fares":[{"w":0,"p":641},{"w":1,"p":348},{"w":2,"p":628},{"w":3,"p":449},{"w":4,"p":736},{"w":5,"p":353},{"w":6,"p":519},{"w":7,"p":424},{"w":8,"p":656},{"w":9,"p":427},{"w":10,"p":472},{"w":11,"p":438}]},"BKK":{"city":"Bangkok","typ":598,"fares":[{"w":0,"p":704},{"w":1,"p":791},{"w":2,"p":443},{"w":3,"p":548},{"w":4,"p":789},{"w":5,"p":537},{"w":6,"p":801},{"w":7,"p":364},{"w":8,"p":766},{"w":9,"p":691},{"w":10,"p":782},{"w":11,"p":443}]},"SIN":{"city":"Singapore","typ":535,"fares":[{"w":0,"p":347},{"w":1,"p":482},{"w":2,"p":465},{"w":3,"p":348},{"w":4,"p":472},{"w":5,"p":391},{"w":6,"p":421},{"w":7,"p":640},{"w":8,"p":332},{"w":9,"p":480},{"w":10,"p":416},{"w":11,"p":327}]}},"BNE":{"SYD":{"city":"Sydney","typ":119,"fares":[{"w":0,"p":141},{"w":1,"p":66},{"w":2,"p":150},{"w":3,"p":136},{"w":4,"p":104},{"w":5,"p":153},{"w":6,"p":98},{"w":7,"p":102},{"w":8,"p":77},{"w":9,"p":149},{"w":10,"p":69},{"w":11,"p":114}]},"MEL":{"city":"Melbourne","typ":149,"fares":[{"w":0,"p":197},{"w":1,"p":117},{"w":2,"p":145},{"w":3,"p":110},{"w":4,"p":173},{"w":5,"p":176},{"w":6,"p":126},{"w":7,"p":130},{"w":8,"p":98},{"w":9,"p":174},{"w":10,"p":94},{"w":11,"p":126}]},"CNS":{"city":"Cairns","typ":188,"fares":[{"w":0,"p":239},{"w":1,"p":106},{"w":2,"p":184},{"w":3,"p":176},{"w":4,"p":172},{"w":5,"p":209},{"w":6,"p":233},{"w":7,"p":130},{"w":8,"p":154},{"w":9,"p":166},{"w":10,"p":141},{"w":11,"p":147}]},"ADL":{"city":"Adelaide","typ":198,"fares":[{"w":0,"p":245},{"w":1,"p":171},{"w":2,"p":259},{"w":3,"p":159},{"w":4,"p":214},{"w":5,"p":142},{"w":6,"p":236},{"w":7,"p":117},{"w":8,"p":144},{"w":9,"p":256},{"w":10,"p":251},{"w":11,"p":242}]},"HBA":{"city":"Hobart","typ":229,"fares":[{"w":0,"p":182},{"w":1,"p":146},{"w":2,"p":245},{"w":3,"p":201},{"w":4,"p":172},{"w":5,"p":241},{"w":6,"p":137},{"w":7,"p":255},{"w":8,"p":191},{"w":9,"p":275},{"w":10,"p":139},{"w":11,"p":233}]},"OOL":{"city":"Gold Coast","typ":59,"fares":[{"w":0,"p":44},{"w":1,"p":64},{"w":2,"p":50},{"w":3,"p":73},{"w":4,"p":60},{"w":5,"p":55},{"w":6,"p":74},{"w":7,"p":47},{"w":8,"p":40},{"w":9,"p":55},{"w":10,"p":54},{"w":11,"p":56}]},"AKL":{"city":"Auckland","typ":315,"fares":[{"w":0,"p":192},{"w":1,"p":342},{"w":2,"p":210},{"w":3,"p":277},{"w":4,"p":223},{"w":5,"p":313},{"w":6,"p":215},{"w":7,"p":381},{"w":8,"p":236},{"w":9,"p":414},{"w":10,"p":217},{"w":11,"p":281}]},"ZQN":{"city":"Queenstown","typ":439,"fares":[{"w":0,"p":474},{"w":1,"p":301},{"w":2,"p":324},{"w":3,"p":559},{"w":4,"p":310},{"w":5,"p":391},{"w":6,"p":385},{"w":7,"p":334},{"w":8,"p":278},{"w":9,"p":296},{"w":10,"p":285},{"w":11,"p":447}]},"CHC":{"city":"Christchurch","typ":369,"fares":[{"w":0,"p":307},{"w":1,"p":384},{"w":2,"p":406},{"w":3,"p":237},{"w":4,"p":358},{"w":5,"p":435},{"w":6,"p":349},{"w":7,"p":210},{"w":8,"p":227},{"w":9,"p":238},{"w":10,"p":244},{"w":11,"p":439}]},"DPS":{"city":"Bali","typ":449,"fares":[{"w":0,"p":247},{"w":1,"p":385},{"w":2,"p":282},{"w":3,"p":649},{"w":4,"p":572},{"w":5,"p":643},{"w":6,"p":632},{"w":7,"p":294},{"w":8,"p":270},{"w":9,"p":547},{"w":10,"p":606},{"w":11,"p":572}]},"NAN":{"city":"Fiji","typ":459,"fares":[{"w":0,"p":449},{"w":1,"p":334},{"w":2,"p":451},{"w":3,"p":266},{"w":4,"p":315},{"w":5,"p":519},{"w":6,"p":318},{"w":7,"p":297},{"w":8,"p":502},{"w":9,"p":595},{"w":10,"p":480},{"w":11,"p":293}]},"SGN":{"city":"Ho Chi Minh City","typ":598,"fares":[{"w":0,"p":645},{"w":1,"p":721},{"w":2,"p":808},{"w":3,"p":522},{"w":4,"p":559},{"w":5,"p":402},{"w":6,"p":474},{"w":7,"p":806},{"w":8,"p":660},{"w":9,"p":342},{"w":10,"p":638},{"w":11,"p":591}]},"BKK":{"city":"Bangkok","typ":629,"fares":[{"w":0,"p":440},{"w":1,"p":346},{"w":2,"p":379},{"w":3,"p":484},{"w":4,"p":659},{"w":5,"p":675},{"w":6,"p":441},{"w":7,"p":493},{"w":8,"p":423},{"w":9,"p":793},{"w":10,"p":569},{"w":11,"p":382}]},"SIN":{"city":"Singapore","typ":559,"fares":[{"w":0,"p":572},{"w":1,"p":603},{"w":2,"p":711},{"w":3,"p":455},{"w":4,"p":379},{"w":5,"p":514},{"w":6,"p":385},{"w":7,"p":367},{"w":8,"p":713},{"w":9,"p":437},{"w":10,"p":551},{"w":11,"p":665}]}}};
+const CURRENCY = "$", CUR_NOTE = "AUD";
+const FARES = () => FARES_ALL[S && S.o] || FARES_ALL.SYD;
+
+// ================= WEEKENDS (next 12, Fri–Mon) =================
+function nextWeekends(n=12){
+  const out=[], d=new Date();
+  d.setDate(d.getDate() + ((5 - d.getDay() + 7) % 7 || 7)); // next Friday
+  for(let i=0;i<n;i++){
+    const fri=new Date(d); fri.setDate(d.getDate()+i*7);
+    const mon=new Date(fri); mon.setDate(fri.getDate()+3);
+    out.push({fri, mon});
+  }
+  return out;
+}
+const WEEKENDS = nextWeekends();
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const isWin = i => i>=100;
+function winList(){ return (S&&S.w)||draftWins; }
+function wkLabel(w){
+  if(isWin(w)){
+    const r=winList()[w-100]; if(!r) return {m:"",d:""};
+    const s=new Date(r.s+"T12:00"), e=new Date(r.e+"T12:00");
+    return {m:(r.l||"Custom").slice(0,14), d:MONTHS[s.getMonth()]+" "+s.getDate()+"–"+(s.getMonth()===e.getMonth()?"":MONTHS[e.getMonth()]+" ")+e.getDate()};
+  }
+  const a=WEEKENDS[w];return {m:MONTHS[a.fri.getMonth()], d:a.fri.getDate()+"–"+a.mon.getDate()};
+}
+// price a custom window off the weekend nearest its start date (cached fares are weekend-keyed)
+function nearestWeekend(win){
+  const s=new Date(win.s+"T12:00"); let best=0,bd=1e15;
+  WEEKENDS.forEach((a,i)=>{const d=Math.abs(a.fri-s); if(d<bd){bd=d;best=i;}});
+  return best;
+}
+let draftWins=[];   // windows added during creation, before S exists
+
+// ================= STATE (lives in the URL hash — no backend) =================
+let S = null; // {n:name, o:origin, p:[{n:name, f:[weekend idx]}]}
+function save(){location.hash = btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function load(){
+  if(!location.hash || location.hash.length<3) return null;
+  try{ return JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(1).replace(/-/g,'+').replace(/_/g,'/'))))); }
+  catch(e){ return null; }
+}
+
+// ================= TRACKING (swap for Plausible/PostHog when deployed) =================
+function track(ev, props){
+  console.log("[track]", ev, props||{});
+  if(sb) sb.from("events").insert({name:ev, props:props||{}, trip_code:tripCode()}).then(()=>{},()=>{});
+}
+
+// ================= UI =================
+function renderWeekendPicker(el, selected){
+  el.innerHTML="";
+  const mk=(i)=>{
+    const l=wkLabel(i);
+    const div=document.createElement("div");
+    div.className="wk"+(isWin(i)?" win":"")+(selected.has(i)?" on":"");
+    div.innerHTML=`<div class="m">${l.m}</div><div class="d">${l.d}</div>`;
+    div.onclick=()=>{ selected.has(i)?selected.delete(i):selected.add(i); div.classList.toggle("on"); };
+    el.appendChild(div);
+  };
+  WEEKENDS.forEach((_,i)=>mk(i));
+  winList().forEach((_,j)=>mk(100+j));
+}
+const createSel=new Set(), respondSel=new Set();
+function addWindow(){
+  const s=document.getElementById("winStart").value, e=document.getElementById("winEnd").value;
+  const l=document.getElementById("winLabel").value.trim()||"Custom";
+  if(!s||!e||e<s){ toast("Pick a valid start and end date"); return; }
+  draftWins.push({s,e,l});
+  createSel.add(100+draftWins.length-1);
+  renderWeekendPicker(document.getElementById("wk-create"), createSel);
+  track("window_added",{label:l});
+  document.getElementById("winLabel").value="";
+}
+
+function createTrip(){
+  const name=document.getElementById("tripName").value.trim()||"Our trip";
+  const who=document.getElementById("creatorName").value.trim()||"Organiser";
+  if(createSel.size===0){ toast("Tap at least one weekend"); return; }
+  S={n:name, o:document.getElementById("origin").value, w:draftWins, p:[{n:who, f:[...createSel]}]};
+  if(sb){
+    const code=newCode();
+    sb.from("trips").insert({code, name:S.n, origin:S.o, windows:S.w})
+      .then(()=>sb.from("members").insert({trip_code:code, name:who, weekends:[...createSel]}))
+      .then(()=>{ history.replaceState(null,"","?t="+code); track("trip_created",{weekends:createSel.size}); showRespond(true); share(); },
+            ()=>toast("Connection hiccup — try again"));
+  } else {
+    save(); track("trip_created",{weekends:createSel.size});
+    showRespond(true);
+    share();
+  }
+}
+
+function joinTrip(){
+  const who=document.getElementById("joinName").value.trim();
+  if(!who){ toast("Add your name"); return; }
+  if(respondSel.size===0){ toast("Tap at least one weekend"); return; }
+  S.p.push({n:who, f:[...respondSel]});
+  if(sb){
+    sb.from("members").insert({trip_code:tripCode(), name:who, weekends:[...respondSel]})
+      .then(()=>{},()=>{});
+    toast("You're in!");
+  } else {
+    save();
+    toast("Added! Now share it back to the chat");
+  }
+  track("joined",{people:S.p.length});
+  respondSel.clear();
+  showRespond(true);   // hide the join form — you're in now
+}
+
+function overlap(){
+  const counts={};
+  for(let i=0;i<WEEKENDS.length;i++) counts[i]=0;
+  winList().forEach((_,j)=>counts[100+j]=0);
+  S.p.forEach(pp=>pp.f.forEach(w=>{ if(counts[w]===undefined) counts[w]=0; counts[w]++; }));
+  const idxs=Object.keys(counts).map(Number);
+  const max=Math.max(0,...idxs.map(i=>counts[i]));
+  return {counts, max, best:idxs.filter(i=>counts[i]===max&&max>0).sort((a,b)=>a-b)};
+}
+
+function median(arr){const s=[...arr].sort((a,b)=>a-b);return s[Math.floor(s.length/2)];}
+
+function showRespond(justCreated){
+  document.getElementById("v-create").classList.add("hidden");
+  document.getElementById("v-respond").classList.remove("hidden");
+  document.getElementById("r-title").textContent=S.n;
+  const o=overlap();
+  document.getElementById("r-sub").textContent=
+    S.p.length===1 ? "Waiting on the group — share the link below."
+    : `${S.p.length} in · best weekend works for ${o.max}/${S.p.length}`;
+  const ppl=document.getElementById("r-people");
+  ppl.innerHTML=""; S.p.forEach((pp,i)=>{
+    const a=document.createElement("span");
+    a.className="avatar"+(i===S.p.length-1&&!justCreated?" you":"");
+    a.textContent=pp.n; ppl.appendChild(a);
+  });
+  if(justCreated) document.getElementById("r-join").classList.add("hidden");
+  else { document.getElementById("r-join").classList.remove("hidden");
+         renderWeekendPicker(document.getElementById("wk-respond"), respondSel); }
+  renderResults();
+}
+
+// price A/B: variant chosen by trip name hash, logged with every pass_click
+const PRICE_VARIANTS=["$1.49/mo each","$2.49/mo each"];
+function priceVariant(){
+  let s=0; const n=(S&&S.n)||""; for(const ch of n) s+=ch.charCodeAt(0);
+  return s%2;
+}
+let selectedW=null, lastPeople=0;
+function renderResults(){
+  const el=document.getElementById("results");
+  const o=overlap();
+  if(o.max===0){ el.innerHTML=""; return; }
+  if(selectedW===null || S.p.length!==lastPeople || !o.counts[selectedW]) selectedW=o.best[0];
+  lastPeople=S.p.length;
+  const bestW=o.best[0];
+  const showW=selectedW;
+  const l=wkLabel(showW);
+  const fareW=isWin(showW)?nearestWeekend(winList()[showW-100]):showW;
+  const approx=isWin(showW)?"~":"";
+  const rows=Object.entries(FARES()).map(([code,r])=>{
+    const fare=r.fares.find(f=>f.w===fareW);
+    return fare?{code, city:r.city, p:fare.p, deal:fare.p < r.typ*0.8}:null;
+  }).filter(Boolean).sort((a,b)=>a.p-b.p);
+  if(!rows.length){ el.innerHTML=""; return; }
+
+  // weekend chips: every weekend at least one person can do, with counts
+  let chips='<div class="wchips">';
+  Object.keys(o.counts).map(Number).sort((a,b)=>a-b).forEach(i=>{
+    const c=o.counts[i];
+    if(c===0) return;
+    const wl=wkLabel(i);
+    chips+=`<div class="wchip${i===showW?" sel":""}${c===o.max?" full":""}" onclick="selectedW=${i};renderResults();track('weekend_switch',{w:${i}})">
+      <span>${wl.m} ${wl.d}</span><b>${c}/${S.p.length}</b></div>`;
+  });
+  chips+='</div>';
+
+  let html=`<div class="best" style="margin-bottom:14px;">
+    <div class="notch-r"></div>
+    <div class="inner">
+      <div class="when">${o.counts[showW]}/${S.p.length} can make it ✈ ${l.m} ${l.d}${showW===bestW?"":" · not the best overlap"}</div>
+      <div class="big">${rows[0].city} from ${approx}${CURRENCY}${rows[0].p} return</div>
+      <div class="muted" style="margin-top:4px">Tap another window to compare. ${approx?"~ = nearest-weekend estimate for a custom range. ":""}Fares per person, ${CUR_NOTE}.</div>
+    </div>
+  </div>`+chips+`<div class="card">`;
+  const iso=d=>d.toISOString().slice(0,10);
+  const dep=isWin(showW)?winList()[showW-100].s:iso(WEEKENDS[showW].fri);
+  const ret=isWin(showW)?winList()[showW-100].e:iso(WEEKENDS[showW].mon);
+  rows.slice(0,8).forEach(r=>{
+    html+=`<div class="dest row">
+      <div><span class="city">${r.city}</span><span class="code">${r.code}</span>
+        ${r.deal?'<span class="pill pill-deal" style="margin-left:8px">DEAL</span>':''}
+        <div>
+          <a href="https://www.skyscanner.com.au/transport/flights/${S.o.toLowerCase()}/${r.code.toLowerCase()}/" target="_blank" rel="noopener" onclick="track('clickout',{d:'${r.code}'})">flights →</a>
+          &nbsp;·&nbsp;
+          <a href="https://www.booking.com/searchresults.html?ss=${encodeURIComponent(r.city)}&checkin=${dep}&checkout=${ret}&group_adults=${S.p.length||2}" target="_blank" rel="noopener" onclick="track('clickout_beds',{d:'${r.code}'})">beds →</a>
+        </div>
+      </div>
+      <div class="price">${approx}${CURRENCY}${r.p}<span class="per">return / person</span></div>
+    </div>`;
+  });
+  html+=`</div>
+  <div class="card">
+    <div class="row">
+      <div>
+        <div style="font-weight:800; font-size:15px;">Want 30+ more destinations + price alerts?</div>
+        <div class="muted">Freewheel Pass — <span id="passPrice"></span> for your crew (billed yearly), organiser free.</div>
+      </div>
+    </div>
+    <button class="btn btn-accent" onclick="fakeDoor()">Unlock the Pass</button>
+    <div id="wl" class="hidden" style="margin-top:10px;">
+      <input id="wlEmail" type="email" placeholder="you@uni.edu.au" style="margin-bottom:8px;">
+      <button class="btn btn-primary" onclick="joinWaitlist()">Lock my founding rate</button>
+    </div>
+  </div>`;
+  el.innerHTML=html;
+  const pp=document.getElementById("passPrice");
+  if(pp) pp.textContent=PRICE_VARIANTS[priceVariant()];
+}
+function joinWaitlist(){
+  const email=(document.getElementById("wlEmail").value||"").trim();
+  if(!email.includes("@")){ toast("That email doesn't look right"); return; }
+  const variant=PRICE_VARIANTS[priceVariant()];
+  if(sb) sb.from("waitlist").insert({email, variant, trip_code:tripCode()}).then(()=>{},()=>{});
+  track("waitlist_joined",{variant});
+  document.getElementById("wl").classList.add("hidden");
+  toast("Locked in — you're on the founding list 🎉");
+}
+function fakeDoor(){
+  track("pass_click",{people:S?S.p.length:0, variant:PRICE_VARIANTS[priceVariant()]});
+  const wl=document.getElementById("wl");
+  if(wl){ wl.classList.remove("hidden"); document.getElementById("wlEmail").focus(); }
+  else toast("You're on the early list — it's free for now 🎉");
+}
+
+function share(){
+  const url=location.href;
+  const text=`${S.n} — tap the weekends you're free and see what's cheap: `;
+  track("share_click",{people:S.p.length});
+  if(navigator.share){ navigator.share({title:S.n, text, url}).catch(()=>{}); }
+  else { navigator.clipboard.writeText(text+url).then(()=>toast("Link copied — paste it in the chat")); }
+}
+
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),2600);
+}
+
+// ================= BOOT =================
+if(SAMPLE_DATA) document.getElementById("sampleFlag").classList.remove("hidden");
+async function boot(){
+  const code=tripCode();
+  if(sb && code){
+    const t=await sb.from("trips").select().eq("code",code).single();
+    const m=await sb.from("members").select().eq("trip_code",code).order("created_at");
+    if(t.data){
+      S={n:t.data.name, o:t.data.origin, w:t.data.windows||[], p:(m.data||[]).map(r=>({n:r.name, f:r.weekends}))};
+      track("trip_opened",{people:S.p.length});
+      showRespond(false);
+      return;
+    }
+  }
+  const loaded=load();
+  if(loaded && loaded.p){ S=loaded; track("trip_opened",{people:S.p.length}); showRespond(false); }
+  else renderWeekendPicker(document.getElementById("wk-create"), createSel);
+}
+boot();
+// backend mode: instant join updates via Realtime, slow poll as belt-and-braces
+async function refreshMembers(){
+  if(!S || !sb || !tripCode()) return;
+  const m=await sb.from("members").select().eq("trip_code",tripCode()).order("created_at");
+  if(m.data && m.data.length!==S.p.length){
+    S.p=m.data.map(r=>({n:r.name, f:r.weekends}));
+    showRespond(true);
+    toast(S.p[S.p.length-1].n+" just joined");
+  }
+}
+if(sb && tripCode()){
+  try{
+    sb.channel("trip-"+tripCode())
+      .on("postgres_changes",
+          {event:"INSERT", schema:"public", table:"members", filter:"trip_code=eq."+tripCode()},
+          ()=>refreshMembers())
+      .subscribe();
+  }catch(e){ console.log("realtime unavailable, polling only"); }
+  setInterval(refreshMembers, 45000);
+}
+</script>
+</body>
+</html>

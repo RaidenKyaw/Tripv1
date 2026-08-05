@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>og:image source — Freewheel</title>
+<meta name="robots" content="noindex">
+<!--
+  Source for og.png — the card that shows when the link is pasted into a group chat.
+  To regenerate after a design change, screenshot #card at exactly 1200x630:
+
+    npx playwright screenshot --viewport-size=1200,630 og-source.html og.png
+
+  Keep it 1200x630: that's what WhatsApp, iMessage, Discord and Twitter all crop to.
+-->
+<style>
+  *{box-sizing:border-box; margin:0; padding:0;}
+  :root{
+    --bg:#FBF5EC; --card:#FFFFFF; --line:#EAD9C3; --ink:#33302B; --dim:#8C7F6D;
+    --terra:#D96A4B; --teal:#2F6D62; --gold:#D9A441; --gold-soft:#FAF1DC;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  html,body{width:1200px; height:630px; overflow:hidden;}
+  body{
+    background:
+      radial-gradient(760px 420px at 88% -60px, #FDEBDD 0%, rgba(253,235,221,0) 62%),
+      radial-gradient(700px 380px at -6% 110%, #EDF3EE 0%, rgba(237,243,238,0) 58%),
+      var(--bg);
+    font-family:var(--sans); color:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* drifting-cloud motif, static here */
+  .cloud{position:absolute; border-radius:99px; background:#fff; opacity:.55;}
+  .cloud::before,.cloud::after{content:""; position:absolute; background:#fff; border-radius:50%;}
+  .k1{width:150px; height:30px; top:62px; left:96px;}
+  .k1::before{width:64px; height:64px; top:-30px; left:26px;}
+  .k1::after{width:44px; height:44px; top:-17px; left:84px;}
+  .k2{width:112px; height:24px; bottom:74px; right:120px; opacity:.42;}
+  .k2::before{width:50px; height:50px; top:-23px; left:18px;}
+  .k2::after{width:34px; height:34px; top:-12px; left:60px;}
+
+  #card{
+    position:relative; width:1000px; background:var(--card);
+    border:1px solid var(--line); border-radius:26px; overflow:hidden;
+    box-shadow:0 20px 60px rgba(120,90,60,.13);
+    display:flex;
+  }
+  .strip{
+    background:var(--teal); color:#DFEEEA; font-size:15px; font-weight:800;
+    letter-spacing:.34em; padding:15px 40px;
+    position:absolute; top:0; left:0; right:0;
+  }
+  .left{flex:1; padding:96px 44px 44px; border-right:3px dashed var(--line);}
+  .right{width:340px; padding:96px 34px 44px; display:flex; flex-direction:column; justify-content:space-between;}
+
+  .brand{font-family:var(--serif); font-size:27px; font-weight:700; color:var(--teal);}
+  .brand span{font-size:16px; color:var(--dim); font-style:italic; font-family:var(--sans);
+              font-weight:500; margin-left:12px;}
+  h1{font-family:var(--serif); font-size:64px; line-height:1.06; font-weight:700;
+     letter-spacing:-.02em; margin:22px 0 18px;}
+  /* highlight drawn as a background on the span itself — a z-index:-1 pseudo-element
+     would paint behind the card's white background and vanish */
+  h1 .u{
+    white-space:nowrap;
+    background-image:linear-gradient(var(--gold-soft), var(--gold-soft));
+    background-size:100% .30em; background-position:0 82%; background-repeat:no-repeat;
+    border-bottom:5px solid var(--gold);
+  }
+  .sub{font-size:23px; color:var(--dim); line-height:1.45; max-width:560px;}
+
+  .route{display:flex; align-items:center; gap:12px; margin-bottom:26px;}
+  .iata{font-family:var(--serif); font-size:38px; font-weight:700; letter-spacing:.02em;}
+  .iata.q{color:var(--terra);}
+  .dash{flex:1; height:0; border-top:3px dashed var(--line); position:relative;}
+  .dash span{position:absolute; left:50%; top:-16px; transform:translateX(-50%); font-size:24px;}
+
+  .meta{font-size:13px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; color:var(--dim);}
+  .meta b{display:block; font-family:var(--serif); font-size:27px; font-weight:700; color:var(--ink);
+          letter-spacing:0; text-transform:none; margin-top:5px;}
+  .pstamp{
+    align-self:flex-start; border:3px dashed var(--teal); border-radius:50%;
+    width:138px; height:138px; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; transform:rotate(-11deg); color:var(--teal);
+    font-family:var(--serif); font-weight:700; line-height:1.15; text-align:center;
+    background:#E7F1EE; margin-top:8px;
+  }
+  .pstamp .big{font-size:31px;}
+  .pstamp .sm{font-size:10.5px; letter-spacing:.11em; font-family:var(--sans); font-weight:800;
+              white-space:nowrap; margin-top:3px;}
+
+  .notch{position:absolute; width:34px; height:34px; border-radius:50%; background:var(--bg);
+         border:1px solid var(--line); right:323px;}
+  .notch.t{top:-18px;}
+  .notch.b{bottom:-18px;}
+</style>
+</head>
+<body>
+  <div class="cloud k1"></div>
+  <div class="cloud k2"></div>
+
+  <div id="card">
+    <div class="strip">BOARDING PASS · FREEWHEEL AIR · GROUP TRAVEL, SORTED</div>
+    <div class="notch t"></div>
+    <div class="notch b"></div>
+
+    <div class="left">
+      <div class="brand">Freewheel<span>where can we all go?</span></div>
+      <h1>Tap the weekends<br>you're <span class="u">actually free</span>.</h1>
+      <p class="sub">We'll show what's cheap from your airport on the days that work for everyone.</p>
+    </div>
+
+    <div class="right">
+      <div>
+        <div class="route">
+          <div class="iata">SYD</div>
+          <div class="dash"><span>✈</span></div>
+          <div class="iata q">???</div>
+        </div>
+        <div class="meta">Passengers<b>All of you</b></div>
+      </div>
+      <div class="pstamp">
+        <div class="big">7 days</div>
+        <div class="sm">FREE · NO CARD</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Log in — Freewheel</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --bg:#FBF5EC; --card:#FFFFFF; --card2:#FDF9F2; --line:#EAD9C3;
+    --ink:#33302B; --dim:#8C7F6D;
+    --terra:#D96A4B; --teal:#2F6D62; --teal-soft:#E7F1EE;
+    --radius:16px;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  body{
+    background:
+      radial-gradient(1100px 460px at 85% -170px, #FDEBDD 0%, rgba(253,235,221,0) 60%),
+      radial-gradient(860px 400px at -10% -120px, #EDF3EE 0%, rgba(237,243,238,0) 55%),
+      var(--bg);
+    color:var(--ink); font-family:var(--sans); min-height:100vh;
+  }
+  .wrap{max-width:420px; margin:0 auto; padding:22px 16px;}
+  .logo{font-family:var(--serif); font-weight:700; font-size:19px; color:var(--teal);
+        text-decoration:none; display:block; margin-bottom:44px;}
+  .logo em{color:var(--dim); font-family:var(--sans); font-weight:500; font-size:12px;
+           margin-left:8px; font-style:italic;}
+  h1{font-family:var(--serif); font-size:29px; line-height:1.18; margin-bottom:8px; font-weight:700;}
+  .sub{color:var(--dim); font-size:14.5px; line-height:1.55; margin-bottom:22px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+        padding:16px; margin-bottom:14px; box-shadow:0 2px 10px rgba(120,90,60,.05);}
+  label{display:block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+        color:var(--dim); margin:0 0 6px;}
+  input{width:100%; background:var(--card2); color:var(--ink); border:1px solid var(--line);
+    border-radius:11px; padding:12px 14px; font-size:16px; outline:none; font-family:var(--sans);}
+  input::placeholder{color:#BCAE9A;}
+  input:focus{border-color:var(--terra);}
+  .gap{height:14px;}
+  .btn{display:block; width:100%; border:none; border-radius:13px; padding:15px; font-size:16px;
+       font-weight:700; cursor:pointer; text-align:center; margin-top:6px; font-family:var(--sans);
+       text-decoration:none;}
+  .btn-primary{background:var(--terra); color:#FFF8F2; box-shadow:0 6px 16px rgba(217,106,75,.25);}
+  .btn-primary[disabled]{opacity:.55; cursor:default; box-shadow:none;}
+  .btn-link{background:none; border:none; color:var(--dim); font-size:13.5px; text-decoration:underline;
+            cursor:pointer; display:block; margin:14px auto 0; font-family:var(--sans);}
+  .err{color:var(--terra); font-size:13px; margin-top:8px; font-weight:600;}
+  .ok{background:var(--teal-soft); border:1px solid #CFE2DC; border-radius:12px; padding:13px 14px;
+      font-size:13.5px; color:#24504A; line-height:1.55; margin-top:12px;}
+  .hidden{display:none;}
+  .alt{text-align:center; margin-top:26px; font-size:14px; color:var(--dim);}
+  .alt a{color:var(--teal); font-weight:700;}
+  .demo{background:#FAF1DC; border:1px solid #EBD9AE; border-radius:12px; padding:13px 14px;
+        font-size:13px; color:#7C5A12; line-height:1.55; margin-bottom:16px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="logo" href="index.html">Freewheel<em>where can we all go?</em></a>
+
+  <h1>Welcome back</h1>
+  <p class="sub">Log in to see your deals, trips and crew.</p>
+
+  <div class="demo hidden" id="demoNote">
+    No backend connected yet, so there's nothing to log in to. Paste your Supabase keys into the
+    <b>BACKEND</b> line in this file to switch it on — or take a look around in demo mode.
+  </div>
+
+  <div class="card">
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="email" placeholder="you@uni.edu.au">
+    <div class="gap"></div>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="current-password" placeholder="Your password">
+    <div class="err hidden" id="err"></div>
+    <div class="ok hidden" id="ok"></div>
+  </div>
+
+  <button class="btn btn-primary" id="go">Log in →</button>
+  <button class="btn-link" id="reset">Forgot your password?</button>
+
+  <div class="alt">New here? <a href="onboard.html">Start your free week</a></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ================= BACKEND (Supabase — optional) =================
+// Paste from Supabase → Project Settings → API. Leave blank = demo mode.
+const BACKEND = { url: "", anonKey: "" };
+const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
+  ? window.supabase.createClient(BACKEND.url, BACKEND.anonKey) : null;
+
+const $ = id => document.getElementById(id);
+function show(id, msg){
+  const n = $(id);
+  n.textContent = msg;
+  n.classList.toggle("hidden", !msg);
+}
+function track(ev, props){
+  console.log("[track]", ev, props||{});
+  if(sb) sb.from("events").insert({name:ev, props:props||{}}).then(()=>{},()=>{});
+}
+
+$("go").addEventListener("click", async () => {
+  const email = $("email").value.trim(), pw = $("pw").value;
+  show("ok", "");
+  if(!email.includes("@")) return show("err", "That email doesn't look right.");
+  if(!pw) return show("err", "Enter your password.");
+  show("err", "");
+
+  if(!sb){
+    // demo mode: no accounts exist, so send them into the seeded shell rather than a dead end
+    track("login_demo");
+    location.href = "home.html?demo=1";
+    return;
+  }
+
+  const btn = $("go");
+  btn.disabled = true; btn.textContent = "Logging in…";
+  const {error} = await sb.auth.signInWithPassword({email, password:pw});
+  btn.disabled = false; btn.textContent = "Log in →";
+  if(error) return show("err", "Wrong email or password.");
+  track("login");
+  location.href = "home.html";
+});
+
+$("reset").addEventListener("click", async () => {
+  const email = $("email").value.trim();
+  if(!email.includes("@")) return show("err", "Type your email above first, then hit this again.");
+  show("err", "");
+  if(sb){
+    await sb.auth.resetPasswordForEmail(email, {redirectTo:location.origin + "/login.html"});
+  }
+  // Same message either way — never reveal whether an address has an account.
+  show("ok", "If that address has an account, a reset link is on its way.");
+  track("password_reset_requested");
+});
+
+// enter submits
+["email","pw"].forEach(id => $(id).addEventListener("keydown", e => {
+  if(e.key === "Enter") $("go").click();
+}));
+
+// already logged in? skip straight through
+(async () => {
+  $("demoNote").classList.toggle("hidden", !!sb);
+  if(sb){
+    const {data:{session}} = await sb.auth.getSession();
+    if(session) location.href = "home.html";
+  }
+})();
+</script>
+</body>
+</html>

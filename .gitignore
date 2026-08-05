@@ -1,0 +1,22 @@
+# Playwright MCP scratch output
+.playwright-mcp/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Python (fetch_fares.py runs on stdlib only — this is for local venvs)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Never commit a real token or key file. Keys go in the BACKEND lines
+# (anon key only — public by design) and in GitHub Actions secrets.
+.env
+.env.*
+*.secret

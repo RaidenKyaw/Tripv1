@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Start free — Freewheel</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --bg:#FBF5EC; --card:#FFFFFF; --card2:#FDF9F2; --line:#EAD9C3;
+    --ink:#33302B; --dim:#8C7F6D;
+    --terra:#D96A4B; --terra-soft:#FBEDE6;
+    --teal:#2F6D62; --teal-deep:#24504A; --teal-soft:#E7F1EE;
+    --gold:#D9A441; --gold-soft:#FAF1DC;
+    --radius:16px;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  body{
+    background:
+      radial-gradient(1100px 460px at 85% -170px, #FDEBDD 0%, rgba(253,235,221,0) 60%),
+      radial-gradient(860px 400px at -10% -120px, #EDF3EE 0%, rgba(237,243,238,0) 55%),
+      var(--bg);
+    color:var(--ink); font-family:var(--sans); min-height:100vh; padding-bottom:50px;
+  }
+  .wrap{max-width:480px; margin:0 auto; padding:18px 16px;}
+  .logo{font-family:var(--serif); font-weight:700; font-size:19px; color:var(--teal); text-decoration:none;}
+  .logo em{color:var(--dim); font-family:var(--sans); font-weight:500; font-size:12px; margin-left:8px; font-style:italic;}
+
+  /* progress */
+  .prog{display:flex; gap:5px; margin:16px 0 6px;}
+  .prog i{flex:1; height:4px; border-radius:99px; background:var(--line); transition:background .3s;}
+  .prog i.on{background:var(--terra);}
+  .stepno{font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+          color:var(--dim); margin-bottom:14px;}
+
+  h1{font-family:var(--serif); font-size:clamp(25px,6.4vw,31px); line-height:1.18; margin-bottom:8px; font-weight:700;}
+  .sub{color:var(--dim); font-size:14.5px; line-height:1.55; margin-bottom:20px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+        padding:16px; margin-bottom:14px; box-shadow:0 2px 10px rgba(120,90,60,.05);}
+  label{display:block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+        color:var(--dim); margin:0 0 6px;}
+  input,select{width:100%; background:var(--card2); color:var(--ink); border:1px solid var(--line);
+    border-radius:11px; padding:12px 14px; font-size:16px; outline:none; font-family:var(--sans);}
+  input::placeholder{color:#BCAE9A;}
+  input:focus,select:focus{border-color:var(--terra);}
+  .gap{height:14px;}
+  .hint{font-size:12px; color:var(--dim); margin-top:6px; line-height:1.5;}
+
+  .btn{display:block; width:100%; border:none; border-radius:13px; padding:15px; font-size:16px;
+       font-weight:700; cursor:pointer; text-align:center; margin-top:6px; font-family:var(--sans);
+       text-decoration:none;}
+  .btn-primary{background:var(--terra); color:#FFF8F2; box-shadow:0 6px 16px rgba(217,106,75,.25);}
+  .btn-primary:active{transform:scale(.985);}
+  .btn-primary[disabled]{opacity:.55; cursor:default; box-shadow:none;}
+  .btn-ghost{background:transparent; color:var(--teal); border:1.5px dashed var(--line);}
+  .btn-link{background:none; border:none; color:var(--dim); font-size:13.5px; text-decoration:underline;
+            cursor:pointer; display:block; margin:12px auto 0; font-family:var(--sans);}
+
+  /* chips */
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{background:var(--card2); border:1.5px solid var(--line); border-radius:99px;
+        padding:9px 14px; font-size:14px; cursor:pointer; user-select:none; color:var(--ink);
+        font-family:var(--sans);}
+  .chip.on{border-color:var(--terra); background:var(--terra-soft); color:var(--terra); font-weight:700;}
+  .opts{display:grid; gap:8px;}
+  .opt{background:var(--card2); border:1.5px solid var(--line); border-radius:12px;
+       padding:13px 14px; cursor:pointer; display:flex; justify-content:space-between;
+       align-items:center; gap:10px; font-size:15px;}
+  .opt.on{border-color:var(--terra); background:var(--terra-soft);}
+  .opt .tick{color:var(--terra); font-weight:800; opacity:0;}
+  .opt.on .tick{opacity:1;}
+  .opt small{display:block; color:var(--dim); font-size:12.5px; font-weight:400; margin-top:2px;}
+
+  /* boarding-pass pricing block */
+  .pass{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+        overflow:hidden; margin-bottom:14px;}
+  .pass .strip{background:var(--teal); color:#DFEEEA; font-size:9.5px; font-weight:800;
+               letter-spacing:.2em; padding:7px 16px;}
+  .pass .inner{padding:15px 16px 17px; border-top:2px dashed var(--line);}
+  .prow{display:flex; justify-content:space-between; align-items:baseline; padding:9px 0;
+        border-bottom:1px dashed var(--line); font-size:14.5px;}
+  .prow:last-child{border-bottom:none;}
+  .prow.pick{background:var(--terra-soft); margin:0 -16px; padding-left:16px; padding-right:16px;}
+  .prow b{font-weight:800;}
+  .prow .amt{font-weight:800; color:var(--teal);}
+  .prow.pick .amt{color:var(--terra);}
+  .prow small{display:block; color:var(--dim); font-size:11.5px; font-weight:500;}
+  .pill{display:inline-block; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;
+        background:var(--gold-soft); color:#9A6E1B; border:1px solid #EBD9AE; margin-left:6px;}
+
+  .note{background:var(--teal-soft); border:1px solid #CFE2DC; border-radius:12px;
+        padding:13px 14px; font-size:13.5px; color:var(--teal-deep); line-height:1.55;}
+  .note b{font-weight:800;}
+  .err{color:var(--terra); font-size:13px; margin-top:8px; font-weight:600;}
+  .hidden{display:none;}
+  .foot{color:var(--dim); font-size:11.5px; text-align:center; margin-top:22px; line-height:1.7;}
+  .toast{position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:var(--ink);
+    color:#FBF5EC; font-weight:700; font-size:14px; padding:11px 20px; border-radius:99px;
+    opacity:0; transition:opacity .25s; pointer-events:none; white-space:nowrap; z-index:50;
+    box-shadow:0 8px 24px rgba(51,48,43,.25);}
+  .toast.show{opacity:1;}
+  @media(prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="logo" href="index.html">Freewheel<em>where can we all go?</em></a>
+  <div class="prog" id="prog"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="stepno" id="stepno">Step 1 of 5</div>
+
+  <!-- ========================================================= 1 · ACCOUNT -->
+  <section id="s1">
+    <h1>Start your free week</h1>
+    <p class="sub">Seven days, everything unlocked, no card. We'll ask about payment only if you decide to stay.</p>
+    <div class="card">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" placeholder="you@uni.edu.au">
+      <div class="gap"></div>
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="new-password" placeholder="At least 8 characters">
+      <div class="hint">We email you when a route you care about drops. Nothing else, no more than twice a week.</div>
+      <div class="err hidden" id="s1err"></div>
+    </div>
+    <button class="btn btn-primary" id="s1next">Create my account →</button>
+    <button class="btn-link" id="s1skip">Just let me look around first</button>
+  </section>
+
+  <!-- ============================================================ 2 · YOU -->
+  <section id="s2" class="hidden">
+    <h1>Who are you flying as?</h1>
+    <p class="sub">Your handle is how friends add you. Your home airport is where every price on the site is measured from.</p>
+    <div class="card">
+      <label for="name">Your name</label>
+      <input id="name" placeholder="First name is fine" maxlength="20" autocomplete="given-name">
+      <div class="gap"></div>
+      <label for="handle">Handle</label>
+      <input id="handle" placeholder="@yourname" maxlength="20" autocapitalize="none" autocorrect="off">
+      <div class="hint">Letters, numbers and underscores.</div>
+      <div class="gap"></div>
+      <label for="home">Home airport</label>
+      <select id="home">
+        <option value="SYD" selected>Sydney (SYD)</option>
+        <option value="MEL">Melbourne (MEL)</option>
+        <option value="BNE">Brisbane (BNE)</option>
+      </select>
+      <div class="hint">Only these three at launch — deal quality depends on how many people fly the same routes.</div>
+      <div class="err hidden" id="s2err"></div>
+    </div>
+    <button class="btn btn-primary" id="s2next">Next →</button>
+    <button class="btn-link" id="s2back">← Back</button>
+  </section>
+
+  <!-- ========================================================== 3 · VIBES -->
+  <section id="s3" class="hidden">
+    <h1>What kind of trip?</h1>
+    <p class="sub">Pick as many as you like. This shapes which deals we bother emailing you about.</p>
+    <div class="card">
+      <label>Trip vibes</label>
+      <div class="chips" id="vibes">
+        <button type="button" class="chip" data-v="beach">Beach</button>
+        <button type="button" class="chip" data-v="city">City break</button>
+        <button type="button" class="chip" data-v="nature">Hikes &amp; nature</button>
+        <button type="button" class="chip" data-v="nightlife">Nightlife</button>
+        <button type="button" class="chip" data-v="food">Food</button>
+        <button type="button" class="chip" data-v="snow">Snow</button>
+        <button type="button" class="chip" data-v="festival">Festivals</button>
+        <button type="button" class="chip" data-v="cheap">Wherever's cheapest</button>
+      </div>
+    </div>
+    <div class="card">
+      <label>Budget per person, return flights</label>
+      <div class="opts" id="budget">
+        <div class="opt" data-b="under200"><div>Under $200<small>Domestic hops, mostly</small></div><span class="tick">✓</span></div>
+        <div class="opt" data-b="200-400"><div>$200 – $400<small>Anywhere in Australia and NZ</small></div><span class="tick">✓</span></div>
+        <div class="opt" data-b="400-700"><div>$400 – $700<small>Bali, Fiji, Southeast Asia</small></div><span class="tick">✓</span></div>
+        <div class="opt" data-b="any"><div>If it's cheap enough I'll find the money<small>Show me everything</small></div><span class="tick">✓</span></div>
+      </div>
+      <div class="err hidden" id="s3err"></div>
+    </div>
+    <button class="btn btn-primary" id="s3next">Next →</button>
+    <button class="btn-link" id="s3back">← Back</button>
+  </section>
+
+  <!-- ======================================================== 4 · WINDOWS -->
+  <section id="s4" class="hidden">
+    <h1>When can you usually go?</h1>
+    <p class="sub">Not exact dates — just the shape of your year. We use it to decide whether a cheap fare is
+      actually useful to you before we send it.</p>
+    <div class="card">
+      <label>Your usual windows</label>
+      <div class="chips" id="windows">
+        <button type="button" class="chip" data-w="weekends">Any weekend</button>
+        <button type="button" class="chip" data-w="longweekend">Long weekends</button>
+        <button type="button" class="chip" data-w="midsem">Mid-sem break</button>
+        <button type="button" class="chip" data-w="postexam">Right after exams</button>
+        <button type="button" class="chip" data-w="summer">Summer break</button>
+        <button type="button" class="chip" data-w="winter">Winter break</button>
+        <button type="button" class="chip" data-w="flexible">Honestly, whenever it's cheap</button>
+      </div>
+      <div class="err hidden" id="s4err"></div>
+    </div>
+    <div class="note">
+      <b>How often we'll email you:</b> at most twice a week, and only when a route from your airport
+      drops more than 20% under its typical price inside one of these windows. If we can't beat that
+      bar, you hear nothing.
+    </div>
+    <button class="btn btn-primary" id="s4next" style="margin-top:14px;">Next →</button>
+    <button class="btn-link" id="s4back">← Back</button>
+  </section>
+
+  <!-- ========================================================== 5 · THE DEAL -->
+  <section id="s5" class="hidden">
+    <h1>Here's the deal</h1>
+    <p class="sub">Free for seven days. After that it costs less the more of your friends are on it —
+      because a bigger crew genuinely makes the product work better.</p>
+
+    <div class="pass">
+      <div class="strip">FREEWHEEL PASS · BILLED YEARLY · AUD</div>
+      <div class="inner">
+        <div class="prow"><div><b>Solo</b><small>just you</small></div>
+          <div class="amt">$4.99<small>$59 / year</small></div></div>
+        <div class="prow"><div><b>Pair</b><small>2 people</small></div>
+          <div class="amt">$3.29<small>$39 / year</small></div></div>
+        <div class="prow"><div><b>Squad</b><small>4 people · organiser free</small></div>
+          <div class="amt">$2.49<small>$29 / year</small></div></div>
+        <div class="prow pick"><div><b>Crew</b><span class="pill">71% OFF</span><small>6 people · organiser free</small></div>
+          <div class="amt">$1.49<small>$17 / year</small></div></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>The bit worth knowing:</b> during your free week, any friend who joins with your crew code
+      locks the same rate as you and lands on the same bill date. Join after your week ends and they
+      start their own trial at whatever the rate is then.
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <label for="crew">Got a crew code? (optional)</label>
+      <input id="crew" placeholder="FW-XXXX" maxlength="12" autocapitalize="characters" autocorrect="off">
+      <div class="hint">If a friend already started their week, paste their code to join their crew and
+        share the rate. Leave it blank and you'll get your own code to share.</div>
+    </div>
+
+    <button class="btn btn-primary" id="s5next">Start my free week →</button>
+    <button class="btn-link" id="s5back">← Back</button>
+  </section>
+
+  <div class="foot">
+    No card required · Cancel any time · We never sell flights or hold your booking money
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ================= BACKEND (Supabase — optional) =================
+// Paste from Supabase → Project Settings → API. Leave blank = demo mode
+// (nothing persists; the wizard still runs end to end and hands off to home.html).
+// Run supabase-schema.sql then supabase-schema-v2.sql first.
+const BACKEND = { url: "", anonKey: "" };
+const sb = (BACKEND.url && BACKEND.anonKey && window.supabase)
+  ? window.supabase.createClient(BACKEND.url, BACKEND.anonKey) : null;
+
+// ================= TRACKING =================
+function track(ev, props){
+  console.log("[track]", ev, props||{});
+  if(sb) sb.from("events").insert({name:ev, props:props||{}}).then(()=>{},()=>{});
+}
+
+// ================= STATE =================
+const D = {
+  email:"", name:"", handle:"", home:"SYD",
+  vibes:new Set(), budget:"", windows:new Set(),
+  crew:"", demo:false
+};
+let step = 1;
+
+const $ = id => document.getElementById(id);
+function showStep(n){
+  step = n;
+  for(let i = 1; i <= 5; i++) $("s" + i).classList.toggle("hidden", i !== n);
+  [...$("prog").children].forEach((bar, i) => bar.classList.toggle("on", i < n));
+  $("stepno").textContent = "Step " + n + " of 5";
+  window.scrollTo({top:0, behavior:"instant"});
+  track("onboard_step", {step:n});
+}
+function err(id, msg){
+  const e = $(id);
+  e.textContent = msg;
+  e.classList.toggle("hidden", !msg);
+}
+let toastTimer;
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+function newCode(){
+  return "FW-" + Array.from(crypto.getRandomValues(new Uint8Array(4)),
+    b => "ABCDEFGHJKMNPQRSTUVWXYZ23456789"[b % 31]).join("");
+}
+
+// ================= 1 · ACCOUNT =================
+$("s1next").addEventListener("click", async () => {
+  const email = $("email").value.trim(), pw = $("pw").value;
+  if(!email.includes("@") || email.length < 5) return err("s1err", "That email doesn't look right.");
+  if(pw.length < 8) return err("s1err", "Password needs at least 8 characters.");
+  err("s1err", "");
+  D.email = email;
+
+  if(sb){
+    $("s1next").disabled = true;
+    $("s1next").textContent = "Creating…";
+    const {error} = await sb.auth.signUp({email, password:pw});
+    $("s1next").disabled = false;
+    $("s1next").textContent = "Create my account →";
+    if(error){
+      // most common: the address already has an account
+      return err("s1err", error.message + " — already signed up? Log in instead.");
+    }
+  }
+  track("signup", {mode: sb ? "supabase" : "demo"});
+  showStep(2);
+});
+
+$("s1skip").addEventListener("click", () => {
+  D.demo = true;
+  track("onboard_explore");
+  showStep(2);
+});
+
+// ================= 2 · YOU =================
+$("s2next").addEventListener("click", () => {
+  const name = $("name").value.trim();
+  let handle = $("handle").value.trim().replace(/^@+/, "");
+  if(!name) return err("s2err", "We need something to call you.");
+  if(handle && !/^[A-Za-z0-9_]{2,20}$/.test(handle))
+    return err("s2err", "Handles can only use letters, numbers and underscores.");
+  if(!handle) handle = name.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 16) || "traveller";
+  err("s2err", "");
+  D.name = name; D.handle = handle; D.home = $("home").value;
+  showStep(3);
+});
+$("s2back").addEventListener("click", () => showStep(1));
+
+// ================= 3 · VIBES =================
+$("vibes").addEventListener("click", e => {
+  const chip = e.target.closest(".chip");
+  if(!chip) return;
+  const v = chip.dataset.v;
+  D.vibes.has(v) ? D.vibes.delete(v) : D.vibes.add(v);
+  chip.classList.toggle("on");
+});
+$("budget").addEventListener("click", e => {
+  const opt = e.target.closest(".opt");
+  if(!opt) return;
+  [...$("budget").children].forEach(o => o.classList.remove("on"));
+  opt.classList.add("on");
+  D.budget = opt.dataset.b;
+});
+$("s3next").addEventListener("click", () => {
+  if(!D.budget) return err("s3err", "Pick a rough budget — it's the main thing we filter on.");
+  err("s3err", "");
+  showStep(4);
+});
+$("s3back").addEventListener("click", () => showStep(2));
+
+// ================= 4 · WINDOWS =================
+$("windows").addEventListener("click", e => {
+  const chip = e.target.closest(".chip");
+  if(!chip) return;
+  const w = chip.dataset.w;
+  D.windows.has(w) ? D.windows.delete(w) : D.windows.add(w);
+  chip.classList.toggle("on");
+});
+$("s4next").addEventListener("click", () => {
+  if(D.windows.size === 0) return err("s4err", "Pick at least one — otherwise we can't tell a useful deal from noise.");
+  err("s4err", "");
+  showStep(5);
+});
+$("s4back").addEventListener("click", () => showStep(3));
+
+// ================= 5 · FINISH =================
+$("s5back").addEventListener("click", () => showStep(4));
+
+$("s5next").addEventListener("click", async () => {
+  D.crew = $("crew").value.trim().toUpperCase();
+  const btn = $("s5next");
+  btn.disabled = true;
+  btn.textContent = "Setting up…";
+
+  let myCrewCode = newCode();
+
+  if(sb && !D.demo){
+    const {data:{user}} = await sb.auth.getUser();
+    if(user){
+      let crewId = null;
+
+      // redeeming someone else's code: only valid while their trial is still running
+      if(D.crew){
+        const {data:crew} = await sb.from("crews").select("id, owner, code").eq("code", D.crew).maybeSingle();
+        if(crew){
+          const {data:owner} = await sb.from("profiles").select("trial_ends").eq("id", crew.owner).maybeSingle();
+          if(owner && new Date(owner.trial_ends) > new Date()){
+            crewId = crew.id;
+            myCrewCode = crew.code;
+            track("crew_joined", {code:D.crew});
+          } else {
+            toast("That crew's free week has ended — starting your own");
+            track("crew_join_expired", {code:D.crew});
+          }
+        } else {
+          toast("Couldn't find that crew code — starting your own");
+          track("crew_join_missing", {code:D.crew});
+        }
+      }
+
+      // no code, or the code didn't apply: this user gets their own crew
+      if(!crewId){
+        const {data:mine} = await sb.from("crews")
+          .insert({code:myCrewCode, owner:user.id}).select("id").single();
+        crewId = mine ? mine.id : null;
+      }
+
+      const {error:pErr} = await sb.from("profiles").insert({
+        id:user.id, name:D.name, handle:D.handle, home:D.home,
+        prefs:{vibes:[...D.vibes], budget:D.budget, windows:[...D.windows]},
+        plan:"trial", crew_id:crewId
+      });
+      if(pErr && pErr.code === "23505"){   // unique_violation on handle
+        btn.disabled = false;
+        btn.textContent = "Start my free week →";
+        showStep(2);
+        return err("s2err", "That handle's taken — try another.");
+      }
+    }
+  }
+
+  track("onboard_complete", {
+    home:D.home, vibes:[...D.vibes].length, budget:D.budget,
+    windows:[...D.windows].length, crew:!!D.crew, demo:D.demo
+  });
+
+  // Demo mode has no session, so home.html reads these params. With a live
+  // backend home.html prefers the session and ignores them.
+  const q = new URLSearchParams({
+    n:D.name, h:D.handle, o:D.home, c:myCrewCode, demo:D.demo ? "1" : "0"
+  });
+  location.href = "home.html?" + q.toString();
+});
+
+// ================= BOOT =================
+// A signed-in user who lands here already has an account — send them past step 1.
+(async () => {
+  if(sb){
+    const {data:{session}} = await sb.auth.getSession();
+    if(session){ showStep(2); return; }
+  }
+  showStep(1);
+})();
+</script>
+</body>
+</html>
