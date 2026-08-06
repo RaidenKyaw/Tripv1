@@ -6,6 +6,9 @@
 <title>Start free · Freewheel</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
 <meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#FBF5EC; --card:#FFFFFF; --card2:#FDF9F2; --line:#EAD9C3;
@@ -14,8 +17,8 @@
     --teal:#2F6D62; --teal-deep:#24504A; --teal-soft:#E7F1EE;
     --gold:#D9A441; --gold-soft:#FAF1DC;
     --radius:16px;
-    --serif:Georgia,"Times New Roman",serif;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --display:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --sans:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   body{
@@ -26,7 +29,7 @@
     color:var(--ink); font-family:var(--sans); min-height:100vh; padding-bottom:50px;
   }
   .wrap{max-width:480px; margin:0 auto; padding:18px 16px;}
-  .logo{font-family:var(--serif); font-weight:700; font-size:19px; color:var(--teal); text-decoration:none;}
+  .logo{font-family:var(--display); font-weight:700; font-size:19px; color:var(--teal); text-decoration:none;}
   .logo em{color:var(--dim); font-family:var(--sans); font-weight:500; font-size:12px; margin-left:8px; font-style:italic;}
 
   .prog{display:flex; gap:5px; margin:16px 0 6px;}
@@ -35,7 +38,7 @@
   .stepno{font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
           color:var(--dim); margin-bottom:14px;}
 
-  h1{font-family:var(--serif); font-size:clamp(25px,6.4vw,31px); line-height:1.18; margin-bottom:8px; font-weight:700;}
+  h1{font-family:var(--display); font-size:clamp(25px,6.4vw,31px); line-height:1.18; margin-bottom:8px; font-weight:700;}
   .sub{color:var(--dim); font-size:14.5px; line-height:1.55; margin-bottom:20px;}
   .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
         padding:16px; margin-bottom:14px; box-shadow:0 2px 10px rgba(120,90,60,.05);}
@@ -73,7 +76,7 @@
   .lrow .p em{display:block; font-style:normal; font-size:10.5px; color:#8FB5AD; font-weight:600;
               margin-top:1px;}
   .live .note{font-size:11.5px; color:#8FB5AD; margin-top:11px; line-height:1.5;}
-  .bignum{font-family:var(--serif); font-size:29px; font-weight:700; color:#FFFDF9; line-height:1.15;}
+  .bignum{font-family:var(--display); font-size:29px; font-weight:700; color:#FFFDF9; line-height:1.15;}
   .bigsub{font-size:13px; color:#A9C7C0; margin-top:6px; line-height:1.5;}
 
   .chips{display:flex; flex-wrap:wrap; gap:8px;}

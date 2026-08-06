@@ -12,6 +12,9 @@
 <meta property="og:title" content="Where can we all go?">
 <meta property="og:description" content="Tap the weekends you're free. See what's cheap when everyone can make it.">
 <meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#FBF5EC;
@@ -28,27 +31,27 @@
     --gold:#D9A441;
     --gold-soft:#FAF1DC;
     --radius:16px;
-    --serif:Georgia,"Times New Roman",serif;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --display:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --sans:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
   body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.55; overflow-x:hidden;}
   .wrap{max-width:1020px; margin:0 auto; padding:0 20px;}
   .narrow{max-width:720px; margin:0 auto;}
-  h1,h2,h3{font-family:var(--serif); font-weight:700; letter-spacing:-.015em; line-height:1.15;}
-  h2{font-size:clamp(25px,3.7vw,32px); margin-bottom:10px;}
-  h3{font-size:19px;}
+  h1,h2,h3{font-family:var(--display); font-weight:500; letter-spacing:-.028em; line-height:1.12;}
+  h2{font-size:clamp(28px,4.1vw,40px); margin-bottom:12px;}
+  h3{font-size:20px; font-weight:700; letter-spacing:-.015em;}
   .eyebrow{font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:var(--terra); margin-bottom:12px;}
-  .lead{color:var(--dim); font-size:16px; line-height:1.62;}
+  .lead{color:var(--dim); font-size:16.5px; line-height:1.6;}
   a{color:var(--teal);}
-  section{padding:78px 0; position:relative;}
+  section{padding:92px 0; position:relative;}
 
   /* ------------------------------------------------------------------ nav */
   nav{position:sticky; top:0; z-index:40; background:rgba(251,245,236,.86);
       backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
   nav .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:13px; padding-bottom:13px;}
-  .logo{font-family:var(--serif); font-weight:700; font-size:20px; color:var(--teal); text-decoration:none;}
+  .logo{font-family:var(--display); font-weight:700; font-size:20px; color:var(--teal); text-decoration:none;}
   .logo em{color:var(--dim); font-family:var(--sans); font-weight:500; font-size:12px; margin-left:9px; font-style:italic;}
   .navlinks{display:flex; align-items:center; gap:18px;}
   .navlinks a{font-size:14px; font-weight:600; text-decoration:none; color:var(--dim);}
@@ -81,8 +84,8 @@
   @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
 
   .hero .wrap{position:relative; z-index:1;}
-  .hero h1{font-size:clamp(34px,5.2vw,54px); line-height:1.08; margin-bottom:16px;
-           max-width:19ch; margin-left:auto; margin-right:auto; text-align:center;
+  .hero h1{font-size:clamp(38px,6.1vw,68px); line-height:1.03; margin-bottom:20px;
+           max-width:17ch; margin-left:auto; margin-right:auto; text-align:center;
            text-wrap:balance;}
   /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
      is fragile here (any ancestor stacking context hides it), and --gold-soft is too
@@ -93,19 +96,19 @@
     background-size:100% .34em; background-position:0 78%; background-repeat:no-repeat;
     border-bottom:3px solid var(--gold);
   }
-  .hero .lead{font-size:17px; max-width:520px; margin:0 auto 24px; text-align:center;}
+  .hero .lead{font-size:18.5px; max-width:540px; margin:0 auto 28px; text-align:center;}
   .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:center;}
   .cta-note{color:var(--dim); font-size:13px; margin-top:16px; text-align:center;}
   /* factual, checkable claims only. No user counts until they are real. */
   .facts{display:flex; justify-content:center; gap:0; flex-wrap:wrap; margin-top:22px;}
   .fact{padding:0 20px; text-align:center; border-right:1px solid var(--line);}
   .fact:last-child{border-right:none;}
-  .fact b{display:block; font-family:var(--serif); font-size:22px; font-weight:700;}
+  .fact b{display:block; font-family:var(--display); font-size:22px; font-weight:700;}
   .fact span{font-size:11.5px; color:var(--dim); font-weight:600; letter-spacing:.03em;}
   .cta-note b{color:var(--ink); font-weight:700;}
 
   /* flight path */
-  .flightpath{position:relative; height:126px; margin-top:2px;}
+  .flightpath{position:relative; height:96px; margin-top:6px;}
   .flightpath svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
   .fp-line{fill:none; stroke:var(--line); stroke-width:2; stroke-dasharray:7 7;}
   .fp-dot{fill:var(--terra);}
@@ -146,7 +149,7 @@
   /* ------------------------------------------------------- passport stamp */
   .stamp{width:62px; height:62px; border:2.5px dashed var(--teal); border-radius:50%;
          display:flex; align-items:center; justify-content:center; transform:rotate(-8deg);
-         font-family:var(--serif); font-size:25px; font-weight:700; color:var(--teal);
+         font-family:var(--display); font-size:25px; font-weight:700; color:var(--teal);
          background:var(--teal-soft); margin-bottom:16px;}
   .step h3{margin-bottom:7px;}
   .step p{color:var(--dim); font-size:14.5px;}
@@ -182,37 +185,37 @@
   .chat-note{font-size:12px; color:var(--dim); text-align:center; margin-top:12px; font-style:italic;}
 
   /* ------------------------------------------------------------ postcards */
-  /* Horizontal rail: a row of destinations you can flick through reads as
-     abundance, where a 3x2 grid reads as a short list. */
-  .rail{display:flex; gap:16px; overflow-x:auto; padding:4px 0 18px; scroll-snap-type:x mandatory;
-        -webkit-overflow-scrolling:touch; scrollbar-width:thin;}
-  .rail::-webkit-scrollbar{height:8px;}
-  .rail::-webkit-scrollbar-thumb{background:var(--line); border-radius:99px;}
-  .railwrap{position:relative;
-    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 96%,transparent);
-    mask-image:linear-gradient(90deg,#000 0,#000 96%,transparent);}
-  .dcard{flex:0 0 268px; scroll-snap-align:start; background:var(--card);
-         border:1px solid var(--line); border-radius:20px; overflow:hidden;
-         box-shadow:0 3px 14px rgba(120,90,60,.07);}
-  .dcard:hover{transform:translateY(-4px); box-shadow:0 16px 34px rgba(120,90,60,.16);}
-  .scene{position:relative; height:132px; overflow:hidden;}
+  /* Full-bleed rail. Cards running off both edges signal "there is more here"
+     far better than a grid that stops politely at the container. */
+  .railwrap{position:relative; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw);}
+  .rail{display:flex; gap:14px; overflow-x:auto; padding:6px 0 22px;
+        scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+        scrollbar-width:none; padding-left:max(20px, calc(50vw - 500px));
+        padding-right:max(20px, calc(50vw - 500px));}
+  .rail::-webkit-scrollbar{display:none;}
+  .dcard{flex:0 0 258px; scroll-snap-align:start; border-radius:22px; overflow:hidden;
+         position:relative; height:288px; background:var(--card);
+         box-shadow:0 4px 18px rgba(120,90,60,.10);}
+  .dcard:hover{transform:translateY(-5px); box-shadow:0 18px 38px rgba(120,90,60,.20);}
+  .scene{position:absolute; inset:0;}
   .scene svg{position:absolute; inset:0; width:100%; height:100%; display:block;}
-  .scene .stamp{position:absolute; top:10px; left:11px; z-index:3; background:rgba(255,253,249,.92);
-                border:1px dashed var(--ink); border-radius:5px; padding:3px 8px; font-size:8px;
-                font-weight:800; letter-spacing:.12em; color:var(--ink); transform:rotate(-5deg);
-                white-space:nowrap; line-height:1.4;}
-  .scene .off{position:absolute; top:10px; right:11px; z-index:3; background:var(--gold);
-              color:#3A2A08; border-radius:99px; padding:4px 10px; font-size:11px; font-weight:800;
-              box-shadow:0 2px 8px rgba(0,0,0,.16);}
-  .dbody{padding:14px 15px 16px;}
-  .dplace{font-family:var(--serif); font-size:19px; font-weight:700; line-height:1.2;}
-  .dplace span{font-family:var(--sans); font-size:11.5px; font-weight:700; color:var(--dim);
-               margin-left:7px; letter-spacing:.04em;}
-  .dprice{display:flex; align-items:baseline; gap:9px; margin-top:9px;}
-  .dprice b{font-size:27px; font-weight:800; color:var(--teal); letter-spacing:-.02em;}
-  .dprice s{font-size:14px; color:var(--dim); font-weight:600;}
-  .dmeta{font-size:12px; color:var(--dim); margin-top:5px;}
-  .railhint{font-size:12.5px; color:var(--dim); text-align:center; margin-top:2px;}
+  /* dark wash so white type stays legible whatever the artwork does */
+  .dcard::after{content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(180deg, rgba(20,16,12,.42) 0%, rgba(20,16,12,0) 34%,
+                                       rgba(20,16,12,0) 52%, rgba(20,16,12,.55) 100%);}
+  .dname{position:absolute; top:16px; left:17px; right:17px; z-index:3;
+         font-family:var(--display); font-size:20px; font-weight:700; color:#FFF;
+         line-height:1.2; letter-spacing:-.02em; text-shadow:0 1px 10px rgba(0,0,0,.30);}
+  .dname span{display:block; font-size:11.5px; font-weight:600; opacity:.82; margin-top:3px;
+              letter-spacing:.06em;}
+  .dfoot{position:absolute; left:17px; right:17px; bottom:16px; z-index:3;}
+  .doff{display:inline-block; background:var(--gold); color:#3A2A08; border-radius:99px;
+        padding:7px 14px; font-size:13.5px; font-weight:700; letter-spacing:-.01em;}
+  .doff.hot{background:var(--terra); color:#FFF3EE;}
+  .dprice{margin-top:9px; color:#FFF; font-size:15px; font-weight:700;
+          text-shadow:0 1px 8px rgba(0,0,0,.4);}
+  .dprice s{opacity:.72; font-weight:500; margin-left:6px; font-size:13px;}
+  .railhint{font-size:13px; color:var(--dim); text-align:center; margin-top:4px;}
 
   /* -------------------------------------------------------- boarding pass */
   .tiers{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:26px;}
@@ -225,7 +228,7 @@
   .tier .body{padding:15px 14px 17px; border-top:2px dashed var(--line); flex:1;
               display:flex; flex-direction:column;}
   .tier .who{font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--dim);}
-  .tier .amt{font-family:var(--serif); font-size:30px; font-weight:700; margin:6px 0 1px;}
+  .tier .amt{font-family:var(--display); font-size:30px; font-weight:700; margin:6px 0 1px;}
   .tier .amt small{font-size:13px; font-weight:400; color:var(--dim); font-family:var(--sans);}
   .tier .bill{font-size:12px; color:var(--dim);}
   .tier .note{font-size:12.5px; color:var(--teal); font-weight:700; margin-top:9px;}
@@ -284,14 +287,14 @@
          box-shadow:0 2px 12px rgba(120,90,60,.06);}
   .vtag{font-size:10.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
         color:var(--dim); margin-bottom:10px;}
-  .vq{font-family:var(--serif); font-size:21px; font-weight:700; line-height:1.25; margin-bottom:10px;}
+  .vq{font-family:var(--display); font-size:21px; font-weight:700; line-height:1.25; margin-bottom:10px;}
   .vcard p{color:var(--dim); font-size:14.5px; line-height:1.6;}
-  .vplus{align-self:center; font-family:var(--serif); font-size:30px; color:var(--terra);
+  .vplus{align-self:center; font-family:var(--display); font-size:30px; color:var(--terra);
          font-weight:700; width:46px; height:46px; border-radius:50%; background:var(--terra-soft);
          border:1.5px dashed #E4B49F; display:flex; align-items:center; justify-content:center;}
   .fuse{margin-top:20px; background:var(--teal-deep); color:#D9E8E3; border-radius:18px;
         padding:20px 24px; font-size:16px; line-height:1.6; text-align:center;}
-  .fuse b{color:#FFFDF9; display:block; font-family:var(--serif); font-size:22px; font-weight:700;
+  .fuse b{color:#FFFDF9; display:block; font-family:var(--display); font-size:22px; font-weight:700;
           margin-bottom:5px;}
 
   /* ------------------------------------------------------------ how steps */
@@ -391,8 +394,6 @@
         <circle class="fp-dot" cx="780" cy="30" r="4.5"/>
       </svg>
       <div class="plane" aria-hidden="true">✈️</div>
-      <div class="fp-label" style="left:46px; top:104px;">Group chat</div>
-      <div class="fp-label" style="right:0; top:40px;">Actually going</div>
     </div>
   </div>
 </header>
@@ -756,8 +757,8 @@ const SKY = {
   mountain:["#A9C4DA","#EDE3D2"], europe:["#B3C6E0","#F0D3B5"], desert:["#F2C48C","#E9A46B"]
 };
 const SCENES = {
-  tropical:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <circle cx="212" cy="38" r="19" fill="#FFF3D0" opacity=".95"/>
+  tropical:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <circle cx="212" cy="38" r="19" fill="#FFF3D0" opacity=".95"/><g fill="#FFFFFF" opacity=".55"><ellipse cx="62" cy="26" rx="26" ry="9"/><ellipse cx="48" cy="22" rx="15" ry="9"/><ellipse cx="196" cy="52" rx="20" ry="7"/><ellipse cx="186" cy="48" rx="12" ry="7"/></g>
     <path d="M0 96h268v36H0z" fill="#3E8FA8"/>
     <path d="M0 96c30-8 54 6 84 0s54-10 88-2 66 4 96-2v40H0z" fill="#4FA7BE" opacity=".85"/>
     <path d="M0 110c34 8 62-6 96 0s58 10 92 4 50-6 80-2v20H0z" fill="#EFD9AE"/>
@@ -766,15 +767,15 @@ const SCENES = {
     <g fill="#2E6B4F" opacity=".8"><path d="M96 118V92h4v26z"/>
       <path d="M98 92c-10-7-19-6-23 0 7-3 14-2 21 3zM98 92c10-7 19-6 23 0-7-3-14-2-21 3z"/></g>
   </svg>`,
-  beach:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <circle cx="60" cy="36" r="17" fill="#FFF0C8"/>
+  beach:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <circle cx="60" cy="36" r="17" fill="#FFF0C8"/><g fill="#FFFFFF" opacity=".55"><ellipse cx="62" cy="26" rx="26" ry="9"/><ellipse cx="48" cy="22" rx="15" ry="9"/><ellipse cx="196" cy="52" rx="20" ry="7"/><ellipse cx="186" cy="48" rx="12" ry="7"/></g>
     <path d="M0 88h268v44H0z" fill="#4C9DC0"/>
     <path d="M0 100c26 10 48-8 74 0s48 12 74 2 44-8 64 2 34 2 56-4v32H0z" fill="#68B6D4" opacity=".8"/>
     <path d="M0 112c30 6 58-4 88 2s60 6 92 0 58-4 88 2v16H0z" fill="#F2E0BC"/>
     <g fill="#D96A4B" opacity=".9"><path d="M198 112V96h3v16z"/><path d="M186 96a14 8 0 0 1 28 0z"/></g>
   </svg>`,
-  city:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <circle cx="222" cy="34" r="15" fill="#FFF3D6" opacity=".9"/>
+  city:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <circle cx="222" cy="34" r="15" fill="#FFF3D6" opacity=".9"/><g fill="#FFFFFF" opacity=".55"><ellipse cx="62" cy="26" rx="26" ry="9"/><ellipse cx="48" cy="22" rx="15" ry="9"/><ellipse cx="196" cy="52" rx="20" ry="7"/><ellipse cx="186" cy="48" rx="12" ry="7"/></g>
     <g fill="#3B5570" opacity=".28"><path d="M8 78h22v54H8zM40 62h18v70H40zM66 88h24v44H66z"/></g>
     <g fill="#2F4A63"><path d="M96 56h26v76H96zM130 74h20v58h-20zM158 44h22v88h-22zM188 68h26v64h-26zM222 82h30v50h-30z"/></g>
     <g fill="#F6DFA8" opacity=".85">
@@ -784,15 +785,15 @@ const SCENES = {
     </g>
     <path d="M0 126h268v6H0z" fill="#233B50"/>
   </svg>`,
-  mountain:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <circle cx="44" cy="34" r="14" fill="#FFF6DE"/>
+  mountain:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <circle cx="44" cy="34" r="14" fill="#FFF6DE"/><g fill="#FFFFFF" opacity=".55"><ellipse cx="62" cy="26" rx="26" ry="9"/><ellipse cx="48" cy="22" rx="15" ry="9"/><ellipse cx="196" cy="52" rx="20" ry="7"/><ellipse cx="186" cy="48" rx="12" ry="7"/></g>
     <path d="M0 132l74-86 46 54 30-34 60 66z" fill="#4A6B7C"/>
     <path d="M74 46l24 28H50zM150 66l14-16 18 20z" fill="#F7F4EC"/>
     <path d="M120 132l70-72 78 72z" fill="#5C7E8E" opacity=".9"/>
     <path d="M190 60l20 18h-40z" fill="#F7F4EC" opacity=".95"/>
     <path d="M0 124h268v8H0z" fill="#3C5A69"/>
   </svg>`,
-  europe:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  europe:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
     <circle cx="36" cy="32" r="13" fill="#FFF2D2" opacity=".9"/>
     <g fill="#8C5A4A"><path d="M18 92h40v40H18zM64 80h34v52H64zM104 96h44v36h-44zM154 74h30v58h-30zM190 90h38v42h-38z"/></g>
     <g fill="#B8705A"><path d="M14 92l24-18 24 18zM60 80l17-14 17 14zM100 96l22-16 22 16zM150 74l15-14 15 14zM186 90l19-15 19 15z"/></g>
@@ -801,7 +802,7 @@ const SCENES = {
     <g fill="#F3DCB4" opacity=".9"><path d="M28 104h8v12h-8zM40 104h8v12h-8zM74 92h10v14H74zM118 108h10v12h-10zM162 88h10v14h-10zM202 102h10v14h-10z"/></g>
     <path d="M0 126h268v6H0z" fill="#6B4438"/>
   </svg>`,
-  desert:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  desert:`<svg viewBox="0 0 268 132" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
     <circle cx="204" cy="40" r="20" fill="#FFEBBC"/>
     <path d="M0 96c40-18 70 6 104-4s58-22 92-10 46 8 72 2v48H0z" fill="#E0A76B"/>
     <path d="M0 116c46-12 78 8 116 0s70-14 152-4v20H0z" fill="#CE9159"/>
@@ -844,7 +845,7 @@ function buildTicker(){
 
 function buildCards(){
   const host = document.getElementById("postcards");
-  routeSummary(HOME).slice(0, 10).forEach(r => {
+  routeSummary(HOME).slice(0, 12).forEach(r => {
     const card = el("article", "dcard");
 
     const scene = el("div", "scene");
@@ -854,21 +855,18 @@ function buildCards(){
     const art = el("div");
     art.innerHTML = SCENES[kind];          // static markup, nothing interpolated
     scene.appendChild(art.firstElementChild);
-    scene.appendChild(el("span", "stamp", "AIR MAIL"));
-    if(r.off >= 20) scene.appendChild(el("span", "off", r.off + "% OFF"));
     card.appendChild(scene);
 
-    const body = el("div", "dbody");
-    const place = el("div", "dplace", r.city);
-    place.appendChild(el("span", null, r.code));
-    body.appendChild(place);
+    const name = el("div", "dname", r.city);
+    name.appendChild(el("span", null, HOME + " to " + r.code));
+    card.appendChild(name);
 
-    const price = el("div", "dprice");
-    price.appendChild(el("b", null, money(r.low)));
+    const foot = el("div", "dfoot");
+    if(r.off >= 20) foot.appendChild(el("span", "doff" + (r.off >= 40 ? " hot" : ""), r.off + "% off"));
+    const price = el("div", "dprice", money(r.low));
     price.appendChild(el("s", null, money(r.typ)));
-    body.appendChild(price);
-    body.appendChild(el("div", "dmeta", HOME + " \u2192 " + r.code + " \u00b7 round trip per person, " + CUR));
-    card.appendChild(body);
+    foot.appendChild(price);
+    card.appendChild(foot);
 
     host.appendChild(card);
   });

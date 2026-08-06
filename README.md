@@ -78,10 +78,22 @@ The rest of the principles are in [HANDOFF.md §4](HANDOFF.md).
 ## Design system
 
 Warm travel, not tech gloss. Sand `#FBF5EC`, ink `#33302B`, line `#EAD9C3`, terracotta `#D96A4B`
-(action), teal `#2F6D62` (trust/prices, deep panel `#24504A`), gold `#D9A441` (deals). Georgia serif
-headlines, system sans body. Motifs: boarding passes (teal strip + dashed perforation), postcards with
-AIR MAIL stamps, passport-stamp step numbers, dashed flight paths. `prefers-reduced-motion` respected
-everywhere.
+(action), teal `#2F6D62` (trust/prices, deep panel `#24504A`), gold `#D9A441` (deals).
+
+**Type: DM Sans throughout,** loaded from Google Fonts, set in `--display` (headlines) and `--sans`
+(body). Headlines run at weight 500 with tight tracking; the size does the work, not the weight.
+
+> **Override, Aug 2026.** HANDOFF.md 4.5 specifies Georgia serif headlines and says the design
+> system stays. The founder overrode that after benchmarking against eatclub.com.au, which is a
+> large geometric sans on cream. The palette, the postcard and boarding-pass motifs, and the
+> honesty rules are all unchanged; only the typeface and the type scale moved. If you are weighing
+> this up again, the argument for the serif was "warmth and freedom, not tech gloss", and the
+> argument against was that it read older than the audience.
+
+Motifs: boarding passes (teal strip and dashed perforation), postcards with AIR MAIL stamps,
+passport-stamp step numbers, dashed flight paths. Deal cards are illustrated SVG scenes chosen by
+destination type, filling the card with the crop anchored to the ground. `prefers-reduced-motion`
+respected everywhere.
 
 ## A note on the JavaScript
 

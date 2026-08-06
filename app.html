@@ -10,6 +10,9 @@
 <meta property="og:image" content="https://raidenkyaw.github.io/Tripv1/og.png">
 <meta property="og:title" content="Where can we all go?">
 <meta property="og:description" content="Tap the weekends you're free. See what's cheap when everyone can make it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#FBF5EC;            /* warm sand */
@@ -25,6 +28,8 @@
     --gold:#D9A441;          /* sun: deals, highlights */
     --gold-soft:#FAF1DC;
     --radius:16px;
+    --display:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --sans:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   body{
@@ -33,14 +38,14 @@
       radial-gradient(900px 420px at -10% -120px, #EDF3EE 0%, rgba(237,243,238,0) 55%),
       var(--bg);
     color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-family:var(--sans);
     min-height:100vh; padding-bottom:60px;
   }
   .wrap{max-width:480px; margin:0 auto; padding:20px 16px;}
-  .logo{font-family:Georgia,"Times New Roman",serif; font-weight:700; font-size:19px; color:var(--teal); letter-spacing:.01em;}
-  .logo span{color:var(--dim); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  .logo{font-family:var(--display); font-weight:700; font-size:19px; color:var(--teal); letter-spacing:.01em;}
+  .logo span{color:var(--dim); font-family:var(--sans);
     font-weight:500; font-size:12px; margin-left:8px; font-style:italic;}
-  h1{font-family:Georgia,"Times New Roman",serif; font-size:clamp(27px,7vw,34px); line-height:1.16; margin:18px 0 8px; font-weight:700; letter-spacing:-.01em;}
+  h1{font-family:var(--display); font-size:clamp(27px,7vw,34px); line-height:1.16; margin:18px 0 8px; font-weight:700; letter-spacing:-.01em;}
   .sub{color:var(--dim); font-size:14.5px; line-height:1.55; margin-bottom:22px;}
   .card{
     background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
@@ -106,7 +111,7 @@
   .best .notch-r{position:absolute; right:-9px; top:54%; width:18px; height:18px;
     border-radius:50%; background:var(--bg); border:1px solid var(--line);}
   .best .when{font-size:12.5px; color:var(--terra); font-weight:800; letter-spacing:.06em; text-transform:uppercase;}
-  .best .big{font-family:Georgia,serif; font-size:23px; font-weight:700; margin-top:5px; line-height:1.25; color:var(--ink);}
+  .best .big{font-family:var(--display); font-size:23px; font-weight:700; margin-top:5px; line-height:1.25; color:var(--ink);}
   .best .inner{padding:14px 16px 15px; border-top:2px dashed var(--line);}
   .muted{color:var(--dim); font-size:12.5px; line-height:1.55;}
 
