@@ -105,7 +105,7 @@
   .cta-note b{color:var(--ink); font-weight:700;}
 
   /* flight path */
-  .flightpath{position:relative; height:104px; margin-top:2px;}
+  .flightpath{position:relative; height:126px; margin-top:2px;}
   .flightpath svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
   .fp-line{fill:none; stroke:var(--line); stroke-width:2; stroke-dasharray:7 7;}
   .fp-dot{fill:var(--terra);}
@@ -232,10 +232,13 @@
   .tier .note.plain{color:var(--dim); font-weight:500;}
   .tier .off{position:absolute; top:34px; right:10px; background:var(--gold-soft); border:1px solid #EBD9AE;
              color:#9A6E1B; font-size:10px; font-weight:800; border-radius:99px; padding:3px 8px;}
-  .guarantees{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px;}
-  .guar{display:flex; gap:11px; align-items:flex-start; font-size:13.5px; color:var(--dim);}
-  .guar b{color:var(--ink); display:block; font-size:14px; margin-bottom:2px;}
-  .guar .ic{font-size:18px; line-height:1.2;}
+  .guarantees{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px;}
+  .guar{display:flex; gap:12px; align-items:flex-start; font-size:13.5px; color:var(--dim);
+        background:var(--card); border:1px solid var(--line); border-radius:16px;
+        padding:16px 17px; line-height:1.6; box-shadow:0 2px 10px rgba(120,90,60,.05);}
+  .guar:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(120,90,60,.11);}
+  .guar b{color:var(--ink); display:block; font-size:14.5px; margin-bottom:4px;}
+  .guar .ic{font-size:20px; line-height:1.15; flex:0 0 auto;}
 
   /* ------------------------------------------------------------------ faq */
   .faq details{border-bottom:1px solid var(--line); padding:16px 0;}
@@ -273,6 +276,43 @@
     .flightpath{height:104px;}
   }
   @media(max-width:420px){ .tiers{grid-template-columns:1fr;} }
+
+  /* ------------------------------------------------------- problem/versus */
+  /* The pitch is a seam between two things, so show two things and the seam. */
+  .versus{display:grid; grid-template-columns:1fr auto 1fr; gap:18px; align-items:stretch;}
+  .vcard{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:22px 22px 20px;
+         box-shadow:0 2px 12px rgba(120,90,60,.06);}
+  .vtag{font-size:10.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+        color:var(--dim); margin-bottom:10px;}
+  .vq{font-family:var(--serif); font-size:21px; font-weight:700; line-height:1.25; margin-bottom:10px;}
+  .vcard p{color:var(--dim); font-size:14.5px; line-height:1.6;}
+  .vplus{align-self:center; font-family:var(--serif); font-size:30px; color:var(--terra);
+         font-weight:700; width:46px; height:46px; border-radius:50%; background:var(--terra-soft);
+         border:1.5px dashed #E4B49F; display:flex; align-items:center; justify-content:center;}
+  .fuse{margin-top:20px; background:var(--teal-deep); color:#D9E8E3; border-radius:18px;
+        padding:20px 24px; font-size:16px; line-height:1.6; text-align:center;}
+  .fuse b{color:#FFFDF9; display:block; font-family:var(--serif); font-size:22px; font-weight:700;
+          margin-bottom:5px;}
+
+  /* ------------------------------------------------------------ how steps */
+  /* A dashed run between the stamps, same motif as the flight path. */
+  .steps{position:relative;}
+  .steps .step{position:relative; padding-top:4px;}
+  .steps .step::after{content:""; position:absolute; top:35px; left:calc(50% + 46px);
+    width:calc(100% - 92px); border-top:2px dashed var(--line); z-index:0;}
+  .steps .step:last-child::after{display:none;}
+  .step .stamp{position:relative; z-index:1; margin-left:auto; margin-right:auto;}
+  .steps .step{text-align:center;}
+  .step h3{min-height:2.4em;}
+
+  @media(max-width:860px){
+    /* declared after .versus/.steps above, so these actually win */
+    .versus{grid-template-columns:1fr; gap:12px;}
+    .vplus{margin:0 auto; width:40px; height:40px; font-size:26px;}
+    .steps .step::after{display:none;}
+    .step h3{min-height:0;}
+    .fuse{padding:18px 18px; font-size:15px;}
+  }
 
   /* ---------------------------------------------------- interaction polish */
   a,button,select,input,summary,.chip,.size,.sort,.wk,.wchip,.opt,.checkrow,
@@ -351,8 +391,8 @@
         <circle class="fp-dot" cx="780" cy="30" r="4.5"/>
       </svg>
       <div class="plane" aria-hidden="true">✈️</div>
-      <div class="fp-label" style="left:0; top:114px;">Group chat</div>
-      <div class="fp-label" style="right:0; top:44px;">Actually going</div>
+      <div class="fp-label" style="left:46px; top:104px;">Group chat</div>
+      <div class="fp-label" style="right:0; top:40px;">Actually going</div>
     </div>
   </div>
 </header>
@@ -364,14 +404,34 @@
 
 <!-- ============================================================== PROBLEM -->
 <section>
-  <div class="wrap narrow" style="text-align:center;">
-    <div class="eyebrow">The actual problem</div>
-    <h2>Two questions nobody can answer at once</h2>
-    <p class="lead" style="margin-top:14px;">Planners tell you <em>when everyone's free</em>. Flight
-      tools tell you <em>when it's cheap</em>. Neither knows the other, so the group chat stalls at
-      "when's everyone free?" and dies at "that weekend's $480 now."</p>
-    <p class="lead" style="margin-top:14px;"><b style="color:var(--ink)">Freewheel fuses the two.</b>
-      Your shared free weekends, priced from your home airport, ranked cheapest first.</p>
+  <div class="wrap">
+    <div style="text-align:center; margin-bottom:34px;">
+      <div class="eyebrow">The actual problem</div>
+      <h2>Two questions nobody can answer at once</h2>
+    </div>
+
+    <div class="versus">
+      <div class="vcard">
+        <div class="vtag">Group planners</div>
+        <div class="vq">"When is everyone free?"</div>
+        <p>They can line up the calendars. They have no idea what a flight costs on the days
+          you land on.</p>
+      </div>
+
+      <div class="vplus" aria-hidden="true">+</div>
+
+      <div class="vcard">
+        <div class="vtag">Flight tools</div>
+        <div class="vq">"When is it cheap?"</div>
+        <p>They can find the fare. They have never heard of your friends, or the fact that
+          Jack has finals that week.</p>
+      </div>
+    </div>
+
+    <div class="fuse">
+      <b>Freewheel is the overlap.</b>
+      Your shared free weekends, priced from your home airport, ranked cheapest first.
+    </div>
   </div>
 </section>
 
@@ -382,7 +442,7 @@
       <div class="eyebrow">How it works</div>
       <h2>Three taps and a link</h2>
     </div>
-    <div class="grid3">
+    <div class="grid3 steps">
       <div class="step">
         <div class="stamp">01</div>
         <h3>Start a trip</h3>
@@ -397,7 +457,7 @@
       </div>
       <div class="step">
         <div class="stamp">03</div>
-        <h3>See where you can all afford to go</h3>
+        <h3>See where you can all afford&nbsp;to&nbsp;go</h3>
         <p>The overlap becomes a boarding pass: the weekend that works for the most people,
           with the cheapest destinations from your airport on those exact dates.</p>
       </div>
