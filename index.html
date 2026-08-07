@@ -84,9 +84,8 @@
   @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
 
   .hero .wrap{position:relative; z-index:1;}
-  .hero h1{font-size:clamp(38px,6.1vw,68px); line-height:1.03; margin-bottom:20px;
-           max-width:17ch; margin-left:auto; margin-right:auto; text-align:center;
-           text-wrap:balance;}
+  .hero h1{font-size:clamp(36px,4.6vw,60px); line-height:1.04; margin-bottom:20px;
+           max-width:15ch; text-wrap:balance;}
   /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
      is fragile here (any ancestor stacking context hides it), and --gold-soft is too
      close to the sand background to read, so this band is deliberately warmer. */
@@ -96,13 +95,13 @@
     background-size:100% .34em; background-position:0 78%; background-repeat:no-repeat;
     border-bottom:3px solid var(--gold);
   }
-  .hero .lead{font-size:18.5px; max-width:540px; margin:0 auto 28px; text-align:center;}
-  .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:center;}
-  .cta-note{color:var(--dim); font-size:13px; margin-top:16px; text-align:center;}
+  .hero .lead{font-size:18px; max-width:480px; margin:0 0 28px;}
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+  .cta-note{color:var(--dim); font-size:13px; margin-top:16px;}
   /* factual, checkable claims only. No user counts until they are real. */
-  .facts{display:flex; justify-content:center; gap:0; flex-wrap:wrap; margin-top:22px;}
-  .fact{padding:0 20px; text-align:center; border-right:1px solid var(--line);}
-  .fact:last-child{border-right:none;}
+  .facts{display:flex; gap:0; flex-wrap:wrap; margin-top:26px;}
+  .fact{padding:0 20px 0 0; margin-right:20px; border-right:1px solid var(--line);}
+  .fact:last-child{border-right:none; margin-right:0; padding-right:0;}
   .fact b{display:block; font-family:var(--display); font-size:22px; font-weight:700;}
   .fact span{font-size:11.5px; color:var(--dim); font-weight:600; letter-spacing:.03em;}
   .cta-note b{color:var(--ink); font-weight:700;}
@@ -123,6 +122,19 @@
   }
   .fp-label{position:absolute; font-size:11px; font-weight:800; letter-spacing:.1em;
             text-transform:uppercase; color:var(--dim);}
+
+  .hero-alt{font-size:15px; font-weight:600; color:var(--teal); text-decoration:none;
+            border-bottom:1.5px solid #BFD6CF; padding-bottom:1px;}
+  .hero-alt:hover{border-bottom-color:var(--teal);}
+
+  /* --------------------------------------------------------- hero layout */
+  .hero-grid{display:grid; grid-template-columns:1.02fr .98fr; gap:36px; align-items:center;}
+  .hero-art{position:relative;}
+  .hero-art svg{width:100%; height:auto; display:block; max-height:520px;
+                filter:drop-shadow(0 18px 34px rgba(120,90,60,.14));}
+  /* the picture drifts a little so the hero is not completely static */
+  @keyframes hover-art{0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)}}
+  .hero-art svg{animation:hover-art 7s ease-in-out infinite;}
 
   /* --------------------------------------------------------------- ticker */
   .ticker{border-top:1px solid var(--line); border-bottom:1px solid var(--line);
@@ -268,8 +280,13 @@
     .navlinks{gap:14px;}
     .navlinks a{font-size:14px;}
     .btn-sm{padding:9px 15px; font-size:13.5px;}
-    .facts{margin-top:18px;}
-    .fact{padding:0 14px 10px;}
+    .facts{margin-top:20px;}
+    .fact{padding:0 11px 0 0; margin-right:11px;}
+    .fact b{font-size:19px;}
+    .fact span{font-size:10px; letter-spacing:.02em;}
+    .hero-grid{grid-template-columns:1fr; gap:6px;}
+    .hero-art{order:-1; max-width:440px; margin:0 auto 4px;}
+    .hero-art svg{max-height:330px;}
     .grid3,.sc-grid,.guarantees{grid-template-columns:1fr;}
     .tiers{grid-template-columns:repeat(2,1fr);}
     .grid2{grid-template-columns:1fr;}
@@ -369,31 +386,121 @@
     <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
   </div>
   <div class="wrap">
-    <h1>Your group chat has been planning this trip <span class="u">since March</span>.</h1>
-    <p class="lead">Everyone taps the weekends they can actually do. Freewheel finds the windows you
-      all share, then shows what's cheap from your airport on exactly those days.</p>
-    <div class="cta-row">
-      <a href="onboard.html" class="btn btn-primary" data-cta="hero">Start free for 7 days, no card</a>
-      <a href="app.html" class="btn btn-ghost" data-cta="hero_try">Try it without signing up</a>
-    </div>
-    <p class="cta-note">No app to install. <b>Nobody needs an account to join your trip.</b> You send a link, they tap dates.</p>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Your group chat has been planning this trip <span class="u">since March</span>.</h1>
+        <p class="lead">Everyone taps the weekends they can actually do. Freewheel finds the windows
+          you all share, then shows what's cheap from your airport on exactly those days.</p>
+        <div class="cta-row">
+          <a href="onboard.html" class="btn btn-primary" data-cta="hero">Start your free week</a>
+          <a href="app.html" class="hero-alt" data-cta="hero_try">or try it without signing up</a>
+        </div>
+        <p class="cta-note">Seven days, no card. No app to install, and
+          <b>nobody needs an account to join your trip.</b></p>
 
-    <!-- Every number here is checkable against the repo. No user counts, no
-         testimonials, no partner badges, until those are real. -->
-    <div class="facts">
-      <div class="fact"><b id="factRoutes">96</b><span>ROUTES WATCHED</span></div>
-      <div class="fact"><b id="factAirports">6</b><span>US AIRPORTS</span></div>
-      <div class="fact"><b>Nightly</b><span>PRICE REFRESH</span></div>
-      <div class="fact"><b>$0</b><span>TO JOIN A TRIP</span></div>
-    </div>
+        <!-- Every number here is checkable against the repo. No user counts, no
+             testimonials, no partner badges, until those are real. -->
+        <div class="facts">
+          <div class="fact"><b id="factRoutes">96</b><span>ROUTES WATCHED</span></div>
+          <div class="fact"><b id="factAirports">6</b><span>US AIRPORTS</span></div>
+          <div class="fact"><b>Nightly</b><span>PRICE REFRESH</span></div>
+        </div>
+      </div>
 
-    <div class="flightpath">
-      <svg viewBox="0 0 800 132" preserveAspectRatio="none" aria-hidden="true">
-        <path class="fp-line" d="M 10 104 C 150 104, 220 26, 380 26 S 640 96, 780 30"/>
-        <circle class="fp-dot" cx="10" cy="104" r="4.5"/>
-        <circle class="fp-dot" cx="780" cy="30" r="4.5"/>
-      </svg>
-      <div class="plane" aria-hidden="true">✈️</div>
+      <!-- Three friends, three sets of dates, one weekend they all share, and the
+           fare that falls out of it. The whole product in one picture. -->
+      <div class="hero-art">
+        <svg viewBox="0 0 560 500" role="img" aria-label="Three friends comparing the weekends they are free, with the cheapest fare for the weekend they all share">
+          <ellipse cx="292" cy="252" rx="248" ry="212" fill="#F6E9CE" opacity=".85"/>
+          <ellipse cx="286" cy="300" rx="196" ry="158" fill="#E3F0EB" opacity=".55"/>
+
+          <g stroke="#33302B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <!-- friend, left -->
+            <g>
+              <path d="M58 452v-58a56 56 0 0 1 56-56h20a56 56 0 0 1 56 56v58z" fill="#D96A4B"/>
+              <path d="M104 338h60v22a30 30 0 0 1-60 0z" fill="#E8B183"/>
+              <circle cx="134" cy="300" r="46" fill="#E8B183"/>
+              <path d="M88 296a46 46 0 0 1 92 0c0-16-8-24-18-28-8 12-52 14-62-2-8 6-12 16-12 30z" fill="#4A342A"/>
+              <circle cx="119" cy="300" r="4.5" fill="#33302B" stroke="none"/>
+              <circle cx="151" cy="300" r="4.5" fill="#33302B" stroke="none"/>
+              <path d="M124 318c6 6 16 6 22 0" fill="none"/>
+            </g>
+
+            <!-- friend, right -->
+            <g>
+              <path d="M372 452v-52a52 52 0 0 1 52-52h18a52 52 0 0 1 52 52v52z" fill="#2F6D62"/>
+              <path d="M414 348h54v20a27 27 0 0 1-54 0z" fill="#C98A5E"/>
+              <circle cx="441" cy="312" r="43" fill="#C98A5E"/>
+              <path d="M398 310a43 43 0 0 1 86 0c4-24-14-42-43-42s-47 18-43 42z" fill="#33302B"/>
+              <circle cx="427" cy="312" r="4.5" fill="#33302B" stroke="none"/>
+              <circle cx="457" cy="312" r="4.5" fill="#33302B" stroke="none"/>
+              <path d="M432 330c6 5 14 5 20 0" fill="none"/>
+            </g>
+
+            <!-- friend, centre back -->
+            <g>
+              <path d="M216 452v-118a50 50 0 0 1 50-50h20a50 50 0 0 1 50 50v118z" fill="#D9A441"/>
+              <path d="M256 282h44v16a22 22 0 0 1-44 0z" fill="#8D5B3B"/>
+              <circle cx="278" cy="250" r="39" fill="#8D5B3B"/>
+              <path d="M239 248a39 39 0 0 1 78 0c2-21-12-37-39-37s-41 16-39 37z" fill="#2A1D14"/>
+              <circle cx="265" cy="251" r="4.5" fill="#33302B" stroke="none"/>
+              <circle cx="292" cy="251" r="4.5" fill="#33302B" stroke="none"/>
+              <path d="M270 267c5 5 13 5 17 0" fill="none"/>
+            </g>
+
+            <!-- the phone they are all looking at -->
+            <g transform="rotate(-7 288 392)">
+              <rect x="222" y="290" width="132" height="196" rx="20" fill="#FFFDF9"/>
+              <rect x="234" y="308" width="108" height="160" rx="12" fill="#24504A" stroke="none"/>
+              <rect x="262" y="297" width="52" height="7" rx="3.5" fill="#E7E1D6" stroke="none"/>
+              <g stroke="none">
+                <rect x="244" y="318" width="40" height="9" rx="4.5" fill="#7FA9A0"/>
+                <!-- weekend tiles, the three everyone shares are lit -->
+                <rect x="244" y="336" width="28" height="26" rx="7" fill="#3C6B63"/>
+                <rect x="278" y="336" width="28" height="26" rx="7" fill="#D9A441"/>
+                <rect x="312" y="336" width="20" height="26" rx="7" fill="#3C6B63"/>
+                <rect x="244" y="368" width="28" height="26" rx="7" fill="#D9A441"/>
+                <rect x="278" y="368" width="28" height="26" rx="7" fill="#3C6B63"/>
+                <rect x="312" y="368" width="20" height="26" rx="7" fill="#3C6B63"/>
+                <rect x="244" y="400" width="28" height="26" rx="7" fill="#3C6B63"/>
+                <rect x="278" y="400" width="28" height="26" rx="7" fill="#3C6B63"/>
+                <rect x="312" y="400" width="20" height="26" rx="7" fill="#D9A441"/>
+                <rect x="244" y="436" width="88" height="20" rx="10" fill="#D96A4B"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- the fare that falls out of the overlap -->
+          <g transform="rotate(6 452 132)">
+            <rect x="360" y="92" width="188" height="80" rx="18" fill="#FFFDF9"
+                  stroke="#33302B" stroke-width="3"/>
+            <rect x="360" y="92" width="188" height="24" rx="18" fill="#2F6D62" stroke="none"/>
+            <rect x="360" y="106" width="188" height="10" fill="#2F6D62" stroke="none"/>
+            <text x="374" y="109" font-family="DM Sans, sans-serif" font-size="11"
+                  font-weight="700" fill="#DFEEEA" letter-spacing="1.6">CHEAPEST TOGETHER</text>
+            <text x="374" y="146" font-family="DM Sans, sans-serif" font-size="30"
+                  font-weight="700" fill="#33302B" letter-spacing="-0.6">$86</text>
+            <text x="440" y="146" font-family="DM Sans, sans-serif" font-size="14"
+                  font-weight="500" fill="#8C7F6D">BOS to DCA</text>
+            <text x="374" y="163" font-family="DM Sans, sans-serif" font-size="11.5"
+                  font-weight="600" fill="#9A6E1B">Sat 12 to Mon 14</text>
+          </g>
+
+          <!-- each of them offering a different set of dates -->
+          <g font-family="DM Sans, sans-serif" font-weight="700" font-size="13">
+            <g transform="rotate(-8 96 168)">
+              <rect x="26" y="148" width="140" height="38" rx="19" fill="#FFFDF9"
+                    stroke="#33302B" stroke-width="3"/>
+              <text x="46" y="172" fill="#33302B">Free the 12th</text>
+            </g>
+            <g transform="rotate(5 486 236)">
+              <rect x="416" y="216" width="140" height="38" rx="19" fill="#FFFDF9"
+                    stroke="#33302B" stroke-width="3"/>
+              <text x="434" y="240" fill="#33302B">Not the 26th</text>
+            </g>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 </header>
