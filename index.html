@@ -52,29 +52,65 @@
   a{color:var(--teal);}
   section{padding:92px 0; position:relative;}
 
-  /* ------------------------------------------------------------------ nav */
-  nav{position:sticky; top:0; z-index:40; background:rgba(251,245,236,.86);
-      backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
-  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:13px; padding-bottom:13px;}
-  .logo{font-family:var(--display); font-weight:700; font-size:19.5px; color:var(--ink);
-       text-decoration:none; display:flex; align-items:center; gap:10px; letter-spacing:-.02em;}
-  .logo{white-space:nowrap;}
-  .logo .mark{width:34px; height:34px; border-radius:10px; background:var(--brand);
-              display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
-  .logo em{color:var(--dim); font-family:var(--sans); font-weight:500; font-size:12px; margin-left:9px; font-style:italic;}
-  .navlinks{display:flex; align-items:center; gap:18px;}
-  .navlinks a{font-size:14px; font-weight:600; text-decoration:none; color:var(--dim);}
-  .navlinks a:hover{color:var(--ink);}
-  .btn{display:inline-block; border:none; border-radius:99px; padding:16px 28px; font-size:16px;
-       white-space:nowrap;
-       font-weight:700; cursor:pointer; text-align:center; text-decoration:none; font-family:var(--sans);}
+  /* ------------------------------------------------- buttons and wordmark */
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:9px;
+       border:none; border-radius:99px; padding:16px 28px; font-size:16px; font-weight:700;
+       cursor:pointer; text-decoration:none; font-family:var(--sans); white-space:nowrap;}
+  .btn svg{flex:0 0 auto;}
   .btn-primary{background:var(--brand); color:#F3FAF7; box-shadow:0 6px 18px rgba(27,114,89,.24);}
   .btn-primary:active{transform:scale(.985);}
   .btn-ghost{background:transparent; color:var(--brand); border:1.6px solid var(--brand-line);}
   .btn-sm{padding:10px 18px; font-size:14px; border-radius:99px;}
+  .logo{font-family:var(--display); font-weight:700; font-size:19.5px; color:var(--ink);
+        text-decoration:none; display:inline-flex; align-items:center; gap:10px;
+        letter-spacing:-.02em; white-space:nowrap;}
+
+  /* ------------------------------------------------------------------ nav */
+  /* Floating pill. Width animates between a measured expanded value and 52px,
+     because CSS cannot transition to `auto`; the JS measures it and re-measures
+     on resize. The spring-ish overshoot stands in for Framer's damping. */
+  .pillnav{position:fixed; left:50%; transform:translateX(-50%); z-index:60;
+           top:var(--navtop, 16px); transition:top .3s ease;}
+  .pillnav .bar{position:relative; display:flex; align-items:center; height:54px;
+    border-radius:999px; border:1px solid rgba(120,90,60,.14);
+    background:rgba(253,249,242,.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 10px 34px rgba(70,60,45,.13); overflow:hidden; padding-right:7px;
+    transition:width .5s cubic-bezier(.34,1.28,.64,1), padding .5s cubic-bezier(.34,1.28,.64,1),
+               box-shadow .3s ease;}
+  .pn-logo{flex:0 0 auto; display:flex; align-items:center; padding:0 4px 0 7px; text-decoration:none;}
+  .pn-logo .mark{width:40px; height:40px; border-radius:13px; background:var(--brand);
+                 display:flex; align-items:center; justify-content:center;}
+  .pn-logo .mark svg{width:21px; height:21px;}
+  .pn-items{display:flex; align-items:center; gap:4px; white-space:nowrap;
+            transition:opacity .24s ease, transform .34s cubic-bezier(.34,1.2,.64,1);}
+  .pn-items a{font-size:14.5px; font-weight:600; color:var(--dim); text-decoration:none;
+              padding:9px 13px; border-radius:999px;}
+  .pn-items a:hover{color:var(--ink); background:rgba(120,90,60,.07); opacity:1;}
+  .pn-cta{background:var(--brand); color:#F3FAF7 !important; font-weight:700 !important;
+          padding:11px 20px !important; margin-left:5px;
+          box-shadow:0 5px 14px rgba(27,114,89,.26);}
+  .pn-cta:hover{background:#166049; color:#F3FAF7 !important;}
+  .pn-burger{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+             color:var(--ink); opacity:0; transform:scale(.8); pointer-events:none;
+             transition:opacity .24s ease .06s, transform .34s cubic-bezier(.34,1.4,.64,1) .06s;}
+  .pn-burger svg{width:23px; height:23px;}
+
+  /* collapsed: a 54px disc showing the menu glyph, click or scroll up to reopen */
+  .pillnav.is-collapsed .bar{padding-right:0; justify-content:center; cursor:pointer;}
+  .pillnav.is-collapsed .pn-items{opacity:0; transform:translateX(-16px);}
+  .pillnav.is-collapsed .pn-logo{opacity:0; transform:translateX(-22px) rotate(-140deg);
+                                 transition:opacity .24s ease, transform .34s ease;}
+  .pillnav.is-collapsed .pn-burger{opacity:1; transform:scale(1);}
+  .pillnav.is-collapsed .bar:hover{box-shadow:0 12px 30px rgba(70,60,45,.20);}
+  .pn-logo{transition:opacity .3s ease .1s, transform .4s cubic-bezier(.34,1.3,.64,1) .1s;}
+
+  /* the sample-price warning outranks the nav, so it pins to the top and the
+     nav sits under it. When the fetcher clears the banner, the nav rises. */
+  .sample-flag{position:fixed; top:0; left:0; right:0; z-index:70; border-radius:0;
+               margin:0; border-left:none; border-right:none; border-top:none;}
 
   /* ----------------------------------------------------------------- hero */
-  .hero{padding:40px 0 30px; position:relative; overflow:hidden;}
+  .hero{padding:calc(var(--navtop, 16px) + 92px) 0 30px; position:relative; overflow:hidden;}
   .sky{position:absolute; inset:0; pointer-events:none; z-index:0;
     background:
       radial-gradient(1000px 420px at 82% -140px, #FDEBDD 0%, rgba(253,235,221,0) 62%),
@@ -359,6 +395,15 @@
     .navlinks .hide-sm{display:none;}
     .flightpath{height:104px;}
   }
+  @media(max-width:620px){
+    /* the full pill is 431px wide, which overhangs a 390px phone on both sides.
+       The two section links drop; Log in and the CTA are the ones that matter. */
+    .pn-items a[href="#how"], .pn-items a[href="#pricing"]{display:none;}
+    .pn-items a{font-size:14px; padding:9px 12px;}
+    .pn-cta{padding:11px 17px !important;}
+    .pn-logo{padding:0 2px 0 6px;}
+    .pn-logo .mark{width:38px; height:38px; border-radius:12px;}
+  }
   @media(max-width:560px){
     /* the wordmark is long, so on a phone it gets the room and the login link
        moves out of the way. It is still in the footer and on the onboarding page. */
@@ -442,23 +487,29 @@
   Sample prices: realistic placeholders, not live fares. Real prices land once the nightly fetcher runs.
 </div>
 
-<nav>
-  <div class="wrap">
-    <a class="logo" href="/">
+<!-- Floating pill nav. Port of the supplied Framer Motion component: same
+     shape, same collapse-on-scroll-down / expand-on-scroll-up behaviour, same
+     click-to-reopen, built without React so it keeps working on a static page. -->
+<div class="pillnav" id="pillnav">
+  <nav class="bar" id="pillbar" aria-label="Main">
+    <a class="pn-logo" href="/" aria-label="Untitled Trip Planner, home">
       <span class="mark" aria-hidden="true">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M21.5 2.5 2 10.2l7.4 2.6 2.4 7.6z" fill="#F3FAF7"/><path d="m9.4 12.8 12.1-10.3" stroke="#1B7259" stroke-width="1.6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M21.5 2.5 2 10.2l7.4 2.6 2.4 7.6z" fill="#F3FAF7"/><path d="m9.4 12.8 12.1-10.3" stroke="#1B7259" stroke-width="1.6"/></svg>
       </span>
-      Untitled Trip Planner
     </a>
-    <div class="navlinks">
-      <a href="#how" class="hide-sm">How it works</a>
-      <a href="#pricing" class="hide-sm">Pricing</a>
+
+    <div class="pn-items" id="pnItems">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
       <a href="login.html">Log in</a>
-      <span class="audience hide-sm">Made for college students</span>
-      <a href="onboard.html" class="btn btn-primary btn-sm" data-cta="nav">Start free</a>
+      <a href="onboard.html" class="pn-cta" data-cta="nav">Start free</a>
     </div>
-  </div>
-</nav>
+
+    <span class="pn-burger" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </span>
+  </nav>
+</div>
 
 <!-- ================================================================ HERO -->
 <header class="hero">
@@ -1041,8 +1092,73 @@ function buildCards(){
   });
 }
 
+// ================= FLOATING NAV =================
+// Same rules as the supplied component: collapse once the user is scrolling
+// down and past 150px, reopen when they scroll back up more than 80px from
+// wherever it collapsed, or when they click it.
+(function pillNav(){
+  const nav   = document.getElementById("pillnav");
+  const bar   = document.getElementById("pillbar");
+  const items = document.getElementById("pnItems");
+  if(!nav || !bar) return;
+
+  const EXPAND_SCROLL_THRESHOLD = 80;
+  let collapsed = false, lastY = 0, collapsedAt = 0;
+
+  // CSS cannot animate to width:auto, so the expanded width is measured and pinned
+  function measure(){
+    const wasCollapsed = nav.classList.contains("is-collapsed");
+    nav.classList.remove("is-collapsed");
+    bar.style.transition = "none";
+    bar.style.width = "auto";
+    const w = bar.getBoundingClientRect().width;
+    bar.style.width = w + "px";
+    bar.offsetHeight;                       // flush before restoring transitions
+    bar.style.transition = "";
+    if(wasCollapsed) nav.classList.add("is-collapsed");
+    return w;
+  }
+  let expandedW = measure();
+
+  // keep the nav clear of the sample-price strip while that is showing
+  function place(){
+    const flag = document.getElementById("sampleFlag");
+    const h = flag && !flag.hidden ? flag.getBoundingClientRect().height : 0;
+    document.documentElement.style.setProperty("--navtop", (h + 16) + "px");
+    if(h) document.body.style.paddingTop = h + "px";
+  }
+
+  function setCollapsed(next){
+    if(next === collapsed) return;
+    collapsed = next;
+    nav.classList.toggle("is-collapsed", next);
+    bar.style.width = next ? "54px" : expandedW + "px";
+    // links must leave the tab order when they are not visible
+    items.toggleAttribute("inert", next);
+    bar.setAttribute("aria-expanded", String(!next));
+  }
+
+  addEventListener("scroll", () => {
+    const y = window.scrollY;
+    if(!collapsed && y > lastY && y > 150){ setCollapsed(true); collapsedAt = y; }
+    else if(collapsed && y > lastY){ collapsedAt = y; }
+    else if(collapsed && y < lastY && collapsedAt - y > EXPAND_SCROLL_THRESHOLD){ setCollapsed(false); }
+    lastY = y;
+  }, {passive:true});
+
+  bar.addEventListener("click", e => {
+    if(collapsed){ e.preventDefault(); setCollapsed(false); collapsedAt = 0; }
+  });
+
+  addEventListener("resize", () => { expandedW = measure(); if(!collapsed) bar.style.width = expandedW + "px"; place(); });
+  window.__placeNav = place;          // boot calls this once the strip's state is known
+  place();
+  setCollapsed(false);
+})();
+
 // ================= BOOT =================
 document.getElementById("sampleFlag").hidden = !SAMPLE_DATA;
+if(window.__placeNav) window.__placeNav();
 document.getElementById("yr").textContent = new Date().getFullYear();
 buildCards();
 (function tripCard(){
