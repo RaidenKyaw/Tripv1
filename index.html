@@ -65,7 +65,7 @@
   .navlinks{display:flex; align-items:center; gap:18px;}
   .navlinks a{font-size:14px; font-weight:600; text-decoration:none; color:var(--dim);}
   .navlinks a:hover{color:var(--ink);}
-  .btn{display:inline-block; border:none; border-radius:99px; padding:17px 32px; font-size:16.5px;
+  .btn{display:inline-block; border:none; border-radius:99px; padding:16px 28px; font-size:16px;
        white-space:nowrap;
        font-weight:700; cursor:pointer; text-align:center; text-decoration:none; font-family:var(--sans);}
   .btn-primary{background:var(--brand); color:#F3FAF7; box-shadow:0 6px 18px rgba(27,114,89,.24);}
@@ -93,8 +93,8 @@
   @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
 
   .hero .wrap{position:relative; z-index:1;}
-  .hero h1{font-size:clamp(38px,6.2vw,82px); line-height:1.0; margin-bottom:6px;
-           letter-spacing:-.035em; max-width:none;}
+  .hero h1{font-size:clamp(36px,3.95vw,58px); line-height:1.08; margin:0;
+           letter-spacing:-.03em; max-width:none;}
   /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
      is fragile here (any ancestor stacking context hides it), and --gold-soft is too
      close to the sand background to read, so this band is deliberately warmer. */
@@ -104,14 +104,14 @@
     background-size:100% .34em; background-position:0 78%; background-repeat:no-repeat;
     border-bottom:3px solid var(--gold);
   }
-  .hero .lead{font-size:20px; line-height:1.55; max-width:520px; margin:0;}
+  .hero .lead{font-size:18.5px; line-height:1.6; max-width:470px; margin:0;}
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin:0;}
   .cta-note{color:var(--dim); font-size:13px; margin-top:16px;}
   /* factual, checkable claims only. No user counts until they are real. */
-  .facts{display:flex; gap:0; flex-wrap:wrap; margin-top:26px;}
+  .facts{display:flex; gap:0; flex-wrap:wrap; margin:0;}
   .fact{padding:0 20px 0 0; margin-right:20px; border-right:1px solid var(--line);}
   .fact:last-child{border-right:none; margin-right:0; padding-right:0;}
-  .fact b{display:block; font-family:var(--display); font-size:27px; font-weight:700;}
+  .fact b{display:block; font-family:var(--display); font-size:24px; font-weight:700;}
   .fact span{font-size:12px; color:var(--dim); font-weight:600; letter-spacing:.03em;}
   .cta-note b{color:var(--ink); font-weight:700;}
 
@@ -143,9 +143,9 @@
   .btn{display:inline-flex; align-items:center; justify-content:center; gap:9px;}
   .btn svg{flex:0 0 auto;}
 
-  .featrow{list-style:none; display:flex; flex-wrap:wrap; gap:30px; margin:0;
+  .featrow{list-style:none; display:flex; flex-wrap:wrap; gap:26px; margin:0;
            padding:0; color:var(--ink);}
-  .featrow li{display:flex; align-items:center; gap:10px; font-size:17px; font-weight:600;}
+  .featrow li{display:flex; align-items:center; gap:9px; font-size:16px; font-weight:600;}
   .featrow svg{width:23px; height:23px; color:var(--brand); flex:0 0 auto;}
   .proof{margin:0;}
 
@@ -154,7 +154,7 @@
               margin-right:calc(-1 * (max(100vw - 1260px, 0px) / 2) - 22px);}
   .tc-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
            padding-bottom:13px; border-bottom:1px solid #EFEDE7;}
-  .tc-name{font-family:var(--display); font-size:16.5px; font-weight:700; letter-spacing:-.02em;
+  .tc-name{font-family:var(--display); font-size:18px; font-weight:700; letter-spacing:-.02em;
            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .tc-dates{display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--dim);
             margin-top:5px; white-space:nowrap;}
@@ -165,8 +165,8 @@
     border:2px solid #FFF; margin-left:-7px; font-style:normal;}
   .tc-people i{background:var(--brand-soft); color:var(--brand);}
   .tc-people b{background:var(--brand); color:#F3FAF7;}
-  .tc-row{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #F2F0EA;
-          font-size:14px;}
+  .tc-row{display:flex; align-items:center; gap:11px; padding:13px 0; border-bottom:1px solid #F2F0EA;
+          font-size:15px;}
   .tc-ico{width:22px; height:22px; color:var(--brand); flex:0 0 auto;}
   .tc-ico svg{width:22px; height:22px;}
   .tc-lbl{font-weight:600;}
@@ -181,28 +181,28 @@
   .logo .mark svg{width:19px; height:19px;}
 
   /* --------------------------------------------------------- hero layout */
-  .hero-grid{display:grid; grid-template-columns:.84fr 1.16fr;
-             column-gap:30px; row-gap:4px; align-items:stretch;}
-  .hero-title{grid-column:1 / -1;}
-  .hero-copy{align-self:stretch; display:flex; flex-direction:column;
-               justify-content:center; gap:46px; padding:6px 0 14px;}
+  .hero-grid{display:grid; grid-template-columns:1fr 1.16fr;
+             column-gap:34px; align-items:center;}
+  .hero-copy{display:flex; flex-direction:column; align-items:flex-start;
+               gap:30px; padding:6px 0;}
 
   /* One coordinate space for all three plates, so the drawn route can line up
      with the laptop at one end and the aircraft at the other. */
   .heroscene{position:relative; width:100%; padding-top:72%;}  /* 1000x720 viewBox */
-  .heroscene img{position:absolute; display:block; height:auto;}
+  .heroscene img{position:absolute; display:block; height:auto; pointer-events:none;}
   /* the range is a light wash on near-white: multiply drops the paper and keeps
      the paint, so it sits on the cream without a visible plate edge */
   .sc-range{top:0; left:0; width:100%; opacity:.95;}
-  .sc-crew{bottom:0; left:-24%; width:96%;}
-  .sc-line{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .sc-crew{bottom:0; left:-34%; width:96%;}
+  .sc-line{position:absolute; inset:0; width:100%; height:100%; overflow:visible;
+             pointer-events:none;}
 
   /* the mask uncovers the dashes from the laptop end to the aircraft end */
   .sc-line .reveal{stroke-dasharray:1; stroke-dashoffset:1;
                    animation:route-draw 4.2s .4s cubic-bezier(.4,0,.25,1) forwards;}
   @keyframes route-draw{to{stroke-dashoffset:0;}}
 
-  .tripcard{position:absolute; right:26px; left:auto; bottom:2%; width:232px; background:#FFF;
+  .tripcard{position:absolute; right:22px; left:auto; bottom:4%; width:296px; background:#FFF;
             border:1px solid #E7E4DC; border-radius:18px; padding:15px 16px 13px;
             box-shadow:0 18px 40px rgba(40,50,45,.15); z-index:4;
             opacity:0; animation:card-in .7s 3.7s ease-out forwards;}
@@ -346,8 +346,9 @@
     .fact span{font-size:10px; letter-spacing:.02em;}
     .hero-grid{grid-template-columns:1fr; gap:6px;}
     .hero-art{order:-1; max-width:520px; margin:0 auto 4px;}
-    .tripcard{position:static; width:100%; margin-top:8px;
+    .tripcard{position:static; width:100%; margin-top:-4px;
               box-shadow:0 10px 26px rgba(40,50,45,.13); animation-delay:2.6s;}
+    .hero-copy{gap:24px;}
     .featrow{gap:18px; margin-top:22px;}
     .featrow li{font-size:14.5px;}
     .grid3,.sc-grid,.guarantees{grid-template-columns:1fr;}
@@ -466,11 +467,10 @@
   </div>
   <div class="wrap">
     <div class="hero-grid">
-      <!-- PLACEHOLDER COPY. Structure is final, words are not. Rewrite the
-           headline, the green phrase inside it, and the sub below. -->
-      <h1 class="hero-title">Plan trips together.<br><span class="hl">Unlock better deals.</span></h1>
-
       <div class="hero-copy">
+        <!-- PLACEHOLDER COPY. Structure is final, words are not. Rewrite the
+             headline, the green phrase inside it, and the sub below. -->
+        <h1 class="hero-title">Plan trips together.<br><span class="hl">Unlock better deals.</span></h1>
         <p class="lead">Create shared trip plans with friends and get alerted when prices drop on
           flights, stays, activities and more.</p>
 
@@ -520,14 +520,14 @@
             <defs>
               <mask id="routeReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="720">
                 <path class="reveal" pathLength="1"
-                      d="M393 442C336 476 268 492 216 462C172 436 158 388 190 362C220 338 258 358 250 388C243 412 204 416 189 396C174 376 200 334 254 302C344 248 434 208 514 164C570 134 610 108 640 87"
+                      d="M293 442C236 476 168 492 116 462C72 436 58 388 90 362C120 338 158 358 150 388C143 412 104 416 89 396C74 376 100 334 154 302C260 248 380 208 490 164C556 134 604 108 640 87"
                       stroke="#fff" stroke-width="18" stroke-linecap="round"/>
               </mask>
             </defs>
             <path class="route"
-                  d="M393 442C336 476 268 492 216 462C172 436 158 388 190 362C220 338 258 358 250 388C243 412 204 416 189 396C174 376 200 334 254 302C344 248 434 208 514 164C570 134 610 108 640 87"
-                  stroke="#2F6D62" stroke-width="3.2" stroke-linecap="round"
-                  stroke-dasharray="10 13" mask="url(#routeReveal)"/>
+                  d="M293 442C236 476 168 492 116 462C72 436 58 388 90 362C120 338 158 358 150 388C143 412 104 416 89 396C74 376 100 334 154 302C260 248 380 208 490 164C556 134 604 108 640 87"
+                  stroke="#8FA9A2" stroke-width="2.6" stroke-linecap="round"
+                  stroke-dasharray="9 12" mask="url(#routeReveal)"/>
           </svg>
 
         <!-- Floating trip card. Flight price is read from the real fare cache,
