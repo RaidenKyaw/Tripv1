@@ -45,6 +45,8 @@
     --brand:#1B7259;
     --brand-soft:#E7F2ED;
     --brand-line:#BEDCD0;
+    --wrap:1340px;
+    --wrap-pad:24px;
     --radius:16px;
     --display:"Lexend",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --sans:"Lexend",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -52,7 +54,7 @@
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
   body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.55; overflow-x:hidden;}
-  .wrap{max-width:1260px; margin:0 auto; padding:0 22px;}
+  .wrap{max-width:var(--wrap); margin:0 auto; padding:0 var(--wrap-pad);}
   .narrow{max-width:720px; margin:0 auto;}
   h1,h2,h3{font-family:var(--display); font-weight:600; letter-spacing:-.005em; line-height:1.16;}
   h2{font-size:clamp(30px,4.4vw,45px); margin-bottom:16px;}
@@ -65,7 +67,7 @@
 
   /* ------------------------------------------------- buttons and wordmark */
   .btn{display:inline-flex; align-items:center; justify-content:center; gap:10px;
-       border:none; border-radius:99px; padding:18px 32px; font-size:17px; font-weight:600;
+       border:none; border-radius:99px; padding:20px 36px; font-size:18px; font-weight:600;
        cursor:pointer; text-decoration:none; font-family:var(--sans); white-space:nowrap;}
   .btn svg{flex:0 0 auto;}
   .btn-primary{background:var(--pine); color:#F4F7F2;
@@ -122,7 +124,7 @@
                margin:0; border-left:none; border-right:none; border-top:none;}
 
   /* ----------------------------------------------------------------- hero */
-  .hero{padding:calc(var(--navtop, 16px) + 92px) 0 30px; position:relative; overflow:hidden;}
+  .hero{padding:calc(var(--navtop, 16px) + 66px) 0 26px; position:relative; overflow:hidden;}
   .sky{position:absolute; inset:0; pointer-events:none; z-index:0;
     background:
       radial-gradient(1000px 420px at 82% -140px, #FDEBDD 0%, rgba(253,235,221,0) 62%),
@@ -141,7 +143,7 @@
   @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
 
   .hero .wrap{position:relative; z-index:1;}
-  .hero h1{font-size:clamp(36px,3.9vw,56px); line-height:1.1; margin:0;
+  .hero h1{font-size:clamp(38px,4.5vw,66px); line-height:1.1; margin:0;
            letter-spacing:-.012em; max-width:none;}
   /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
      is fragile here (any ancestor stacking context hides it), and --gold-soft is too
@@ -152,16 +154,16 @@
     background-size:100% .34em; background-position:0 78%; background-repeat:no-repeat;
     border-bottom:3px solid var(--sage);
   }
-  .hero .lead{font-size:20px; line-height:1.6; max-width:500px; margin:0;}
+  .hero .lead{font-size:22px; line-height:1.55; max-width:560px; margin:0;}
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin:0;}
   .cta-note{color:var(--dim); font-size:13px; margin-top:16px;}
   /* factual, checkable claims only. No user counts until they are real. */
   .facts{display:flex; gap:0; flex-wrap:wrap; margin:0;}
   .fact{padding:0 20px 0 0; margin-right:20px; border-right:1px solid var(--line);}
   .fact:last-child{border-right:none; margin-right:0; padding-right:0;}
-  .fact b{display:block; font-family:var(--display); font-size:29px; font-weight:600;
-            letter-spacing:-.01em;}
-  .fact span{font-size:13px; color:var(--dim); font-weight:400; letter-spacing:0;
+  .fact b{display:block; font-family:var(--display); font-size:35px; font-weight:600;
+            letter-spacing:-.015em;}
+  .fact span{font-size:14px; color:var(--dim); font-weight:400; letter-spacing:0;
                text-transform:none;}
   .cta-note b{color:var(--ink); font-weight:700;}
 
@@ -195,13 +197,13 @@
 
   .featrow{list-style:none; display:flex; flex-wrap:wrap; gap:26px; margin:0;
            padding:0; color:var(--ink);}
-  .featrow li{display:flex; align-items:center; gap:10px; font-size:17.5px; font-weight:500;}
-  .featrow svg{width:25px; height:25px; color:var(--pine); flex:0 0 auto; opacity:.85;}
+  .featrow li{display:flex; align-items:center; gap:11px; font-size:19px; font-weight:500;}
+  .featrow svg{width:27px; height:27px; color:var(--pine); flex:0 0 auto; opacity:.85;}
   .proof{margin:0;}
 
   /* floating trip card, overlapping the illustration */
   .hero-art{position:relative;
-              margin-right:calc(-1 * (max(100vw - 1260px, 0px) / 2) - 22px);}
+              margin-right:calc(-1 * (max(100vw - var(--wrap), 0px) / 2) - var(--wrap-pad));}
   .tc-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
            padding-bottom:13px; border-bottom:1px solid #EFEDE7;}
   .tc-name{font-family:var(--display); font-size:19.5px; font-weight:700; letter-spacing:-.02em;
@@ -231,8 +233,8 @@
   .logo .mark svg{width:19px; height:19px;}
 
   /* --------------------------------------------------------- hero layout */
-  .hero-grid{display:grid; grid-template-columns:1.1fr 1.16fr;
-             column-gap:28px; align-items:center;}
+  .hero-grid{display:grid; grid-template-columns:1.16fr 1.1fr;
+             column-gap:26px; align-items:center;}
   .hero-copy{display:flex; flex-direction:column; align-items:flex-start;
                gap:30px; padding:6px 0;}
 
