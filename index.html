@@ -42,7 +42,7 @@
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
   body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.55; overflow-x:hidden;}
-  .wrap{max-width:1020px; margin:0 auto; padding:0 20px;}
+  .wrap{max-width:1130px; margin:0 auto; padding:0 20px;}
   .narrow{max-width:720px; margin:0 auto;}
   h1,h2,h3{font-family:var(--display); font-weight:500; letter-spacing:-.028em; line-height:1.12;}
   h2{font-size:clamp(28px,4.1vw,40px); margin-bottom:12px;}
@@ -151,9 +151,6 @@
 
   /* floating trip card, overlapping the illustration */
   .hero-art{position:relative;}
-  .tripcard{position:absolute; right:-38px; bottom:16px; width:298px; background:#FFF;
-            border:1px solid #E7E4DC; border-radius:18px; padding:16px 17px 14px;
-            box-shadow:0 20px 46px rgba(40,50,45,.16); z-index:4;}
   .tc-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
            padding-bottom:13px; border-bottom:1px solid #EFEDE7;}
   .tc-name{font-family:var(--display); font-size:17.5px; font-weight:700; letter-spacing:-.02em;}
@@ -182,13 +179,28 @@
   .logo .mark svg{width:19px; height:19px;}
 
   /* --------------------------------------------------------- hero layout */
-  .hero-grid{display:grid; grid-template-columns:1fr 1.12fr; gap:24px; align-items:center;}
-  .hero-art{position:relative;}
-  .hero-art > svg{width:100%; height:auto; display:block; max-height:470px;
-                filter:drop-shadow(0 18px 34px rgba(120,90,60,.14));}
-  /* the picture drifts a little so the hero is not completely static */
-  @keyframes hover-art{0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)}}
-  .hero-art > svg{animation:hover-art 7s ease-in-out infinite;}
+  .hero-grid{display:grid; grid-template-columns:.86fr 1.14fr; gap:22px; align-items:center;}
+
+  /* One coordinate space for all three plates, so the drawn route can line up
+     with the laptop at one end and the aircraft at the other. */
+  .heroscene{position:relative; width:100%; padding-top:72%;}  /* 1000x720 viewBox */
+  .heroscene img{position:absolute; display:block; height:auto;}
+  /* the range is a light wash on near-white: multiply drops the paper and keeps
+     the paint, so it sits on the cream without a visible plate edge */
+  .sc-range{top:0; left:0; width:100%; opacity:.95;}
+  .sc-crew{bottom:0; left:5%; width:94%;}
+  .sc-line{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+
+  /* the mask uncovers the dashes from the laptop end to the aircraft end */
+  .sc-line .reveal{stroke-dasharray:1; stroke-dashoffset:1;
+                   animation:route-draw 3.6s .45s cubic-bezier(.42,0,.25,1) forwards;}
+  @keyframes route-draw{to{stroke-dashoffset:0;}}
+
+  .tripcard{position:absolute; left:0; bottom:0; width:258px; background:#FFF;
+            border:1px solid #E7E4DC; border-radius:18px; padding:15px 16px 13px;
+            box-shadow:0 18px 40px rgba(40,50,45,.15); z-index:4;
+            opacity:0; animation:card-in .7s 3.2s ease-out forwards;}
+  @keyframes card-in{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
 
   /* --------------------------------------------------------------- ticker */
   .ticker{border-top:1px solid var(--line); border-bottom:1px solid var(--line);
@@ -340,9 +352,9 @@
     .fact b{font-size:19px;}
     .fact span{font-size:10px; letter-spacing:.02em;}
     .hero-grid{grid-template-columns:1fr; gap:6px;}
-    .hero-art{order:-1; max-width:460px; margin:0 auto 10px;}
-    .hero-art > svg{max-height:270px;}
-    .tripcard{position:static; width:100%; margin-top:-6px; box-shadow:0 10px 26px rgba(40,50,45,.13);}
+    .hero-art{order:-1; max-width:520px; margin:0 auto 4px;}
+    .tripcard{position:static; width:100%; margin-top:8px;
+              box-shadow:0 10px 26px rgba(40,50,45,.13); animation-delay:2.6s;}
     .featrow{gap:18px; margin-top:22px;}
     .featrow li{font-size:14.5px;}
     .grid3,.sc-grid,.guarantees{grid-template-columns:1fr;}
@@ -424,6 +436,8 @@
 
   @media(prefers-reduced-motion:reduce){
     *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
+    .sc-line .reveal{stroke-dashoffset:0;}
+    .tripcard{opacity:1;}
     .plane{offset-distance:62%;}
   }
 </style>
@@ -496,73 +510,37 @@
         </div>
       </div>
 
-      <!-- Three friends, three sets of dates, one weekend they all share, and the
-           fare that falls out of it. The whole product in one picture. -->
+      <!-- Hero scene. Three supplied plates stacked in one coordinate space:
+           the watercolour range behind, the students in front, and a dashed
+           route that draws itself from their laptop up to the aircraft. -->
       <div class="hero-art">
-        <svg viewBox="0 0 726 512" role="img" aria-label="Three friends comparing the weekends they are free, with the cheapest fare for the weekend they all share">
-          <ellipse cx="248" cy="252" rx="248" ry="212" fill="#F6E9CE" opacity=".85"/>
-          <ellipse cx="242" cy="300" rx="196" ry="158" fill="#E3F0EB" opacity=".55"/>
+        <div class="heroscene">
+          <img class="sc-range" src="assets/mountains.webp" alt="" width="1400" height="721" fetchpriority="high">
+          <img class="sc-crew" src="assets/students.webp"
+               alt="Three students at a laptop planning a trip together"
+               width="1200" height="813" fetchpriority="high">
 
-          <g transform="translate(-54,0)" stroke="#33302B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <!-- friend, left -->
-            <g>
-              <path d="M58 452v-58a56 56 0 0 1 56-56h20a56 56 0 0 1 56 56v58z" fill="#D96A4B"/>
-              <path d="M104 338h60v22a30 30 0 0 1-60 0z" fill="#E8B183"/>
-              <circle cx="134" cy="300" r="46" fill="#E8B183"/>
-              <path d="M88 296a46 46 0 0 1 92 0c0-16-8-24-18-28-8 12-52 14-62-2-8 6-12 16-12 30z" fill="#4A342A"/>
-              <circle cx="119" cy="300" r="4.5" fill="#33302B" stroke="none"/>
-              <circle cx="151" cy="300" r="4.5" fill="#33302B" stroke="none"/>
-              <path d="M124 318c6 6 16 6 22 0" fill="none"/>
-            </g>
+          <!-- The route is drawn, not an image, so it can reveal itself on load.
+               A mask sweeps along the same curve and uncovers the dashes. -->
+          <svg class="sc-line" viewBox="0 0 1000 720" fill="none" aria-hidden="true">
+            <defs>
+              <mask id="routeReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="720">
+                <path class="reveal" pathLength="1"
+                      d="M669 447C740 470 820 486 886 452C940 424 958 352 926 300C896 250 826 240 806 274C790 302 826 326 856 306C880 290 874 242 838 208C800 172 744 118 713 74"
+                      stroke="#fff" stroke-width="18" stroke-linecap="round"/>
+              </mask>
+            </defs>
+            <path class="route"
+                  d="M669 447C740 470 820 486 886 452C940 424 958 352 926 300C896 250 826 240 806 274C790 302 826 326 856 306C880 290 874 242 838 208C800 172 744 118 713 74"
+                  stroke="#2F6D62" stroke-width="3.2" stroke-linecap="round"
+                  stroke-dasharray="10 13" mask="url(#routeReveal)"/>
+          </svg>
 
-            <!-- friend, right -->
-            <g>
-              <path d="M372 452v-52a52 52 0 0 1 52-52h18a52 52 0 0 1 52 52v52z" fill="#2F6D62"/>
-              <path d="M414 348h54v20a27 27 0 0 1-54 0z" fill="#C98A5E"/>
-              <circle cx="441" cy="312" r="43" fill="#C98A5E"/>
-              <path d="M398 310a43 43 0 0 1 86 0c4-24-14-42-43-42s-47 18-43 42z" fill="#33302B"/>
-              <circle cx="427" cy="312" r="4.5" fill="#33302B" stroke="none"/>
-              <circle cx="457" cy="312" r="4.5" fill="#33302B" stroke="none"/>
-              <path d="M432 330c6 5 14 5 20 0" fill="none"/>
-            </g>
-
-            <!-- friend, centre back -->
-            <g>
-              <path d="M216 452v-118a50 50 0 0 1 50-50h20a50 50 0 0 1 50 50v118z" fill="#D9A441"/>
-              <path d="M256 282h44v16a22 22 0 0 1-44 0z" fill="#8D5B3B"/>
-              <circle cx="278" cy="250" r="39" fill="#8D5B3B"/>
-              <path d="M239 248a39 39 0 0 1 78 0c2-21-12-37-39-37s-41 16-39 37z" fill="#2A1D14"/>
-              <circle cx="265" cy="251" r="4.5" fill="#33302B" stroke="none"/>
-              <circle cx="292" cy="251" r="4.5" fill="#33302B" stroke="none"/>
-              <path d="M270 267c5 5 13 5 17 0" fill="none"/>
-            </g>
-
-            <!-- the phone they are all looking at -->
-            <g transform="rotate(-7 288 392)">
-              <rect x="222" y="290" width="132" height="196" rx="20" fill="#FFFDF9"/>
-              <rect x="234" y="308" width="108" height="160" rx="12" fill="#24504A" stroke="none"/>
-              <rect x="262" y="297" width="52" height="7" rx="3.5" fill="#E7E1D6" stroke="none"/>
-              <g stroke="none">
-                <rect x="244" y="318" width="40" height="9" rx="4.5" fill="#7FA9A0"/>
-                <!-- weekend tiles, the three everyone shares are lit -->
-                <rect x="244" y="336" width="28" height="26" rx="7" fill="#3C6B63"/>
-                <rect x="278" y="336" width="28" height="26" rx="7" fill="#D9A441"/>
-                <rect x="312" y="336" width="20" height="26" rx="7" fill="#3C6B63"/>
-                <rect x="244" y="368" width="28" height="26" rx="7" fill="#D9A441"/>
-                <rect x="278" y="368" width="28" height="26" rx="7" fill="#3C6B63"/>
-                <rect x="312" y="368" width="20" height="26" rx="7" fill="#3C6B63"/>
-                <rect x="244" y="400" width="28" height="26" rx="7" fill="#3C6B63"/>
-                <rect x="278" y="400" width="28" height="26" rx="7" fill="#3C6B63"/>
-                <rect x="312" y="400" width="20" height="26" rx="7" fill="#D9A441"/>
-                <rect x="244" y="436" width="88" height="20" rx="10" fill="#D96A4B"/>
-              </g>
-            </g>
-          </g>
-
-        </svg>
         <!-- Floating trip card. Flight price is read from the real fare cache,
              so the number on it is whatever the cache actually holds. -->
-        <aside class="tripcard">
+        </div>
+
+          <aside class="tripcard">
           <div class="tc-head">
             <div>
               <div class="tc-name" id="tcName">Spring break</div>
