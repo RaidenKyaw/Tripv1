@@ -42,7 +42,7 @@
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
   body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.55; overflow-x:hidden;}
-  .wrap{max-width:1130px; margin:0 auto; padding:0 20px;}
+  .wrap{max-width:1260px; margin:0 auto; padding:0 22px;}
   .narrow{max-width:720px; margin:0 auto;}
   h1,h2,h3{font-family:var(--display); font-weight:500; letter-spacing:-.028em; line-height:1.12;}
   h2{font-size:clamp(28px,4.1vw,40px); margin-bottom:12px;}
@@ -65,7 +65,7 @@
   .navlinks{display:flex; align-items:center; gap:18px;}
   .navlinks a{font-size:14px; font-weight:600; text-decoration:none; color:var(--dim);}
   .navlinks a:hover{color:var(--ink);}
-  .btn{display:inline-block; border:none; border-radius:99px; padding:15px 28px; font-size:15.5px;
+  .btn{display:inline-block; border:none; border-radius:99px; padding:17px 32px; font-size:16.5px;
        white-space:nowrap;
        font-weight:700; cursor:pointer; text-align:center; text-decoration:none; font-family:var(--sans);}
   .btn-primary{background:var(--brand); color:#F3FAF7; box-shadow:0 6px 18px rgba(27,114,89,.24);}
@@ -74,7 +74,7 @@
   .btn-sm{padding:10px 18px; font-size:14px; border-radius:99px;}
 
   /* ----------------------------------------------------------------- hero */
-  .hero{padding:48px 0 26px; position:relative; overflow:hidden;}
+  .hero{padding:40px 0 30px; position:relative; overflow:hidden;}
   .sky{position:absolute; inset:0; pointer-events:none; z-index:0;
     background:
       radial-gradient(1000px 420px at 82% -140px, #FDEBDD 0%, rgba(253,235,221,0) 62%),
@@ -104,15 +104,15 @@
     background-size:100% .34em; background-position:0 78%; background-repeat:no-repeat;
     border-bottom:3px solid var(--gold);
   }
-  .hero .lead{font-size:18px; max-width:480px; margin:0 0 28px;}
-  .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+  .hero .lead{font-size:20px; line-height:1.55; max-width:520px; margin:0;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin:0;}
   .cta-note{color:var(--dim); font-size:13px; margin-top:16px;}
   /* factual, checkable claims only. No user counts until they are real. */
   .facts{display:flex; gap:0; flex-wrap:wrap; margin-top:26px;}
   .fact{padding:0 20px 0 0; margin-right:20px; border-right:1px solid var(--line);}
   .fact:last-child{border-right:none; margin-right:0; padding-right:0;}
-  .fact b{display:block; font-family:var(--display); font-size:22px; font-weight:700;}
-  .fact span{font-size:11.5px; color:var(--dim); font-weight:600; letter-spacing:.03em;}
+  .fact b{display:block; font-family:var(--display); font-size:27px; font-weight:700;}
+  .fact span{font-size:12px; color:var(--dim); font-weight:600; letter-spacing:.03em;}
   .cta-note b{color:var(--ink); font-weight:700;}
 
   /* flight path */
@@ -143,14 +143,15 @@
   .btn{display:inline-flex; align-items:center; justify-content:center; gap:9px;}
   .btn svg{flex:0 0 auto;}
 
-  .featrow{list-style:none; display:flex; flex-wrap:wrap; gap:26px; margin-top:26px;
+  .featrow{list-style:none; display:flex; flex-wrap:wrap; gap:30px; margin:0;
            padding:0; color:var(--ink);}
-  .featrow li{display:flex; align-items:center; gap:9px; font-size:15.5px; font-weight:600;}
-  .featrow svg{width:21px; height:21px; color:var(--brand); flex:0 0 auto;}
-  .proof{margin-top:26px;}
+  .featrow li{display:flex; align-items:center; gap:10px; font-size:17px; font-weight:600;}
+  .featrow svg{width:23px; height:23px; color:var(--brand); flex:0 0 auto;}
+  .proof{margin:0;}
 
   /* floating trip card, overlapping the illustration */
-  .hero-art{position:relative;}
+  .hero-art{position:relative;
+              margin-right:calc(-1 * (max(100vw - 1260px, 0px) / 2) - 22px);}
   .tc-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
            padding-bottom:13px; border-bottom:1px solid #EFEDE7;}
   .tc-name{font-family:var(--display); font-size:16.5px; font-weight:700; letter-spacing:-.02em;
@@ -180,30 +181,31 @@
   .logo .mark svg{width:19px; height:19px;}
 
   /* --------------------------------------------------------- hero layout */
-  .hero-grid{display:grid; grid-template-columns:.80fr 1.20fr;
-             column-gap:26px; row-gap:6px; align-items:center;}
+  .hero-grid{display:grid; grid-template-columns:.84fr 1.16fr;
+             column-gap:30px; row-gap:4px; align-items:stretch;}
   .hero-title{grid-column:1 / -1;}
-  .hero-copy{align-self:start; padding-top:10px;}
+  .hero-copy{align-self:stretch; display:flex; flex-direction:column;
+               justify-content:center; gap:46px; padding:6px 0 14px;}
 
   /* One coordinate space for all three plates, so the drawn route can line up
      with the laptop at one end and the aircraft at the other. */
-  .heroscene{position:relative; width:100%; padding-top:80%;}  /* 1000x800 viewBox */
+  .heroscene{position:relative; width:100%; padding-top:72%;}  /* 1000x720 viewBox */
   .heroscene img{position:absolute; display:block; height:auto;}
   /* the range is a light wash on near-white: multiply drops the paper and keeps
      the paint, so it sits on the cream without a visible plate edge */
   .sc-range{top:0; left:0; width:100%; opacity:.95;}
-  .sc-crew{bottom:0; left:-30%; width:106%;}
+  .sc-crew{bottom:0; left:-24%; width:96%;}
   .sc-line{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
 
   /* the mask uncovers the dashes from the laptop end to the aircraft end */
   .sc-line .reveal{stroke-dasharray:1; stroke-dashoffset:1;
-                   animation:route-draw 3.6s .45s cubic-bezier(.42,0,.25,1) forwards;}
+                   animation:route-draw 4.2s .4s cubic-bezier(.4,0,.25,1) forwards;}
   @keyframes route-draw{to{stroke-dashoffset:0;}}
 
-  .tripcard{position:absolute; right:-30px; left:auto; bottom:0; width:220px; background:#FFF;
+  .tripcard{position:absolute; right:26px; left:auto; bottom:2%; width:232px; background:#FFF;
             border:1px solid #E7E4DC; border-radius:18px; padding:15px 16px 13px;
             box-shadow:0 18px 40px rgba(40,50,45,.15); z-index:4;
-            opacity:0; animation:card-in .7s 3.2s ease-out forwards;}
+            opacity:0; animation:card-in .7s 3.7s ease-out forwards;}
   @keyframes card-in{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
 
   .sample-flag{background:var(--gold-soft); border-bottom:1px solid #EBD9AE; color:#8A6412;
@@ -514,16 +516,16 @@
 
           <!-- The route is drawn, not an image, so it can reveal itself on load.
                A mask sweeps along the same curve and uncovers the dashes. -->
-          <svg class="sc-line" viewBox="0 0 1000 800" fill="none" aria-hidden="true">
+          <svg class="sc-line" viewBox="0 0 1000 720" fill="none" aria-hidden="true">
             <defs>
-              <mask id="routeReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="800">
+              <mask id="routeReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="720">
                 <path class="reveal" pathLength="1"
-                      d="M399 493C480 518 576 516 634 476C678 444 692 372 680 300C668 232 656 150 640 87"
+                      d="M393 442C336 476 268 492 216 462C172 436 158 388 190 362C220 338 258 358 250 388C243 412 204 416 189 396C174 376 200 334 254 302C344 248 434 208 514 164C570 134 610 108 640 87"
                       stroke="#fff" stroke-width="18" stroke-linecap="round"/>
               </mask>
             </defs>
             <path class="route"
-                  d="M399 493C480 518 576 516 634 476C678 444 692 372 680 300C668 232 656 150 640 87"
+                  d="M393 442C336 476 268 492 216 462C172 436 158 388 190 362C220 338 258 358 250 388C243 412 204 416 189 396C174 376 200 334 254 302C344 248 434 208 514 164C570 134 610 108 640 87"
                   stroke="#2F6D62" stroke-width="3.2" stroke-linecap="round"
                   stroke-dasharray="10 13" mask="url(#routeReveal)"/>
           </svg>
