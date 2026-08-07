@@ -93,8 +93,8 @@
   @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
 
   .hero .wrap{position:relative; z-index:1;}
-  .hero h1{font-size:clamp(34px,4.1vw,54px); line-height:1.06; margin-bottom:18px;
-           max-width:20ch;}
+  .hero h1{font-size:clamp(38px,6.2vw,82px); line-height:1.0; margin-bottom:6px;
+           letter-spacing:-.035em; max-width:none;}
   /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
      is fragile here (any ancestor stacking context hides it), and --gold-soft is too
      close to the sand background to read, so this band is deliberately warmer. */
@@ -153,9 +153,10 @@
   .hero-art{position:relative;}
   .tc-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
            padding-bottom:13px; border-bottom:1px solid #EFEDE7;}
-  .tc-name{font-family:var(--display); font-size:17.5px; font-weight:700; letter-spacing:-.02em;}
-  .tc-dates{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--dim);
-            margin-top:5px;}
+  .tc-name{font-family:var(--display); font-size:16.5px; font-weight:700; letter-spacing:-.02em;
+           white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .tc-dates{display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--dim);
+            margin-top:5px; white-space:nowrap;}
   .tc-dates svg{color:var(--brand);}
   .tc-people{display:flex; align-items:center;}
   .tc-people i,.tc-people b{width:26px; height:26px; border-radius:50%; font-size:10.5px;
@@ -163,32 +164,35 @@
     border:2px solid #FFF; margin-left:-7px; font-style:normal;}
   .tc-people i{background:var(--brand-soft); color:var(--brand);}
   .tc-people b{background:var(--brand); color:#F3FAF7;}
-  .tc-row{display:flex; align-items:center; gap:11px; padding:11px 0; border-bottom:1px solid #F2F0EA;
-          font-size:14.5px;}
+  .tc-row{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #F2F0EA;
+          font-size:14px;}
   .tc-ico{width:22px; height:22px; color:var(--brand); flex:0 0 auto;}
   .tc-ico svg{width:22px; height:22px;}
   .tc-lbl{font-weight:600;}
   .tc-val{margin-left:auto; color:var(--dim); font-size:13.5px;}
   .tc-val b{color:var(--ink); font-size:15px; font-weight:700;}
   .tc-soon{font-size:12.5px; color:#9C9384;}
-  .tc-note{display:flex; gap:9px; align-items:flex-start; background:var(--brand-soft);
-           border-radius:12px; padding:11px 12px; margin-top:13px; font-size:12.5px;
+  .tc-note{display:flex; gap:8px; align-items:flex-start; background:var(--brand-soft);
+           border-radius:12px; padding:10px 11px; margin-top:11px; font-size:12px;
            color:#175E49; line-height:1.5;}
   .tc-note svg{width:17px; height:17px; color:var(--brand); flex:0 0 auto; margin-top:1px;}
   .tc-dates svg{width:15px; height:15px; color:var(--brand); flex:0 0 auto;}
   .logo .mark svg{width:19px; height:19px;}
 
   /* --------------------------------------------------------- hero layout */
-  .hero-grid{display:grid; grid-template-columns:.86fr 1.14fr; gap:22px; align-items:center;}
+  .hero-grid{display:grid; grid-template-columns:.80fr 1.20fr;
+             column-gap:26px; row-gap:6px; align-items:center;}
+  .hero-title{grid-column:1 / -1;}
+  .hero-copy{align-self:start; padding-top:10px;}
 
   /* One coordinate space for all three plates, so the drawn route can line up
      with the laptop at one end and the aircraft at the other. */
-  .heroscene{position:relative; width:100%; padding-top:72%;}  /* 1000x720 viewBox */
+  .heroscene{position:relative; width:100%; padding-top:80%;}  /* 1000x800 viewBox */
   .heroscene img{position:absolute; display:block; height:auto;}
   /* the range is a light wash on near-white: multiply drops the paper and keeps
      the paint, so it sits on the cream without a visible plate edge */
   .sc-range{top:0; left:0; width:100%; opacity:.95;}
-  .sc-crew{bottom:0; left:5%; width:94%;}
+  .sc-crew{bottom:0; left:-30%; width:106%;}
   .sc-line{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
 
   /* the mask uncovers the dashes from the laptop end to the aircraft end */
@@ -196,25 +200,12 @@
                    animation:route-draw 3.6s .45s cubic-bezier(.42,0,.25,1) forwards;}
   @keyframes route-draw{to{stroke-dashoffset:0;}}
 
-  .tripcard{position:absolute; left:0; bottom:0; width:258px; background:#FFF;
+  .tripcard{position:absolute; right:-30px; left:auto; bottom:0; width:220px; background:#FFF;
             border:1px solid #E7E4DC; border-radius:18px; padding:15px 16px 13px;
             box-shadow:0 18px 40px rgba(40,50,45,.15); z-index:4;
             opacity:0; animation:card-in .7s 3.2s ease-out forwards;}
   @keyframes card-in{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
 
-  /* --------------------------------------------------------------- ticker */
-  .ticker{border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-          background:var(--card2); padding:13px 0; overflow:hidden; position:relative;
-          -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
-          mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);}
-  .ticker-track{display:flex; gap:34px; width:max-content; animation:slide 44s linear infinite;}
-  .ticker:hover .ticker-track{animation-play-state:paused;}
-  @keyframes slide{to{transform:translateX(-50%);}}
-  .tick{display:flex; align-items:baseline; gap:8px; font-size:13.5px; white-space:nowrap;}
-  .tick .r{font-weight:700; color:var(--ink); letter-spacing:.02em;}
-  .tick .p{font-weight:800; color:var(--teal);}
-  .tick .d{font-size:10.5px; font-weight:800; color:#9A6E1B; background:var(--gold-soft);
-           border:1px solid #EBD9AE; border-radius:99px; padding:2px 7px;}
   .sample-flag{background:var(--gold-soft); border-bottom:1px solid #EBD9AE; color:#8A6412;
                font-size:12px; text-align:center; padding:7px 16px; font-weight:600;}
 
@@ -473,10 +464,11 @@
   </div>
   <div class="wrap">
     <div class="hero-grid">
+      <!-- PLACEHOLDER COPY. Structure is final, words are not. Rewrite the
+           headline, the green phrase inside it, and the sub below. -->
+      <h1 class="hero-title">Plan trips together.<br><span class="hl">Unlock better deals.</span></h1>
+
       <div class="hero-copy">
-        <!-- PLACEHOLDER COPY. Structure is final, words are not. Rewrite these
-             three: the headline, the green phrase inside it, and the sub. -->
-        <h1>Plan trips together.<br><span class="hl">Unlock better deals.</span></h1>
         <p class="lead">Create shared trip plans with friends and get alerted when prices drop on
           flights, stays, activities and more.</p>
 
@@ -522,16 +514,16 @@
 
           <!-- The route is drawn, not an image, so it can reveal itself on load.
                A mask sweeps along the same curve and uncovers the dashes. -->
-          <svg class="sc-line" viewBox="0 0 1000 720" fill="none" aria-hidden="true">
+          <svg class="sc-line" viewBox="0 0 1000 800" fill="none" aria-hidden="true">
             <defs>
-              <mask id="routeReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="720">
+              <mask id="routeReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="800">
                 <path class="reveal" pathLength="1"
-                      d="M669 447C740 470 820 486 886 452C940 424 958 352 926 300C896 250 826 240 806 274C790 302 826 326 856 306C880 290 874 242 838 208C800 172 744 118 713 74"
+                      d="M399 493C480 518 576 516 634 476C678 444 692 372 680 300C668 232 656 150 640 87"
                       stroke="#fff" stroke-width="18" stroke-linecap="round"/>
               </mask>
             </defs>
             <path class="route"
-                  d="M669 447C740 470 820 486 886 452C940 424 958 352 926 300C896 250 826 240 806 274C790 302 826 326 856 306C880 290 874 242 838 208C800 172 744 118 713 74"
+                  d="M399 493C480 518 576 516 634 476C678 444 692 372 680 300C668 232 656 150 640 87"
                   stroke="#2F6D62" stroke-width="3.2" stroke-linecap="round"
                   stroke-dasharray="10 13" mask="url(#routeReveal)"/>
           </svg>
@@ -578,9 +570,6 @@
   </div>
 </header>
 
-<!-- ============================================================== TICKER -->
-<div class="ticker" aria-label="Sample fares from Boston">
-  <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
 <!-- ============================================================== PROBLEM -->
@@ -902,7 +891,9 @@ function nextWeekend(){
   const d = new Date();
   d.setDate(d.getDate() + ((5 - d.getDay() + 7) % 7 || 7));
   const mon = new Date(d); mon.setDate(d.getDate() + 3);
-  return M[d.getMonth()] + " " + d.getDate() + " to " + M[mon.getMonth()] + " " + mon.getDate();
+  const same = d.getMonth() === mon.getMonth();
+  return M[d.getMonth()] + " " + d.getDate() + "–" +
+         (same ? "" : M[mon.getMonth()] + " ") + mon.getDate();
 }
 
 // ================= CURRENCY =================
@@ -1019,19 +1010,6 @@ function routeSummary(origin){
   }).sort((a, b) => b.off - a.off);
 }
 
-function tickItem(r){
-  const s = el("span", "tick");
-  s.appendChild(el("span", "r", HOME + " \u2192 " + r.code));
-  s.appendChild(el("span", "p", money(r.low)));
-  if(r.off >= 20) s.appendChild(el("span", "d", r.off + "% off"));
-  return s;
-}
-
-function buildTicker(){
-  const rows = routeSummary(HOME), track = document.getElementById("tickerTrack");
-  for(let pass = 0; pass < 2; pass++) rows.forEach(r => track.appendChild(tickItem(r)));
-}
-
 function buildCards(){
   const host = document.getElementById("postcards");
   routeSummary(HOME).slice(0, 12).forEach(r => {
@@ -1064,14 +1042,13 @@ function buildCards(){
 // ================= BOOT =================
 document.getElementById("sampleFlag").hidden = !SAMPLE_DATA;
 document.getElementById("yr").textContent = new Date().getFullYear();
-buildTicker();
 buildCards();
 (function tripCard(){
   const rows = routeSummary(HOME);
   if(!rows.length) return;
   const cheapest = rows.reduce((a, b) => a.low < b.low ? a : b);
   document.getElementById("tcFlight").textContent = money(cheapest.low);
-  document.getElementById("tcName").textContent = cheapest.city + " trip";
+  document.getElementById("tcName").textContent = cheapest.city;
   const w = nextWeekend();
   document.getElementById("tcDates").textContent = w;
 })();
