@@ -1,5 +1,5 @@
 -- ============================================================================
--- FREEWHEEL: schema v2 (accounts, crews, friends)
+-- UNTITLED TRIP PLANNER: schema v2 (accounts, crews, friends)
 -- Run AFTER supabase-schema.sql.
 --
 -- v1 stays exactly as it is: anonymous trips still work, links still work,

@@ -32,7 +32,7 @@ that doesn't exist.
 
 ### This month
 
-- [ ] **7. Name + domain.** "Freewheel" is a placeholder. Check domain availability and run a
+- [ ] **7. Name + domain.** "Untitled Trip Planner" is a placeholder. Check domain availability and run a
       USPTO trademark search (TESS) before printing it anywhere.
 - [ ] **8. Ten more chats, one at a time.** Clubs, teams, dorm floors and Greek houses are
       pre-formed groups, one post in a club GroupMe reaches forty people who already travel

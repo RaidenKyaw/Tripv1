@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Freewheel · where can we all go?</title>
+<title>Untitled Trip Planner · where can we all go?</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
 <!-- Absolute URL required. WhatsApp, iMessage and Discord won't resolve a relative one.
      Update this (and the same line in index.html) if you move to a custom domain. -->
@@ -99,7 +99,7 @@
     border-radius:var(--radius); overflow:hidden;
   }
   .best::before{
-    content:"BOARDING PASS · FREEWHEEL AIR"; display:block;
+    content:"BOARDING PASS · TRIP PLANNER AIR"; display:block;
     background:var(--teal); color:#DFEeea; font-size:9.5px; font-weight:800;
     letter-spacing:.22em; padding:7px 16px 6px;
   }
@@ -163,7 +163,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="logo">Freewheel<span>where can we all go?</span></div>
+  <div class="logo">Untitled Trip Planner<span>where can we all go?</span></div>
   <div class="sample-flag hidden" id="sampleFlag">
     Sample prices: realistic placeholders, not live fares. Don't share this link yet.
   </div>
@@ -550,7 +550,7 @@ function renderResults(){
   h.style.fontWeight="800"; h.style.fontSize="15px";
   ptxt.appendChild(h);
   const sub=mk("div","muted");
-  sub.appendChild(document.createTextNode("Freewheel Pass: "));
+  sub.appendChild(document.createTextNode("Untitled Trip Planner Pass: "));
   const pp=mk("span",null,PRICE_VARIANTS[priceVariant()]);
   pp.id="passPrice";
   sub.appendChild(pp);

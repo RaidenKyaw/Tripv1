@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Freewheel</title>
+<title>Untitled Trip Planner</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -209,7 +209,7 @@
 
   <!-- ============================================================== PANEL -->
   <aside class="panel">
-    <a class="logo" href="index.html">Freewheel</a>
+    <a class="logo" href="index.html">Untitled Trip Planner</a>
     <button class="navbtn on" data-tab="deals"><span class="ic">🏷️</span>Deals</button>
     <button class="navbtn" data-tab="trips"><span class="ic">🧳</span>Trips</button>
     <button class="navbtn" data-tab="friends"><span class="ic">👥</span>Friends<span class="badge hidden" id="frBadge">0</span></button>
@@ -279,7 +279,7 @@
       <p class="sub">Share your code during your free week and everyone locks the same rate and bill date.</p>
 
       <div class="crewcard" style="margin-top:18px;">
-        <div class="strip">FREEWHEEL CREW · SHARE THIS CODE</div>
+        <div class="strip">TRIP PLANNER CREW · SHARE THIS CODE</div>
         <div class="inner">
           <div class="row">
             <div class="code" id="crewCode">…</div>
@@ -697,7 +697,7 @@ function renderCrew(){
 }
 
 $("copyCrew").addEventListener("click", () => {
-  const text = "Join my Freewheel crew with code " + U.crew + ": " +
+  const text = "Join my Untitled Trip Planner crew with code " + U.crew + ": " +
                location.origin + location.pathname.replace(/home\.html$/, "") + "onboard.html";
   if(navigator.clipboard){
     navigator.clipboard.writeText(text).then(

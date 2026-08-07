@@ -1,5 +1,5 @@
 -- ============================================================================
--- FREEWHEEL: schema v3 (shape constraints)
+-- UNTITLED TRIP PLANNER: schema v3 (shape constraints)
 -- Run AFTER v1 and v2. Safe to re-run.
 --
 -- WHAT THIS IS: cheap limits on the SHAPE of anonymous writes. A trip name can't

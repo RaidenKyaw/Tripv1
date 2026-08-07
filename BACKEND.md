@@ -1,6 +1,6 @@
 # Backend setup: about 15 minutes
 
-Freewheel runs fine with no backend at all (demo mode). This turns on the real one: saved trips,
+Untitled Trip Planner runs fine with no backend at all (demo mode). This turns on the real one: saved trips,
 accounts, crews, friends, and the numbers on the dashboard.
 
 You need a free Supabase project and a free Travelpayouts token. Nothing here costs money.

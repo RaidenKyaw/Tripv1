@@ -1,4 +1,4 @@
-# Freewheel
+# Untitled Trip Planner
 
 A membership **website**, never an app, that helps groups of young people actually take the trips
 their group chat keeps talking about.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Structural checks for the Freewheel site.
+Structural checks for the Untitled Trip Planner site.
 
     python check.py
 

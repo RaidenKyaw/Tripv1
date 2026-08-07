@@ -25,14 +25,14 @@
 > Everything else below, the mechanism, the crew-code design, the metrics, the
 > honesty principles in §4, stands unchanged.
 
-# FREEWHEEL: complete handoff brief
+# UNTITLED TRIP PLANNER: complete handoff brief
 
 For any agent or developer picking this up. Everything below was produced in one working session
 (Aug 2026). Read this top to bottom before writing code.
 
 ---
 
-## 1. What Freewheel is
+## 1. What Untitled Trip Planner is
 
 **A membership website (never call it an app, no installs, no app stores) that helps groups of
 young people actually take the trips their group chat keeps talking about.**
@@ -89,12 +89,12 @@ departure airport before deal quality is credible. You don't pick the city; the 
 
 ## 2. Everything already built (state: WORKING, demo-mode, tested via Playwright)
 
-All in `freewheel-site/`. Every page runs standalone with no backend (demo mode) and upgrades
+All in `trip-planner-site/`. Every page runs standalone with no backend (demo mode) and upgrades
 itself when Supabase keys are pasted into the `BACKEND = { url, anonKey }` line each file carries.
 
 | File | What it is | State |
 |---|---|---|
-| `index.html` | Landing. Warm travel theme (sand/terracotta/teal, Georgia serif), animated drifting clouds + plane on a dashed flight path, fare ticker, how-it-works (passport stamps), **Inside Freewheel** showcase (Deals/Trips/Friends), group-chat-bubble proof section, postcard deal cards, boarding-pass pricing tiers + guarantees, FAQ, honest footer. CTAs → `onboard.html` | ✅ tested |
+| `index.html` | Landing. Warm travel theme (sand/terracotta/teal, Georgia serif), animated drifting clouds + plane on a dashed flight path, fare ticker, how-it-works (passport stamps), **Inside the planner** showcase (Deals/Trips/Friends), group-chat-bubble proof section, postcard deal cards, boarding-pass pricing tiers + guarantees, FAQ, honest footer. CTAs → `onboard.html` | ✅ tested |
 | `onboard.html` | 5-step wizard: account (Supabase email/pw or demo-explore) → name/handle/home airport → trip vibes + budget → usual windows → "here's the deal" pricing explainer + crew-code entry → `home.html`. Progress bar, every step tracked | ✅ tested |
 | `home.html` | Logged-in shell. Side panel (bottom bar on mobile): **Deals** (16 routes/origin, sort by cheapest/discount/soonest/popular/recently-updated, flights+beds linkouts), **Trips** (list + new trip + plan-with-friends), **Friends** (crew-code share card, add-by-handle, requests/accept, friends list). Trial banner with days left. Demo seeds: 2 trips, 2 friends, 1 pending request | ✅ tested, one known bug below |
 | `app.html` | The trip tool (reachable from Trips; old shared links still work). Create trip → share link → friends tap weekends AND custom date ranges (mid-sem break) → boarding-pass result card → weekend-comparison chips with availability counts → 8 destinations with flights + beds (dates+group size prefilled) → fake-door Pass with price A/B → inline waitlist email capture. **No account needed to join a trip, this is the viral loop, never gate it** | ✅ tested |
@@ -107,9 +107,9 @@ itself when Supabase keys are pasted into the `BACKEND = { url, anonKey }` line 
 | `README.md` / `BACKEND.md` / `CHECKLIST.md` | Deploy, backend setup (15 min), metrics SQL, launch checklist | ✅ |
 
 Also produced earlier (outputs/, separate from the site): two consulting decks
-(`Project_Tailwind_Go_No_Go.pptx`, the original idea's no-go; `Project_Freewheel_Student_Group_Travel.pptx`),
-`Freewheel_validation_playbook.md` (3 tests: legal, willingness-to-pay, content→group ignition),
-`Freewheel_validation_tracker.xlsx` (assumptions, trip log, groups test, catchment, pricing model, ATOL exposure).
+(`Project_Tailwind_Go_No_Go.pptx`, the original idea's no-go; `Project_Untitled Trip Planner_Student_Group_Travel.pptx`),
+`Untitled Trip Planner_validation_playbook.md` (3 tests: legal, willingness-to-pay, content→group ignition),
+`Untitled Trip Planner_validation_tracker.xlsx` (assumptions, trip log, groups test, catchment, pricing model, ATOL exposure).
 
 **Data reality:** every price on every page is **generated sample data** (`fares.json`, seeded
 random around realistic route baselines). Real prices only exist after the founder's Travelpayouts
@@ -179,7 +179,7 @@ with keys.
 GitHub repo + Pages deploy · Supabase project (run schema v1 then v2, paste keys into the 5
 `BACKEND` lines: index/app/onboard/home/dashboard) · Travelpayouts token as `TP_TOKEN` secret +
 one manual Action run · domain + og:image URLs + real contact email · name/trademark check
-("Freewheel" is a placeholder) · then put the link in front of real people and read the dashboard.
+("Untitled Trip Planner" is a placeholder) · then put the link in front of real people and read the dashboard.
 
 ---
 

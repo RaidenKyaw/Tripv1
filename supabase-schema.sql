@@ -1,5 +1,5 @@
 -- ============================================================================
--- FREEWHEEL: schema v1
+-- UNTITLED TRIP PLANNER: schema v1
 -- Run this FIRST, in Supabase → SQL Editor → New query → paste → Run.
 -- Then run supabase-schema-v2.sql.
 --

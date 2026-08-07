@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Nightly fare cache builder for Freewheel.
+Nightly fare cache builder for Untitled Trip Planner.
 
 Pulls cheapest return fares for the next 12 Fri->Mon weekends, for every route we
 show, from every origin we support, and rewrites the FARES_ALL blob inside each
@@ -36,7 +36,7 @@ WEEKENDS = 12
 MIN_COVERAGE = 0.60          # below this we refuse to publish
 REQUEST_PAUSE = 0.25         # seconds between calls, be a good citizen
 RETRIES = 3
-UA = "freewheel-fare-bot/1.0 (+https://github.com/RaidenKyaw/Tripv1)"
+UA = "trip-planner-fare-bot/1.0 (+https://github.com/RaidenKyaw/Tripv1)"
 
 # Files that carry a `const FARES_ALL = {...};` line. All get the same blob.
 TARGETS = ["app.html", "home.html", "index.html", "onboard.html"]
@@ -293,7 +293,7 @@ def rewrite(path, blob, stamp, live=True, rates=None):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Rebuild the Freewheel fare cache.")
+    ap = argparse.ArgumentParser(description="Rebuild the Untitled Trip Planner fare cache.")
     ap.add_argument("--token", default=os.environ.get("TP_TOKEN"),
                     help="Travelpayouts API token (or set TP_TOKEN)")
     ap.add_argument("--dry-run", action="store_true",

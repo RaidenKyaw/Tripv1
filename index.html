@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Freewheel · where can we all go?</title>
-<meta name="description" content="Everyone taps the weekends they're free. Freewheel shows what's cheap from your airport on the days that work for all of you.">
+<title>Untitled Trip Planner · where can we all go?</title>
+<meta name="description" content="Everyone taps the weekends they're free. Untitled Trip Planner shows what's cheap from your airport on the days that work for all of you.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛫</text></svg>">
 <!-- Absolute URL required. WhatsApp, iMessage and Discord won't resolve a relative one.
      Update this (and the same line in app.html) if you move to a custom domain. -->
@@ -30,6 +30,11 @@
     --teal-soft:#E7F1EE;
     --gold:#D9A441;
     --gold-soft:#FAF1DC;
+    /* primary action is the deep green from the reference. Terracotta stays,
+       demoted to discounts and deal badges where it does its best work. */
+    --brand:#1B7259;
+    --brand-soft:#E7F2ED;
+    --brand-line:#BEDCD0;
     --radius:16px;
     --display:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --sans:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -51,7 +56,11 @@
   nav{position:sticky; top:0; z-index:40; background:rgba(251,245,236,.86);
       backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
   nav .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:13px; padding-bottom:13px;}
-  .logo{font-family:var(--display); font-weight:700; font-size:20px; color:var(--teal); text-decoration:none;}
+  .logo{font-family:var(--display); font-weight:700; font-size:19.5px; color:var(--ink);
+       text-decoration:none; display:flex; align-items:center; gap:10px; letter-spacing:-.02em;}
+  .logo{white-space:nowrap;}
+  .logo .mark{width:34px; height:34px; border-radius:10px; background:var(--brand);
+              display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
   .logo em{color:var(--dim); font-family:var(--sans); font-weight:500; font-size:12px; margin-left:9px; font-style:italic;}
   .navlinks{display:flex; align-items:center; gap:18px;}
   .navlinks a{font-size:14px; font-weight:600; text-decoration:none; color:var(--dim);}
@@ -59,9 +68,9 @@
   .btn{display:inline-block; border:none; border-radius:99px; padding:15px 28px; font-size:15.5px;
        white-space:nowrap;
        font-weight:700; cursor:pointer; text-align:center; text-decoration:none; font-family:var(--sans);}
-  .btn-primary{background:var(--terra); color:#FFF8F2; box-shadow:0 6px 18px rgba(217,106,75,.26);}
+  .btn-primary{background:var(--brand); color:#F3FAF7; box-shadow:0 6px 18px rgba(27,114,89,.24);}
   .btn-primary:active{transform:scale(.985);}
-  .btn-ghost{background:transparent; color:var(--teal); border:1.5px dashed var(--line);}
+  .btn-ghost{background:transparent; color:var(--brand); border:1.6px solid var(--brand-line);}
   .btn-sm{padding:10px 18px; font-size:14px; border-radius:99px;}
 
   /* ----------------------------------------------------------------- hero */
@@ -84,8 +93,8 @@
   @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
 
   .hero .wrap{position:relative; z-index:1;}
-  .hero h1{font-size:clamp(36px,4.6vw,60px); line-height:1.04; margin-bottom:20px;
-           max-width:15ch; text-wrap:balance;}
+  .hero h1{font-size:clamp(34px,4.1vw,54px); line-height:1.06; margin-bottom:18px;
+           max-width:20ch;}
   /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
      is fragile here (any ancestor stacking context hides it), and --gold-soft is too
      close to the sand background to read, so this band is deliberately warmer. */
@@ -127,14 +136,59 @@
             border-bottom:1.5px solid #BFD6CF; padding-bottom:1px;}
   .hero-alt:hover{border-bottom-color:var(--teal);}
 
-  /* --------------------------------------------------------- hero layout */
-  .hero-grid{display:grid; grid-template-columns:1.02fr .98fr; gap:36px; align-items:center;}
+  /* -------------------------------------------------------- hero furniture */
+  .audience{font-size:12.5px; font-weight:600; color:var(--brand); background:var(--brand-soft);
+            border:1px solid var(--brand-line); border-radius:99px; padding:7px 13px;}
+  .hero h1 .hl{color:var(--brand);}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:9px;}
+  .btn svg{flex:0 0 auto;}
+
+  .featrow{list-style:none; display:flex; flex-wrap:wrap; gap:26px; margin-top:26px;
+           padding:0; color:var(--ink);}
+  .featrow li{display:flex; align-items:center; gap:9px; font-size:15.5px; font-weight:600;}
+  .featrow svg{width:21px; height:21px; color:var(--brand); flex:0 0 auto;}
+  .proof{margin-top:26px;}
+
+  /* floating trip card, overlapping the illustration */
   .hero-art{position:relative;}
-  .hero-art svg{width:100%; height:auto; display:block; max-height:520px;
+  .tripcard{position:absolute; right:-38px; bottom:16px; width:298px; background:#FFF;
+            border:1px solid #E7E4DC; border-radius:18px; padding:16px 17px 14px;
+            box-shadow:0 20px 46px rgba(40,50,45,.16); z-index:4;}
+  .tc-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+           padding-bottom:13px; border-bottom:1px solid #EFEDE7;}
+  .tc-name{font-family:var(--display); font-size:17.5px; font-weight:700; letter-spacing:-.02em;}
+  .tc-dates{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--dim);
+            margin-top:5px;}
+  .tc-dates svg{color:var(--brand);}
+  .tc-people{display:flex; align-items:center;}
+  .tc-people i,.tc-people b{width:26px; height:26px; border-radius:50%; font-size:10.5px;
+    font-weight:700; display:flex; align-items:center; justify-content:center;
+    border:2px solid #FFF; margin-left:-7px; font-style:normal;}
+  .tc-people i{background:var(--brand-soft); color:var(--brand);}
+  .tc-people b{background:var(--brand); color:#F3FAF7;}
+  .tc-row{display:flex; align-items:center; gap:11px; padding:11px 0; border-bottom:1px solid #F2F0EA;
+          font-size:14.5px;}
+  .tc-ico{width:22px; height:22px; color:var(--brand); flex:0 0 auto;}
+  .tc-ico svg{width:22px; height:22px;}
+  .tc-lbl{font-weight:600;}
+  .tc-val{margin-left:auto; color:var(--dim); font-size:13.5px;}
+  .tc-val b{color:var(--ink); font-size:15px; font-weight:700;}
+  .tc-soon{font-size:12.5px; color:#9C9384;}
+  .tc-note{display:flex; gap:9px; align-items:flex-start; background:var(--brand-soft);
+           border-radius:12px; padding:11px 12px; margin-top:13px; font-size:12.5px;
+           color:#175E49; line-height:1.5;}
+  .tc-note svg{width:17px; height:17px; color:var(--brand); flex:0 0 auto; margin-top:1px;}
+  .tc-dates svg{width:15px; height:15px; color:var(--brand); flex:0 0 auto;}
+  .logo .mark svg{width:19px; height:19px;}
+
+  /* --------------------------------------------------------- hero layout */
+  .hero-grid{display:grid; grid-template-columns:1fr 1.12fr; gap:24px; align-items:center;}
+  .hero-art{position:relative;}
+  .hero-art > svg{width:100%; height:auto; display:block; max-height:470px;
                 filter:drop-shadow(0 18px 34px rgba(120,90,60,.14));}
   /* the picture drifts a little so the hero is not completely static */
   @keyframes hover-art{0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)}}
-  .hero-art svg{animation:hover-art 7s ease-in-out infinite;}
+  .hero-art > svg{animation:hover-art 7s ease-in-out infinite;}
 
   /* --------------------------------------------------------------- ticker */
   .ticker{border-top:1px solid var(--line); border-bottom:1px solid var(--line);
@@ -278,6 +332,7 @@
     /* the tagline and a roomy CTA don't both fit next to the wordmark on a phone */
     .logo em{display:none;}
     .navlinks{gap:14px;}
+    .audience{display:none;}
     .navlinks a{font-size:14px;}
     .btn-sm{padding:9px 15px; font-size:13.5px;}
     .facts{margin-top:20px;}
@@ -285,8 +340,11 @@
     .fact b{font-size:19px;}
     .fact span{font-size:10px; letter-spacing:.02em;}
     .hero-grid{grid-template-columns:1fr; gap:6px;}
-    .hero-art{order:-1; max-width:440px; margin:0 auto 4px;}
-    .hero-art svg{max-height:330px;}
+    .hero-art{order:-1; max-width:460px; margin:0 auto 10px;}
+    .hero-art > svg{max-height:270px;}
+    .tripcard{position:static; width:100%; margin-top:-6px; box-shadow:0 10px 26px rgba(40,50,45,.13);}
+    .featrow{gap:18px; margin-top:22px;}
+    .featrow li{font-size:14.5px;}
     .grid3,.sc-grid,.guarantees{grid-template-columns:1fr;}
     .tiers{grid-template-columns:repeat(2,1fr);}
     .grid2{grid-template-columns:1fr;}
@@ -294,6 +352,14 @@
     .showcase{padding:34px 20px; border-radius:18px;}
     .navlinks .hide-sm{display:none;}
     .flightpath{height:104px;}
+  }
+  @media(max-width:560px){
+    /* the wordmark is long, so on a phone it gets the room and the login link
+       moves out of the way. It is still in the footer and on the onboarding page. */
+    .logo{font-size:16.5px; gap:8px;}
+    .logo .mark{width:30px; height:30px; border-radius:9px;}
+    .navlinks a[href="login.html"]{display:none;}
+    .navlinks{gap:10px;}
   }
   @media(max-width:420px){ .tiers{grid-template-columns:1fr;} }
 
@@ -342,10 +408,10 @@
   }
   /* Visible keyboard focus everywhere. Mouse users never see it; keyboard and
      screen-reader users can't navigate confidently without it. */
-  :focus-visible{outline:3px solid var(--terra); outline-offset:2px; border-radius:8px;}
+  :focus-visible{outline:3px solid var(--brand); outline-offset:2px; border-radius:8px;}
   .btn:hover{filter:brightness(1.03);}
-  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 9px 24px rgba(217,106,75,.30);}
-  .btn-ghost:hover{border-color:var(--teal); background:var(--teal-soft); border-style:solid;}
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 9px 24px rgba(27,114,89,.30);}
+  .btn-ghost:hover{border-color:var(--brand); background:var(--brand-soft);}
   .btn-accent:hover{filter:brightness(1.08);}
   .chip:hover,.size:hover,.sort:hover,.wk:hover{border-color:#D7C3A6;}
   a:hover{opacity:.85;}
@@ -370,11 +436,17 @@
 
 <nav>
   <div class="wrap">
-    <a class="logo" href="/">Freewheel<em>where can we all go?</em></a>
+    <a class="logo" href="/">
+      <span class="mark" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M21.5 2.5 2 10.2l7.4 2.6 2.4 7.6z" fill="#F3FAF7"/><path d="m9.4 12.8 12.1-10.3" stroke="#1B7259" stroke-width="1.6"/></svg>
+      </span>
+      Untitled Trip Planner
+    </a>
     <div class="navlinks">
       <a href="#how" class="hide-sm">How it works</a>
       <a href="#pricing" class="hide-sm">Pricing</a>
       <a href="login.html">Log in</a>
+      <span class="audience hide-sm">Made for college students</span>
       <a href="onboard.html" class="btn btn-primary btn-sm" data-cta="nav">Start free</a>
     </div>
   </div>
@@ -388,33 +460,50 @@
   <div class="wrap">
     <div class="hero-grid">
       <div class="hero-copy">
-        <h1>Your group chat has been planning this trip <span class="u">since March</span>.</h1>
-        <p class="lead">Everyone taps the weekends they can actually do. Freewheel finds the windows
-          you all share, then shows what's cheap from your airport on exactly those days.</p>
-        <div class="cta-row">
-          <a href="onboard.html" class="btn btn-primary" data-cta="hero">Start your free week</a>
-          <a href="app.html" class="hero-alt" data-cta="hero_try">or try it without signing up</a>
-        </div>
-        <p class="cta-note">Seven days, no card. No app to install, and
-          <b>nobody needs an account to join your trip.</b></p>
+        <!-- PLACEHOLDER COPY. Structure is final, words are not. Rewrite these
+             three: the headline, the green phrase inside it, and the sub. -->
+        <h1>Plan trips together.<br><span class="hl">Unlock better deals.</span></h1>
+        <p class="lead">Create shared trip plans with friends and get alerted when prices drop on
+          flights, stays, activities and more.</p>
 
-        <!-- Every number here is checkable against the repo. No user counts, no
-             testimonials, no partner badges, until those are real. -->
-        <div class="facts">
-          <div class="fact"><b id="factRoutes">96</b><span>ROUTES WATCHED</span></div>
-          <div class="fact"><b id="factAirports">6</b><span>US AIRPORTS</span></div>
-          <div class="fact"><b>Nightly</b><span>PRICE REFRESH</span></div>
+        <div class="cta-row">
+          <a href="app.html" class="btn btn-primary" data-cta="hero_start">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.4" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18 7v6M15 10h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Start a trip
+          </a>
+          <a href="app.html" class="btn btn-ghost" data-cta="hero_join">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.4" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 12.5l2.6 2.6L23 10.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Join a trip
+          </a>
+        </div>
+
+        <ul class="featrow">
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15.5 3 10V7l2 .6 1.6 2.2 4.4 1.3V4.6L13.4 5l1.3 6.8 6.3 1.9z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Flights</li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 18v-7h18v7M3 11V7M21 18v2M3 18v2M7 11V9h5v2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Stays</li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12.6 3H20a1 1 0 0 1 1 1v7.4a1 1 0 0 1-.3.7l-8.6 8.6a1 1 0 0 1-1.4 0l-7.4-7.4a1 1 0 0 1 0-1.4l8.6-8.6a1 1 0 0 1 .7-.3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="16.6" cy="7.4" r="1.5" fill="currentColor"/></svg>Activities</li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2.2 2.2 0 0 0 0 4.4V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3.6A2.2 2.2 0 0 0 4 9z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M13 7v10" stroke="currentColor" stroke-width="1.7" stroke-dasharray="2 2.6"/></svg>Deals</li>
+        </ul>
+
+        <!-- Where the reference puts "+12K students". We have no users, so this
+             states what the site actually does until there is something true here.
+             Do not put a user count in this slot before it is real. -->
+        <div class="proof">
+          <div class="facts">
+            <div class="fact"><b id="factRoutes">96</b><span>ROUTES WATCHED</span></div>
+            <div class="fact"><b id="factAirports">6</b><span>US AIRPORTS</span></div>
+            <div class="fact"><b>Nightly</b><span>PRICE REFRESH</span></div>
+          </div>
         </div>
       </div>
 
       <!-- Three friends, three sets of dates, one weekend they all share, and the
            fare that falls out of it. The whole product in one picture. -->
       <div class="hero-art">
-        <svg viewBox="0 0 560 500" role="img" aria-label="Three friends comparing the weekends they are free, with the cheapest fare for the weekend they all share">
-          <ellipse cx="292" cy="252" rx="248" ry="212" fill="#F6E9CE" opacity=".85"/>
-          <ellipse cx="286" cy="300" rx="196" ry="158" fill="#E3F0EB" opacity=".55"/>
+        <svg viewBox="0 0 726 512" role="img" aria-label="Three friends comparing the weekends they are free, with the cheapest fare for the weekend they all share">
+          <ellipse cx="248" cy="252" rx="248" ry="212" fill="#F6E9CE" opacity=".85"/>
+          <ellipse cx="242" cy="300" rx="196" ry="158" fill="#E3F0EB" opacity=".55"/>
 
-          <g stroke="#33302B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <g transform="translate(-54,0)" stroke="#33302B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <!-- friend, left -->
             <g>
               <path d="M58 452v-58a56 56 0 0 1 56-56h20a56 56 0 0 1 56 56v58z" fill="#D96A4B"/>
@@ -470,36 +559,42 @@
             </g>
           </g>
 
-          <!-- the fare that falls out of the overlap -->
-          <g transform="rotate(6 452 132)">
-            <rect x="360" y="92" width="188" height="80" rx="18" fill="#FFFDF9"
-                  stroke="#33302B" stroke-width="3"/>
-            <rect x="360" y="92" width="188" height="24" rx="18" fill="#2F6D62" stroke="none"/>
-            <rect x="360" y="106" width="188" height="10" fill="#2F6D62" stroke="none"/>
-            <text x="374" y="109" font-family="DM Sans, sans-serif" font-size="11"
-                  font-weight="700" fill="#DFEEEA" letter-spacing="1.6">CHEAPEST TOGETHER</text>
-            <text x="374" y="146" font-family="DM Sans, sans-serif" font-size="30"
-                  font-weight="700" fill="#33302B" letter-spacing="-0.6">$86</text>
-            <text x="440" y="146" font-family="DM Sans, sans-serif" font-size="14"
-                  font-weight="500" fill="#8C7F6D">BOS to DCA</text>
-            <text x="374" y="163" font-family="DM Sans, sans-serif" font-size="11.5"
-                  font-weight="600" fill="#9A6E1B">Sat 12 to Mon 14</text>
-          </g>
-
-          <!-- each of them offering a different set of dates -->
-          <g font-family="DM Sans, sans-serif" font-weight="700" font-size="13">
-            <g transform="rotate(-8 96 168)">
-              <rect x="26" y="148" width="140" height="38" rx="19" fill="#FFFDF9"
-                    stroke="#33302B" stroke-width="3"/>
-              <text x="46" y="172" fill="#33302B">Free the 12th</text>
-            </g>
-            <g transform="rotate(5 486 236)">
-              <rect x="416" y="216" width="140" height="38" rx="19" fill="#FFFDF9"
-                    stroke="#33302B" stroke-width="3"/>
-              <text x="434" y="240" fill="#33302B">Not the 26th</text>
-            </g>
-          </g>
         </svg>
+        <!-- Floating trip card. Flight price is read from the real fare cache,
+             so the number on it is whatever the cache actually holds. -->
+        <aside class="tripcard">
+          <div class="tc-head">
+            <div>
+              <div class="tc-name" id="tcName">Spring break</div>
+              <div class="tc-dates">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <span id="tcDates">Mar 13 to Mar 16</span>
+              </div>
+            </div>
+            <div class="tc-people"><i>M</i><i>J</i><i>R</i><b>+2</b></div>
+          </div>
+
+          <div class="tc-row">
+            <span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15.5 3 10V7l2 .6 1.6 2.2 4.4 1.3V4.6L13.4 5l1.3 6.8 6.3 1.9z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+            <span class="tc-lbl">Flights</span>
+            <span class="tc-val">from <b id="tcFlight">$86</b></span>
+          </div>
+          <div class="tc-row">
+            <span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 18v-7h18v7M3 11V7M21 18v2M3 18v2M7 11V9h5v2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="tc-lbl">Stays</span>
+            <span class="tc-val tc-soon">we link you out</span>
+          </div>
+          <div class="tc-row">
+            <span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12.6 3H20a1 1 0 0 1 1 1v7.4a1 1 0 0 1-.3.7l-8.6 8.6a1 1 0 0 1-1.4 0l-7.4-7.4a1 1 0 0 1 0-1.4l8.6-8.6a1 1 0 0 1 .7-.3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="16.6" cy="7.4" r="1.5" fill="currentColor"/></svg></span>
+            <span class="tc-lbl">Activities</span>
+            <span class="tc-val tc-soon">soon</span>
+          </div>
+
+          <div class="tc-note">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span>Once alerts switch on, we will tell you when one of your routes drops.</span>
+          </div>
+        </aside>
       </div>
     </div>
   </div>
@@ -537,7 +632,7 @@
     </div>
 
     <div class="fuse">
-      <b>Freewheel is the overlap.</b>
+      <b>Untitled Trip Planner is the overlap.</b>
       Your shared free weekends, priced from your home airport, ranked cheapest first.
     </div>
   </div>
@@ -578,7 +673,7 @@
   <div class="wrap">
     <div class="showcase">
       <div style="max-width:560px;">
-        <div class="eyebrow">Inside Freewheel</div>
+        <div class="eyebrow">Inside the planner</div>
         <h2>Then it keeps working between trips</h2>
         <p class="lead">Most of the year you're not booking anything. That's the point of the
           membership: it watches your routes while nothing's happening.</p>
@@ -668,7 +763,7 @@
     </div>
     <div class="tiers">
       <div class="tier">
-        <div class="strip">FREEWHEEL PASS · SOLO</div>
+        <div class="strip">TRIP PLANNER PASS · SOLO</div>
         <div class="body">
           <div class="who">Just you</div>
           <div class="amt">$4.99<small>/mo</small></div>
@@ -677,7 +772,7 @@
         </div>
       </div>
       <div class="tier">
-        <div class="strip">FREEWHEEL PASS · PAIR</div>
+        <div class="strip">TRIP PLANNER PASS · PAIR</div>
         <div class="body">
           <div class="who">2 people</div>
           <div class="amt">$3.29<small>/mo</small></div>
@@ -686,7 +781,7 @@
         </div>
       </div>
       <div class="tier">
-        <div class="strip">FREEWHEEL PASS · SQUAD</div>
+        <div class="strip">TRIP PLANNER PASS · SQUAD</div>
         <div class="body">
           <div class="who">4 people</div>
           <div class="amt">$2.49<small>/mo</small></div>
@@ -695,7 +790,7 @@
         </div>
       </div>
       <div class="tier pick">
-        <div class="strip">FREEWHEEL PASS · CREW</div>
+        <div class="strip">TRIP PLANNER PASS · CREW</div>
         <div class="off">71% off</div>
         <div class="body">
           <div class="who">6 people · most picked</div>
@@ -735,7 +830,7 @@
           no app store, no "download this first".</p></details>
       <details><summary>Where do the prices come from?</summary>
         <p>A nightly cache of round-trip fares from your home airport, built from the Travelpayouts fare
-          data API. We show indicative prices per person and link you out to book. Freewheel never
+          data API. We show indicative prices per person and link you out to book. Untitled Trip Planner never
           takes your money for a flight or holds a booking.</p></details>
       <details><summary>Can we use dates that aren't weekends?</summary>
         <p>Yes. Add a custom range with a label like "spring break" and everyone can tap that too.
@@ -768,7 +863,7 @@
   <div class="wrap">
     <div class="cols">
       <div style="max-width:280px;">
-        <a class="logo" href="/" style="font-size:19px;">Freewheel</a>
+        <a class="logo" href="/" style="font-size:19px;">Untitled Trip Planner</a>
         <p style="color:var(--dim); margin-top:9px; font-size:13px;">
           Group availability, fused with cheap flight windows from your airport.</p>
       </div>
@@ -791,13 +886,13 @@
       </div>
     </div>
     <div class="honest">
-      <b>Being straight with you:</b> Freewheel is new. Prices are indicative round-trip fares per person
+      <b>Being straight with you:</b> Untitled Trip Planner is new. Prices are indicative round-trip fares per person
       in USD, cached nightly. Always confirm on the airline's own site before you book, because
       fares move. We don't sell flights, assemble packages, or take your booking money; every booking
       link takes you to the airline or hotel directly, and some of those links pay us a small
       affiliate fee. We don't publish user counts or reviews until they're real ones.
       <br><br>
-      "Freewheel" is a working name pending a trademark check. © <span id="yr"></span>
+      "Untitled Trip Planner" is a working name pending a trademark check. © <span id="yr"></span>
     </div>
   </div>
 </footer>
@@ -822,6 +917,15 @@ const FARES_ALL = {"BOS":{"LGA":{"city":"New York","typ":128,"fares":[{"w":0,"p"
 // Origin the landing page samples prices from. Boston has the highest student
 // density per airport in the US, so it's the most representative shop window.
 const HOME = "BOS";
+
+// next Friday to Monday, written the way a person would say it
+function nextWeekend(){
+  const M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const d = new Date();
+  d.setDate(d.getDate() + ((5 - d.getDay() + 7) % 7 || 7));
+  const mon = new Date(d); mon.setDate(d.getDate() + 3);
+  return M[d.getMonth()] + " " + d.getDate() + " to " + M[mon.getMonth()] + " " + mon.getDate();
+}
 
 // ================= CURRENCY =================
 // Landing prices honour a currency chosen in onboarding on a previous visit.
@@ -984,6 +1088,16 @@ document.getElementById("sampleFlag").hidden = !SAMPLE_DATA;
 document.getElementById("yr").textContent = new Date().getFullYear();
 buildTicker();
 buildCards();
+(function tripCard(){
+  const rows = routeSummary(HOME);
+  if(!rows.length) return;
+  const cheapest = rows.reduce((a, b) => a.low < b.low ? a : b);
+  document.getElementById("tcFlight").textContent = money(cheapest.low);
+  document.getElementById("tcName").textContent = cheapest.city + " trip";
+  const w = nextWeekend();
+  document.getElementById("tcDates").textContent = w;
+})();
+
 (function facts(){
   const routes = Object.values(FARES_ALL).reduce((n, o) => n + Object.keys(o).length, 0);
   document.getElementById("factRoutes").textContent = routes;
