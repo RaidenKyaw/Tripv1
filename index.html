@@ -29,17 +29,17 @@
        point at ink or at the green tint rather than at terracotta and gold. */
     --terra:#33302B;
     --terra-soft:#EFEADF;
-    --teal:#33453C;
-    --teal-deep:#2E3F37;
+    --teal:#2C6E4F;
+    --teal-deep:#22513C;
     --teal-soft:#EAF0EC;
     --gold:#E4E7DF;
     --gold-soft:#F0F2EB;
     --ink-soft:#5C574E;
-    --pine:#33453C;        /* dark surfaces: buttons, panels, nav pill */
-    --pine-deep:#2A3A32;
+    --pine:#2C6E4F;        /* dark surfaces: buttons, panels, nav pill */
+    --pine-deep:#235841;
     --sage:#A9B8AC;        /* the ridge tone itself */
-    --sage-soft:#E7EDE6;
-    --shadow-green:51,69,60;
+    --sage-soft:#E2F0E6;
+    --shadow-green:44,110,79;
     /* primary action is the deep green from the reference. Terracotta stays,
        demoted to discounts and deal badges where it does its best work. */
     --brand:#1B7259;
@@ -73,7 +73,7 @@
   .btn-primary{background:var(--pine); color:#F4F7F2;
                box-shadow:0 8px 22px rgba(var(--shadow-green),.22);}
   .btn-primary:active{transform:scale(.985);}
-  .btn-ghost{background:transparent; color:var(--pine); border:1.5px solid rgba(51,69,60,.32);}
+  .btn-ghost{background:transparent; color:var(--pine); border:1.6px solid rgba(44,110,79,.36);}
   .btn-sm{padding:10px 18px; font-size:14px; border-radius:99px;}
   .logo{font-family:var(--display); font-weight:700; font-size:19.5px; color:var(--ink);
         text-decoration:none; display:inline-flex; align-items:center; gap:10px;
@@ -85,13 +85,13 @@
      on resize. The spring-ish overshoot stands in for Framer's damping. */
   .pillnav{position:fixed; left:50%; transform:translateX(-50%); z-index:60;
            top:var(--navtop, 16px); transition:top .3s ease;}
-  .pillnav .bar{position:relative; display:flex; align-items:center; height:54px;
+  .pillnav .bar{position:relative; display:flex; align-items:center; height:56px;
     border-radius:999px; border:1px solid rgba(120,90,60,.14);
     background:rgba(253,249,242,.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
     box-shadow:0 10px 34px rgba(70,60,45,.13); overflow:hidden; padding-right:7px;
     transition:width .5s cubic-bezier(.34,1.28,.64,1), padding .5s cubic-bezier(.34,1.28,.64,1),
                box-shadow .3s ease;}
-  .pn-logo{flex:0 0 auto; display:flex; align-items:center; padding:0 4px 0 7px; text-decoration:none;}
+  .pn-logo{flex:0 0 auto; display:flex; align-items:center; padding:0 6px 0 14px; text-decoration:none;}
   .pn-logo .mark{width:40px; height:40px; border-radius:13px; background:var(--pine);
                  display:flex; align-items:center; justify-content:center;}
   .pn-logo .mark svg{width:21px; height:21px;}
@@ -110,7 +110,7 @@
   .pn-burger svg{width:23px; height:23px;}
 
   /* collapsed: a 54px disc showing the menu glyph, click or scroll up to reopen */
-  .pillnav.is-collapsed .bar{padding-right:0; justify-content:center; cursor:pointer;}
+  .pillnav.is-collapsed .bar{padding-right:0; padding-left:0; justify-content:center; cursor:pointer;}
   .pillnav.is-collapsed .pn-items{opacity:0; transform:translateX(-16px);}
   .pillnav.is-collapsed .pn-logo{opacity:0; transform:translateX(-22px) rotate(-140deg);
                                  transition:opacity .24s ease, transform .34s ease;}
@@ -143,7 +143,7 @@
   @keyframes drift{to{transform:translateX(calc(100vw + 260px));}}
 
   .hero .wrap{position:relative; z-index:1;}
-  .hero h1{font-size:clamp(38px,4.5vw,66px); line-height:1.1; margin:0;
+  .hero h1{font-size:clamp(32px,3.4vw,49px); line-height:1.1; margin:0;
            letter-spacing:-.012em; max-width:none;}
   /* Highlighter drawn as a background on the span itself. A z-index:-1 pseudo-element
      is fragile here (any ancestor stacking context hides it), and --gold-soft is too
@@ -154,7 +154,7 @@
     background-size:100% .34em; background-position:0 78%; background-repeat:no-repeat;
     border-bottom:3px solid var(--sage);
   }
-  .hero .lead{font-size:22px; line-height:1.55; max-width:560px; margin:0;}
+  .hero .lead{font-size:20px; line-height:1.58; max-width:520px; margin:0;}
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin:0;}
   .cta-note{color:var(--dim); font-size:13px; margin-top:16px;}
   /* factual, checkable claims only. No user counts until they are real. */
@@ -233,19 +233,19 @@
   .logo .mark svg{width:19px; height:19px;}
 
   /* --------------------------------------------------------- hero layout */
-  .hero-grid{display:grid; grid-template-columns:1.16fr 1.1fr;
-             column-gap:26px; align-items:center;}
+  .hero-grid{display:grid; grid-template-columns:1fr 1.44fr;
+             column-gap:24px; align-items:center;}
   .hero-copy{display:flex; flex-direction:column; align-items:flex-start;
                gap:30px; padding:6px 0;}
 
   /* One coordinate space for all three plates, so the drawn route can line up
      with the laptop at one end and the aircraft at the other. */
-  .heroscene{position:relative; width:100%; padding-top:74%;}  /* 1000x740 viewBox */
+  .heroscene{position:relative; width:100%; padding-top:76%;}  /* 1000x760 viewBox */
   .heroscene img{position:absolute; display:block; height:auto; pointer-events:none;}
   /* the range is a light wash on near-white: multiply drops the paper and keeps
      the paint, so it sits on the cream without a visible plate edge */
   .sc-range{top:0; left:0; width:100%; opacity:.95;}
-  .sc-crew{bottom:0; left:-34%; width:96%;}
+  .sc-crew{bottom:0; left:-32%; width:104%;}
   .sc-line{position:absolute; inset:0; width:100%; height:100%; overflow:visible;
              pointer-events:none;}
 
@@ -254,7 +254,7 @@
                    animation:route-draw 4.2s .4s cubic-bezier(.4,0,.25,1) forwards;}
   @keyframes route-draw{to{stroke-dashoffset:0;}}
 
-  .tripcard{position:absolute; right:14px; left:auto; bottom:3%; width:322px; background:#FFF;
+  .tripcard{position:absolute; right:8px; left:auto; bottom:4%; width:302px; background:#FFF;
             border:1px solid #E7E4DC; border-radius:18px; padding:15px 16px 13px;
             box-shadow:0 18px 40px rgba(40,50,45,.15); z-index:4;
             opacity:0; animation:card-in .7s 3.7s ease-out forwards;}
@@ -270,7 +270,7 @@
   .grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
 
   /* ------------------------------------------------------- passport stamp */
-  .stamp{width:62px; height:62px; border:2.5px dashed rgba(51,69,60,.34); border-radius:50%;
+  .stamp{width:62px; height:62px; border:2.5px dashed rgba(44,110,79,.34); border-radius:50%;
          display:flex; align-items:center; justify-content:center; transform:rotate(-8deg);
          font-family:var(--display); font-size:25px; font-weight:600; color:var(--pine);
          background:var(--sage-soft); margin-bottom:16px;}
@@ -357,7 +357,7 @@
   .tier .note{font-size:12.5px; color:var(--pine); font-weight:600; margin-top:9px;}
   .tier .note.plain{color:var(--dim); font-weight:500;}
   .tier .off{position:absolute; top:34px; right:10px; background:var(--sage-soft);
-             border:1px solid rgba(51,69,60,.14); color:var(--pine-deep); font-size:10px; font-weight:700;
+             border:1px solid rgba(44,110,79,.16); color:var(--pine-deep); font-size:10px; font-weight:700;
              border-radius:99px; padding:3px 8px;}
   .guarantees{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:34px;}
   .guar{display:flex; gap:12px; align-items:flex-start; font-size:13.5px; color:var(--dim);
@@ -418,7 +418,7 @@
     .pn-items a[href="#how"], .pn-items a[href="#pricing"]{display:none;}
     .pn-items a{font-size:14px; padding:9px 12px;}
     .pn-cta{padding:11px 17px !important;}
-    .pn-logo{padding:0 2px 0 6px;}
+    .pn-logo{padding:0 4px 0 11px;}
     .pn-logo .mark{width:38px; height:38px; border-radius:12px;}
   }
   @media(max-width:560px){
@@ -479,7 +479,7 @@
   :focus-visible{outline:3px solid var(--pine); outline-offset:3px; border-radius:8px;}
   .btn:hover{filter:brightness(1.03);}
   .btn-primary:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(var(--shadow-green),.30);}
-  .btn-ghost:hover{border-color:var(--pine); background:rgba(51,69,60,.05);}
+  .btn-ghost:hover{border-color:var(--pine); background:rgba(44,110,79,.06);}
   .btn-accent:hover{filter:brightness(1.08);}
   .chip:hover,.size:hover,.sort:hover,.wk:hover{border-color:#D7C3A6;}
   a:hover{opacity:.85;}
@@ -511,7 +511,7 @@
   <nav class="bar" id="pillbar" aria-label="Main">
     <a class="pn-logo" href="/" aria-label="Untitled Trip Planner, home">
       <span class="mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M21.5 2.5 2 10.2l7.4 2.6 2.4 7.6z" fill="#F4F7F2"/><path d="m9.4 12.8 12.1-10.3" stroke="#33453C" stroke-width="1.6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M21.5 2.5 2 10.2l7.4 2.6 2.4 7.6z" fill="#F4F7F2"/><path d="m9.4 12.8 12.1-10.3" stroke="#2C6E4F" stroke-width="1.6"/></svg>
       </span>
     </a>
 
@@ -579,21 +579,6 @@
         <div class="heroscene">
           <img class="sc-range" src="assets/mountains.webp" alt="" width="1400" height="721" fetchpriority="high">
 
-          <!-- The route is drawn, not an image, so it can reveal itself on load.
-               A mask sweeps along the same curve and uncovers the dashes. -->
-          <svg class="sc-line" viewBox="0 0 1000 740" fill="none" aria-hidden="true">
-            <defs>
-              <mask id="routeReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="740">
-                <path class="reveal" pathLength="1"
-                      d="M293 452C252 496 196 520 140 506C86 492 62 446 84 410C104 378 152 382 160 414C168 448 128 470 96 452C62 432 66 372 116 336C168 298 214 316 236 292C258 268 246 232 276 216C306 200 330 226 358 224C396 221 404 178 442 172C476 167 486 196 518 190C556 183 566 140 602 118C618 108 630 98 640 87"
-                      stroke="#fff" stroke-width="18" stroke-linecap="round"/>
-              </mask>
-            </defs>
-            <path class="route"
-                  d="M293 452C252 496 196 520 140 506C86 492 62 446 84 410C104 378 152 382 160 414C168 448 128 470 96 452C62 432 66 372 116 336C168 298 214 316 236 292C258 268 246 232 276 216C306 200 330 226 358 224C396 221 404 178 442 172C476 167 486 196 518 190C556 183 566 140 602 118C618 108 630 98 640 87"
-                  stroke="#8FA9A2" stroke-width="2.6" stroke-linecap="round"
-                  stroke-dasharray="9 12" mask="url(#routeReveal)"/>
-          </svg>
 
           <img class="sc-crew" src="assets/students.webp"
                alt="Three students at a laptop planning a trip together"
@@ -603,6 +588,22 @@
         <!-- Floating trip card. Flight price is read from the real fare cache,
              so the number on it is whatever the cache actually holds. -->
         </div>
+
+          <!-- The route is drawn, not an image, so it can reveal itself on load.
+               A mask sweeps along the same curve and uncovers the dashes. -->
+          <svg class="sc-line" viewBox="0 0 1000 760" fill="none" aria-hidden="true">
+            <defs>
+              <mask id="routeReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="760">
+                <path class="reveal" pathLength="1"
+                      d="M400 486C412 552 380 626 306 656C224 688 100 676 50 600C18 550 20 452 58 380C84 330 96 262 140 214C190 172 250 186 236 148C224 116 168 128 178 172C188 214 268 214 330 184C424 140 530 112 640 87"
+                      stroke="#fff" stroke-width="18" stroke-linecap="round"/>
+              </mask>
+            </defs>
+            <path class="route"
+                  d="M400 486C412 552 380 626 306 656C224 688 100 676 50 600C18 550 20 452 58 380C84 330 96 262 140 214C190 172 250 186 236 148C224 116 168 128 178 172C188 214 268 214 330 184C424 140 530 112 640 87"
+                  stroke="#6E9C82" stroke-width="2.8" stroke-linecap="round"
+                  stroke-dasharray="9 12" mask="url(#routeReveal)"/>
+          </svg>
 
           <aside class="tripcard">
           <div class="tc-head">
@@ -1151,7 +1152,7 @@ function buildCards(){
     if(next === collapsed) return;
     collapsed = next;
     nav.classList.toggle("is-collapsed", next);
-    bar.style.width = next ? "54px" : expandedW + "px";
+    bar.style.width = next ? "56px" : expandedW + "px";
     // links must leave the tab order when they are not visible
     items.toggleAttribute("inert", next);
     bar.setAttribute("aria-expanded", String(!next));
